@@ -10,6 +10,7 @@ class Solution {
             }
         }
         
+        // * 배열 선언 방법
         int[] answer = {numer, denom};
         return answer;
     }
