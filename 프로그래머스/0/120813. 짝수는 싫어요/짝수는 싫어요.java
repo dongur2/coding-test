@@ -1,5 +1,7 @@
+import java.util.stream.*;
+
 class Solution {
-    public int[] solution(int n) {
+    private int[] myCode(int n) {
         int size = (n % 2 == 0)? n/2 : n/2 + 1;
         int[] answer = new int[size];
         
@@ -8,5 +10,14 @@ class Solution {
         }
         
         return answer;
+    }
+    
+    private int[] useStream(int n) {
+        return IntStream.rangeClosed(1, n).filter(number -> number % 2 == 1).toArray();
+    }
+    
+    
+    public int[] solution(int n) {
+        return useStream(n);
     }
 }
