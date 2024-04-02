@@ -1,10 +1,10 @@
 class Solution {
-    private String myCode(String my_string) { // 76.5MB, 0.11ms
+    private String myCode(String my_string) { // 75.9MB, 0.05ms
         String[] vowels = {"a", "e", "i", "o", "u"};
         
         String answer = my_string;
         for(String vowel : vowels) {
-            answer = answer.replace(vowel, "");
+            answer = answer.replace(vowel, ""); // replace(String, String) 
         }
         return answer;
     }
@@ -14,6 +14,6 @@ class Solution {
     }
     
     public String solution(String my_string) {
-        return myCode(my_string);
+        return useRegex(my_string);
     }
 }
