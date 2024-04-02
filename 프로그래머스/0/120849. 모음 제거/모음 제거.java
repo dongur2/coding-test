@@ -9,11 +9,11 @@ class Solution {
         return answer;
     }
     
-    private String useRegex(String my_string) {
+    private String useRegex(String my_string) { // 76.4MB, 0.15ms
         return my_string.replaceAll("[aeiou]", "");
     }
     
     public String solution(String my_string) {
-        return useRegex(my_string);
+        return myCode(my_string);
     }
 }
