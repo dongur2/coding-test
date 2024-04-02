@@ -1,5 +1,5 @@
 class Solution {
-    public String solution(String my_string, String letter) {
+    private String myCode(String my_string, String letter) {
         StringBuilder answer = new StringBuilder(my_string);
         
         int index = -2;
@@ -12,5 +12,13 @@ class Solution {
         }
         
         return answer.toString();
+    }
+    
+    private String useString(String my_string, String letter) {
+        return my_string.replace(letter, "");
+    }
+    
+    public String solution(String my_string, String letter) {
+        return useString(my_string, letter);
     }
 }
