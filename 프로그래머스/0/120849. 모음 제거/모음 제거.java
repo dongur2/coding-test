@@ -1,5 +1,5 @@
 class Solution {
-    private String myCode(String my_string) { // 75.9MB, 0.05ms
+    private String myCode(String my_string) { // 74.5MB, 0.06ms
         String[] vowels = {"a", "e", "i", "o", "u"};
         
         String answer = my_string;
