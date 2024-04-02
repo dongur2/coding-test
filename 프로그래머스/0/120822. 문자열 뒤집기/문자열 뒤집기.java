@@ -1,10 +1,8 @@
 class Solution {
     private String myCodeWithString(String my_string) {
-        char[] chars = my_string.toCharArray();
-        
         String answer = "";
-        for(int i = chars.length - 1; i >= 0; i--) {
-            answer += chars[i];
+        for(int i = my_string.length() - 1; i >= 0; i--) {
+            answer += my_string.charAt(i);
         }
         return answer;
     }
@@ -13,6 +11,8 @@ class Solution {
         StringBuilder sb = new StringBuilder();
         sb.append(my_string);
         return sb.reverse().toString();
+        
+        // return new StringBuilder(my_string).reverse().toString();
     }
     
     public String solution(String my_string) {
