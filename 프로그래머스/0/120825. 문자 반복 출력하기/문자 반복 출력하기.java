@@ -1,9 +1,9 @@
 class Solution {
     public String solution(String my_string, int n) {
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         for(int i=0; i<my_string.length(); i++) {
-            answer += (my_string.charAt(i)+"").repeat(n);
+            answer.append((my_string.charAt(i)+"").repeat(n));
         }
-        return answer;
+        return answer.toString();
     }
 }
