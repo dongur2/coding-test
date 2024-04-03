@@ -1,5 +1,19 @@
 class Solution {
-    public String solution(int age) {
+    private String myCode(int age) {
+        String[] table = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
+
+        StringBuilder answer = new StringBuilder();
+
+        String stringAge = age+"";
+        for(int i=0; i<stringAge.length(); i++) {
+            String ch = table[(int)stringAge.charAt(i) - 48];
+            answer.append(ch);
+        }
+
+        return answer.toString();
+    }
+    
+    private String referTo(int age) {
         StringBuilder answer = new StringBuilder();
         
         while(age > 0) {
@@ -8,5 +22,9 @@ class Solution {
         }
         
         return answer.toString();
+    }
+    
+    public String solution(int age) {
+        return referTo(age);
     }
 }
