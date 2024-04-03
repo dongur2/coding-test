@@ -6,7 +6,7 @@ class Solution {
         
         int[] answer = new int[numbers.length()];
         for(int i=0; i<numbers.length(); i++) {
-            answer[i] = Integer.parseInt(numbers.charAt(i)+"");
+            answer[i] = numbers.charAt(i) - '0';
         }
         
         Arrays.sort(answer);
