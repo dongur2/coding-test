@@ -21,6 +21,6 @@ class Solution {
     }
     
     public int[] solution(int n, int[] numlist) {
-        return forStream(n, numlist);
+        return useFor(n, numlist);
     }
 }
