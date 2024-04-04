@@ -4,7 +4,7 @@ class Solution {
         
         String[] numbers = my_string.replaceAll("[^0-9]", " ").split(" ");
         for(String num : numbers) {
-            if(!num.trim().equals("")) {
+            if(!num.equals("")) {
                 answer += Integer.parseInt(num); 
             }
         }
