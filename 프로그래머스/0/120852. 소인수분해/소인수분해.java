@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Solution {
-    public int[] solution(int n) {
+    private int[] myCode(int n) {
         List<Integer> dividers = new ArrayList<>();
         
         // n의 약수
@@ -32,6 +32,29 @@ class Solution {
             answer[i] = answerList.get(i);
         }
         
-        return answer;
+        return answer;  
+    }
+    
+    /* 
+    * LinkedHashSet: 중복 비허용 & 데이터 저장 순서를 저장
+    */
+    private int[] useLinkedHashSet(int n) {
+        LinkedHashSet<Integer> answer = new LinkedHashSet<>();
+        
+        int i = 2;
+        while (n != 0 && i <= n) {
+            if (n % i == 0) {
+                answer.add(i);
+                n /= i;
+            } else {
+                i++;
+            }
+        }
+        
+        return answer.stream().mapToInt(Integer::intValue).toArray();
+    }
+    
+    public int[] solution(int n) {
+        return myCode(n);
     }
 }
