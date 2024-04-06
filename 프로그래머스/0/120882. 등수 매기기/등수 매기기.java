@@ -1,5 +1,7 @@
+import java.util.*;
+
 class Solution {
-    public int[] solution(int[][] score) {
+    private int[] myCode(int[][] score) {
         double[] avg = new double[score.length];
         for(int i=0; i<score.length; i++) {
             avg[i] = (double)(score[i][0] + score[i][1])/2;
@@ -19,5 +21,28 @@ class Solution {
         }
         
         return answer;
+    }
+    
+    /*
+    * 점수합을 저장한 배열을 내림차순 정렬 후, 순서대로 인덱스 저장
+    * indexOf() -> 제일 작은 인덱스 반환
+    */
+    private int[] useArr(int[][] score) {
+        List<Integer> sum = new ArrayList<>();
+        for(int[] s : score) {
+            sum.add(s[0]+s[1]);
+        }
+        sum.sort(Comparator.reverseOrder());
+        
+        int[] answer = new int[score.length];
+        for(int i=0; i<score.length; i++) {
+            answer[i] = sum.indexOf(score[i][0] + score[i][1]) + 1;
+        }
+        
+        return answer;
+    }
+    
+    public int[] solution(int[][] score) {
+        return myCode(score);
     }
 }
