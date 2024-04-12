@@ -1,10 +1,5 @@
 class Solution {
-    public String solution(String code) {
-        // 시작할 때 mode=0
-        // ret이 빈 문자열이면 EMPTY 리턴
-        // mode 0: code[i]!=1 - i가 짝수일 때만 ret += code[i] , code[i]=1 - mode 1
-        // mode 1: code[i]!=1 - i가 홀수일 때만 ret += code[i] , code[i]=1 - mode 0
-        
+    public String myCode(String code) {
         int mode = 0;
         String ret = "";
         
@@ -25,7 +20,27 @@ class Solution {
                     else mode = 0; break;
             }
         }
-        
         return ret.length() > 0 ? ret : "EMPTY";
+    }
+    
+    public String refer(String code) {
+        StringBuilder ret = new StringBuilder();
+        int mode = 0;
+        
+        for(int i=0; i<code.length(); i++) {
+            char ch = code.charAt(i);
+            
+            if(i % 2 == mode) {
+                if(ch != '1') ret.append(ch);
+            }
+            
+            if(ch == '1') mode = (mode == 0)? 1 : 0;
+        }
+        
+        return ret.length() > 0 ? ret.toString() : "EMPTY";
+    }
+    
+    public String solution(String code) {
+        return refer(code);
     }
 }
