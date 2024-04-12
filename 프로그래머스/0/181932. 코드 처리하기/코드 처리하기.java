@@ -30,11 +30,14 @@ class Solution {
         for(int i=0; i<code.length(); i++) {
             char ch = code.charAt(i);
             
-            if(i % 2 == mode) {
-                if(ch != '1') ret.append(ch);
-            }
+            if(ch == '1') {
+                mode = (mode == 0)? 1 : 0;
+                continue;
+            } 
             
-            if(ch == '1') mode = (mode == 0)? 1 : 0;
+            if(i % 2 == mode) {
+                ret.append(ch);
+            }
         }
         
         return ret.length() > 0 ? ret.toString() : "EMPTY";
