@@ -5,10 +5,8 @@ class Solution {
         Stack<Integer> stack = new Stack();
         
         int i = 0; 
-        
         while (i < arr.length) {
-            if(stack.empty()) stack.push(arr[i++]);
-            if(stack.peek() < arr[i]) stack.push(arr[i++]); 
+            if(stack.empty() || stack.peek() < arr[i]) stack.push(arr[i++]);
             else stack.pop(); 
             
         }
