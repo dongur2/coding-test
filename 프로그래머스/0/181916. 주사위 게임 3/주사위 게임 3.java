@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int a, int b, int c, int d) {
+    private int my(int a, int b, int c, int d) {
         Map<Integer, Integer> dice = new HashMap<>();
         
         // 주사위 값(key):횟수(value)
@@ -50,5 +50,32 @@ class Solution {
         }
         
         return answer;
+    }
+    
+    private int useSort(int a, int b, int c, int d) {
+        int[] dice = {a, b, c, d};
+        Arrays.sort(dice); // 오름차순 정렬
+        
+        // 모두 같은 경우 0000
+        if(dice[0] == dice[3]) return 1111 * dice[0];
+        
+        // 3개가 같을 경우 0001, 0111
+        if(dice[1] == dice[3]) return (int)Math.pow(10 * dice[1] + dice[0], 2);
+        if(dice[0] == dice[2]) return (int)Math.pow(10 * dice[0] + dice[3], 2);
+        
+        // 2개씩 같을 경우 0011
+        if(dice[0] == dice[1] && dice[2] == dice[3]) return (dice[0] + dice[2]) * Math.abs(dice[0] - dice[2]);
+        
+        // 2개가 같고 2개가 다를 경우 0012, 0112, 0122
+        if(dice[0] == dice[1]) return dice[2] * dice[3];
+        if(dice[1] == dice[2]) return dice[0] * dice[3];
+        if(dice[2] == dice[3]) return dice[0] * dice[1];
+        
+        // 모두 다를 경우
+        else return dice[0];
+    }
+    
+    public int solution(int a, int b, int c, int d) {
+        return useSort(a,b,c,d);
     }
 }
