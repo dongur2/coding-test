@@ -6,11 +6,11 @@ class Solution {
         
         int i = 0;
         while(i < arr.length) {
-            if(stk.isEmpty()) stk.push(arr[i++]);
-            else if(stk.peek() == arr[i]) {
+            if(stk.isEmpty() || stk.peek() != arr[i]) stk.push(arr[i++]);
+            else {
                 stk.pop();
                 i++;
-            } else stk.push(arr[i++]);
+            }
         }
 
         return stk.isEmpty()? 
