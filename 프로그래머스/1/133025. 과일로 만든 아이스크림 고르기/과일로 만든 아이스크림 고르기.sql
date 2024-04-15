@@ -1,0 +1,11 @@
+-- 아이스크림 맛 조회
+-- 상반기 아이스크림 총 주문량 > 3000
+-- 아이스크림의 주 성분이 과일
+-- 총주문량 내림차순 정렬
+
+SELECT F.FLAVOR
+FROM FIRST_HALF AS F JOIN ICECREAM_INFO AS I
+ON F.FLAVOR = I.FLAVOR
+WHERE I.INGREDIENT_TYPE = 'fruit_based'
+AND F.TOTAL_ORDER > 3000
+ORDER BY F.TOTAL_ORDER DESC;
