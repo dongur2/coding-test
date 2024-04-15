@@ -1,0 +1,8 @@
+-- 2021년에 출판된 '인문' 카테고리에 속하는 도서ID, 출판일 목록 출력
+-- 출판일 기준 오름차순 정렬
+
+SELECT BOOK_ID, DATE_FORMAT(PUBLISHED_DATE, '%Y-%m-%d')
+FROM BOOK
+WHERE CATEGORY = '인문'
+AND DATE_FORMAT(PUBLISHED_DATE, '%Y') LIKE '2021%'
+ORDER BY PUBLISHED_DATE;
