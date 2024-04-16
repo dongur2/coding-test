@@ -1,6 +1,8 @@
+import java.util.*;
+
 class Solution {
-    public int[] solution(int[] arr) {
-        int lengthOfArr = arr.length;
+    private int[] my(int[] arr) {
+       int lengthOfArr = arr.length;
         
         int t = 0;
         int length = 1;
@@ -12,6 +14,20 @@ class Solution {
         int[] answer = new int[length];
         for(int i=0; i<lengthOfArr; i++) answer[i] = arr[i];
         
-        return answer;
+        return answer; 
+    }
+    
+    private int[] useArrays(int[] arr) {
+        int length = 1;
+
+        while (length < arr.length) {
+            length *= 2;
+        }
+
+        return Arrays.copyOf(arr, length);
+    }
+    
+    public int[] solution(int[] arr) {
+        return useArrays(arr);
     }
 }
