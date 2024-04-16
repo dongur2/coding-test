@@ -9,11 +9,8 @@ class Solution {
             if(length >= lengthOfArr) break;
         }
         
-        if(lengthOfArr == length) return arr;
-        
         int[] answer = new int[length];
         for(int i=0; i<lengthOfArr; i++) answer[i] = arr[i];
-        for(int i=lengthOfArr; i<length; i++) answer[i] = 0;
         
         return answer;
     }
