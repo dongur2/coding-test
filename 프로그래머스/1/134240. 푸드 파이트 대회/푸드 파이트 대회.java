@@ -6,10 +6,8 @@ class Solution {
             answer.append(String.valueOf(i).repeat(food[i]/2));
         }
         
-        StringBuilder reversed = new StringBuilder(answer.toString());
-        reversed.reverse();
-        answer.append("0").append(reversed.toString());
+        StringBuilder reversed = new StringBuilder(answer.toString()).reverse();
         
-        return answer.toString();
+        return answer.append("0").append(reversed.toString()).toString();
     }
 }
