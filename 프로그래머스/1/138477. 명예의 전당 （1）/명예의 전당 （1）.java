@@ -1,8 +1,8 @@
-import java.util.Arrays;
-import java.util.stream.IntStream;
+import java.util.*;
+import java.util.stream.*;
 
 class Solution {
-    public int[] solution(int k, int[] score) {
+    private int[] my(int k, int[] score) {
         int[] answer = new int[score.length];
         
         int[] honors = {};
@@ -33,7 +33,33 @@ class Solution {
             }
             answer[i] = last;
         }
-        
         return answer;
+    }
+    
+    private int[] useQueue(int k, int[] score) {
+        int[] answer = new int[score.length];
+        
+        // 숫자가 작을수록 우선순위 높음 (앞)
+        PriorityQueue<Integer> honors = new PriorityQueue<>();
+        
+        int last = Integer.MIN_VALUE;
+        for(int i=0; i<answer.length; i++) {
+            if(i < k) {
+                honors.add(score[i]);
+                last = honors.peek();
+            } else {
+                if(honors.peek() < score[i]) {
+                    honors.remove();
+                    honors.add(score[i]);
+                    last = honors.peek();
+                }
+            }
+            answer[i] = last;
+        }
+        return answer;
+    }
+    
+    public int[] solution(int k, int[] score) {
+        return useQueue(k, score);
     }
 }
