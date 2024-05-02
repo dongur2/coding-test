@@ -42,19 +42,10 @@ class Solution {
         // 숫자가 작을수록 우선순위 높음 (앞)
         PriorityQueue<Integer> honors = new PriorityQueue<>();
         
-        int last = Integer.MIN_VALUE;
         for(int i=0; i<answer.length; i++) {
-            if(i < k) {
-                honors.add(score[i]);
-                last = honors.peek();
-            } else {
-                if(honors.peek() < score[i]) {
-                    honors.remove();
-                    honors.add(score[i]);
-                    last = honors.peek();
-                }
-            }
-            answer[i] = last;
+            honors.add(score[i]);
+            if(honors.size() > k) honors.poll();
+            answer[i] = honors.peek();
         }
         return answer;
     }
