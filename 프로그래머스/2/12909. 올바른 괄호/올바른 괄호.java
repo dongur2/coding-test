@@ -1,18 +1,12 @@
-import java.util.*;
-
 class Solution {
     boolean solution(String s) {
-        if(s.length() % 2 > 0) return false;
+        if(s.startsWith(")")) return false;
         
-        Stack<Character> st = new Stack<>();
-        
-        for(Character c:s.toCharArray()) {
-            char before = (!st.isEmpty())? st.peek():' ';
-            
-            if (before == '(' && c == ')') st.pop();
-            else st.push(c); 
-        }
-        
-        return st.isEmpty()? true:false;
+        boolean answer = true;
+
+        // [실행] 버튼을 누르면 출력 값을 볼 수 있습니다.
+        System.out.println("Hello Java");
+
+        return answer;
     }
 }
