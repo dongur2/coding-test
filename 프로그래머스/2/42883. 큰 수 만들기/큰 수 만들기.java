@@ -17,7 +17,8 @@ class Solution {
             stack.push(Character.getNumericValue(c));
         }
         
-        if(k > 0) stack.pop(); // 이전 숫자와 똑같은 경우 삭제
+        // 제거할 숫자가 남을 경우(마지막 숫자가 이전 숫자와 똑같은 경우): 제거
+        if(k > 0) stack.pop(); 
         
         // 스택의 '[',']',',' 제거하고 숫자만 리턴
         return stack.toString().replaceAll("[^0-9]","");
