@@ -1,27 +1,27 @@
 class Solution {
+    //소수 판별 메서드
+    public boolean isPrime(int num) {
+        for(int i=2; i<num; i++) {
+            if(num % i == 0) return false;
+        }
+        return true;
+    }
+    
     public int solution(int[] nums) {
+        // 3개 수를 더했을 때 소수가 되는 경우의 수 리턴: 숫자는 중복 불허
         int cnt = 0;
-        
+
+        // 1.가능한 3개 조합 모두 순회
         for(int i=0; i<nums.length; i++) {
             for(int j=i+1; j<nums.length; j++) {
                 for(int l=j+1; l<nums.length; l++) {
-                    int sum = nums[i] + nums[j] + nums[l];
-                    
-                    // 세 수의 합이 소수인지 판별
-                    if(isPrime(sum)) cnt++;
+                    // 2. 소수 판별 후 소수라면 카운트
+                    if(isPrime(nums[i]+nums[j]+nums[l])) {
+                        cnt++;
+                    }
                 }
             }
         }
         return cnt;
-    }
-    
-    private boolean isPrime(int num) {
-        if (num % 2 == 0) return false; // 짝수는 소수가 아님
-        
-        // 제곱근까지의 수로만 나눠지는지 확인
-        for (int i = 3; i * i <= num; i += 2) {
-            if (num % i == 0) return false; // 나누어 떨어지면 소수가 아님
-        }
-        return true; // 모두 통과하면 소수
     }
 }
