@@ -1,34 +1,24 @@
 import java.util.*;
 
 class Solution {
-    private boolean useStack(String s) {
-        if(s.length() % 2 > 0) return false;
-        
-        Stack<Character> st = new Stack<>();
-        
-        for(Character c:s.toCharArray()) {
-            char before = (!st.isEmpty())? st.peek():' ';
-            
-            if (before == '(' && c == ')') st.pop();
-            else st.push(c); 
-        }
-        
-        return st.isEmpty()? true:false;
-    }
-    
-    private boolean useCnt(String s) {
-        int cnt = 0;
-        
-        for(Character c:s.toCharArray()) {
-            if(c == '(') cnt++;
-            else if(c == ')') cnt--;
-            
-            if(cnt < 0) return false;
-        }
-        return (cnt == 0)? true:false;
-    }
-    
     boolean solution(String s) {
-        return useCnt(s);
+        /*
+        1. 예시를 보면, ()() -> 어떻게 해야 올바른걸 판단? -- 생각..
+        열린게 들어오면, 닫힌게 올때까지 기다림
+        닫힌게 오면 해소
+        2. (())() -> 연속으로 열린거.. -> 닫히는거 기다림기다림 --> 들어오면 해소
+        */
+        
+        Stack<Character> stack = new Stack<>();
+        
+        for(char ch : s.toCharArray()) {
+            if(ch == '(') stack.push(ch);
+            else {
+                if(!stack.isEmpty() && stack.peek() == '(') stack.pop();
+                else stack.push(ch);
+            }
+        }
+        
+        return stack.isEmpty();
     }
 }
