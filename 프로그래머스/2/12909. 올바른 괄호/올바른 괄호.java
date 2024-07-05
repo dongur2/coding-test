@@ -12,13 +12,13 @@ class Solution {
         Stack<Character> stack = new Stack<>();
         
         for(char ch : s.toCharArray()) {
-            if(ch == '(') stack.push(ch);
-            else {
-                if(!stack.isEmpty() && stack.peek() == '(') stack.pop();
-                else stack.push(ch);
+            if(ch == '(') stack.push(ch); // '('일 경우 스택에 삽입
+            else { // ')'일 경우 
+                if(!stack.isEmpty() && stack.peek() == '(') stack.pop(); // 스택에 '('가 들어있으면 '()'짝이 되므로 삭제
+                else stack.push(ch); // 스택에 '('가 없으면 ')'를 스택에 삽입
             }
         }
         
-        return stack.isEmpty();
+        return stack.isEmpty(); // 스택이 비었으면 괄호짝이 맞으므로 true, 안비었으면 짝이 안맞으니 false
     }
 }
