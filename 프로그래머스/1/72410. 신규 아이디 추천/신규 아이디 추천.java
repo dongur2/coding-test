@@ -11,11 +11,10 @@ class Solution {
         recommend = recommend.replaceAll("[^a-z0-9-_.]", "");
         
         //3. 마침표가 2개 이상 연속 => 1개로 치환
-        StringBuilder recommendSb = new StringBuilder();
-        for(int i=0; i<recommend.length(); i++) {
-            if(i>0 && recommendSb.charAt(recommendSb.length()-1) == '.' && recommend.charAt(i) == '.') continue;
-            else recommendSb.append(recommend.charAt(i));
-        }
+        recommend = recommend.replaceAll("\\.{2,}", ".");
+        
+        // String -> StringBuidler 로 변환
+        StringBuilder recommendSb = new StringBuilder(recommend); 
         
         //4. 마침표가 처음/끝이면 제거
         if(recommendSb.charAt(0) == '.') recommendSb.deleteCharAt(0);
