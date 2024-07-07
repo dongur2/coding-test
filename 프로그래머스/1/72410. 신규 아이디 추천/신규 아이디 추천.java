@@ -13,16 +13,13 @@ class Solution {
         //3. 마침표가 2개 이상 연속 => 1개로 치환
         recommend = recommend.replaceAll("[.]{2,}", ".");
         
-        // String -> StringBuidler 로 변환
-        StringBuilder recommendSb = new StringBuilder(recommend); 
-        
         //4. 마침표가 처음/끝이면 제거
-        if(recommendSb.charAt(0) == '.') recommendSb.deleteCharAt(0);
-        if(recommendSb.length() > 0 && 
-           recommendSb.charAt(recommendSb.length()-1) == '.') recommendSb.deleteCharAt(recommendSb.length()-1);
+        recommend = recommend.replaceAll("^[.]|[.]$", "");
         
         //5. 빈 문자열이면 a 대입
-        if(recommendSb.length() == 0) recommendSb.append("a");
+        recommend = recommend.isEmpty() ? "a" : recommend;
+
+        StringBuilder recommendSb = new StringBuilder(recommend);
         
         //6. 16자 이상이면 첫 15개 문자 이후는 제거
         if(recommendSb.length() >= 16) {
