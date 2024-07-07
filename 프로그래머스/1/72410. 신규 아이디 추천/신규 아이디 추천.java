@@ -11,7 +11,7 @@ class Solution {
         recommend = recommend.replaceAll("[^a-z0-9-_.]", "");
         
         //3. 마침표가 2개 이상 연속 => 1개로 치환
-        recommend = recommend.replaceAll("\\.{2,}", ".");
+        recommend = recommend.replaceAll("[.]{2,}", ".");
         
         // String -> StringBuidler 로 변환
         StringBuilder recommendSb = new StringBuilder(recommend); 
