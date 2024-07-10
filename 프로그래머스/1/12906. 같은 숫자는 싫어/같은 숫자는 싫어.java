@@ -21,15 +21,15 @@ public class Solution {
         //5. 스택에서 숫자를 꺼내어 배열에 저장해 리턴
         
         //5-1. 스트림 & 리스트: 스택에서 꺼낸 배열을 뒤집어서 리턴
-        // List<Integer> list = stack.stream().collect(Collectors.toList());
-        // Collections.reverse(list);
-        // return list.stream().mapToInt(n->n).toArray();
+        List<Integer> list = new ArrayList<>(stack);
+        Collections.reverse(list);
+        return list.stream().mapToInt(n->n).toArray();
         
         //5-2. for문으로 스택에서 하나씩 값을 꺼내어 배열화
-        int[] answer = new int[stack.size()];
-        for(int i=stack.size()-1; i>=0; i--) {
-            answer[i] = stack.pop();
-        }
-        return answer;
+    //     int[] answer = new int[stack.size()];
+    //     for(int i=stack.size()-1; i>=0; i--) {
+    //         answer[i] = stack.pop();
+    //     }
+    //     return answer;
     }
 }
