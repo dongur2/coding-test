@@ -20,7 +20,6 @@ class Solution {
         Arrays.sort(converted, (o1, o2) -> (o2 + o1).compareTo(o1 + o2));
  
         //3. 가장 큰 값이면 "0"을, 아니라면 정렬한 배열을 하나의 문자열로 연결하여 리턴
-        if (converted[0].equals("0")) return "0";
-        return String.join("", converted);
+        return converted[0].equals("0") ? "0" : String.join("", converted);
     }
 }
