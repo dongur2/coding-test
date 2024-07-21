@@ -20,7 +20,7 @@ class Solution {
             for(String word:words) {
                 int cnt = 0;
                 for(int i=0; i<word.length(); i++) {
-                    if(cur.charAt(i) != word.charAt(i)) {
+                    if(cntMap.get(word) == null && cur.charAt(i) != word.charAt(i)) {
                         cnt++;
                         if(cnt > 1) break;
                     }
