@@ -1,36 +1,20 @@
 import java.util.*;
 
 class Solution {
-    int cnt = 0;
-    
     public int solution(int[] numbers, int target) {
-        Queue<Entry> q = new ArrayDeque<>();
-        q.offer(new Entry(0, 0)); //처음 노드 숫자 0:레벨 0
-        
-        while(!q.isEmpty()) {
-            Entry curNode = q.poll(); //방문한 노드
-            
-            //현재 노드가 마지막 레벨(가장 깊은 레벨)이라면 반복 중지
-            if(curNode.level == numbers.length) break;
-            
-            //다음 노드가 마지막 레벨이라면 타겟 숫자와 비교하여 카운트
-            if(curNode.level+1 == numbers.length) {
-                if(curNode.num + numbers[curNode.level] == target
-                   || curNode.num - numbers[curNode.level] == target) cnt++; 
-            }
-            
-            //방문한 노드 +/-인덱스값 노드 2개를 대기열에 추가
-            q.offer(new Entry(curNode.num + numbers[curNode.level], curNode.level+1));
-            q.offer(new Entry(curNode.num - numbers[curNode.level], curNode.level+1));
-        }
-        return cnt;
+        return backtrack(numbers, target, 0, 0);
     }
-}
-
-class Entry {
-    int num, level;
-    public Entry(int num, int level) {
-        this.num = num;
-        this.level = level;
+    
+    private int backtrack(int[] numbers, int target, int idx, int node) {
+        //2. 인덱스가 배열 끝이라면, 현재 노드값이 타겟 숫자와 같은지 확인 후, 같다면 1을 리턴
+        if(idx == numbers.length) {
+            return node == target ? 1 : 0;
+        }
+        
+        //1. 인덱스 0부터 각 배열값을 더하거나/빼가면서 전체 노드를 순회
+        int cnt = 0;
+        cnt += backtrack(numbers, target, idx+1, node + numbers[idx]);
+        cnt += backtrack(numbers, target, idx+1, node - numbers[idx]);
+        return cnt; //3. 리턴된 1과 0의 합을 리턴
     }
 }
