@@ -1,37 +1,57 @@
 import java.util.*;
 
 class Solution {
-    int[] sets;
-
+    /*
+    '그래프의 노드'가 독립적인 2개 세트로 나눠지는지 여부를 반환
+    - 서로 연결된(인접한) 노드끼리는 서로 다른 세트에 포함
+    - 연결되지 않은 노드가 존재 -> 그래프에 포함되지 않음 
+    */
+    
+    boolean answer = true;
+    Map<Integer, Character> map; //방문했던 노드에 부여한 세트 확인 목적
+    
+    //int[][] graph: 인덱스에 해당하는 노드와 연결된 노드 목록
     public boolean isBipartite(int[][] graph) {
-        sets = new int[graph.length];
-        Arrays.fill(sets, -1); //세트 기본값 -1로 초기화
-
-        return isDividedIntoTwo(graph);  
+        map = new HashMap<>();
+        bfs(graph);
+        
+        return answer;
     }
-
-    //BFS
-    private boolean isDividedIntoTwo(int[][] graph) {
-        Queue<Integer> q = new ArrayDeque<>();
-        sets[0] = 0; //시작 노드의 세트를 0으로 지정 후 시작
-
-        for(int curVertex=0; curVertex<graph.length; curVertex++) {
-            q.offer(curVertex); //시작 노드 대기열 추가
-
-            while(!q.isEmpty()) { //대기열 소진까지 반복
-                curVertex = q.poll(); //시작 노드 방문
-
-                for(int nextVertex:graph[curVertex]) { //시작 노드의 인접노드들을 탐색
-                    if(sets[nextVertex] == -1) { //세트 지정이 안된 노드(방문X)라면 시작 노드의 세트와 다른 세트에 포함하고 방문 예약
-                        int type = sets[curVertex] == 0 ? 1 : 0;
-                        q.offer(nextVertex); sets[nextVertex] = type;
-                    } else { //세트 지정이 된 노드라면 시작 노드와 같은 세트에 포함되는지 확인: 같은 세트라면 즉시 false 
-                        if(sets[nextVertex] == sets[curVertex]) return false;
+    
+    void bfs(int[][] graph) {
+        for(int i=0; i<graph.length; i++) {
+            //시작점
+            if(map.get(i) != null) continue;
+            
+            Queue<Integer> q = new ArrayDeque<>();
+            q.offer(i);
+            map.put(i, 'A');
+                    
+            //대기열 방문
+            while(!q.isEmpty()) {
+                int cur = q.poll();
+                
+                System.out.println("현재 노드: "+cur);
+                
+                //다음 노드 탐색
+                for(int nextNode : graph[cur]) {
+                    //다음 노드가 방문했던 적이 있고, 그 노드와 현재 노드의 세트가 다르면 통과, 같으면 이분되지 않으므로 즉시 리턴
+                    if(map.get(nextNode) != null) {
+                        if(map.get(cur) == map.get(nextNode)) {
+                            System.out.println("cur set:: "+map.get(cur));
+                            System.out.println("next set:: "+map.get(nextNode));
+                            answer = false; return;
+                        } 
+                        else continue; //방문한 적 있으나 서로 세트가 다르면 무시
                     }
+                    
+                    System.out.println("대기열에 추가:"+nextNode);
+                    //다음 노드가 방문한 적 없으면, 세트 부여 & 대기열에 추가
+                    q.offer(nextNode);
+                    if(map.get(cur) == 'A') map.put(nextNode, 'B');
+                    else map.put(nextNode, 'A');
                 }
             }
         }
-
-        return true; //순회가 끝날 때까지 같은 세트에 포함된 인접 노드를 찾지 못했다면 true 
     }
 }
