@@ -13,7 +13,11 @@ class Solution {
     //int[][] graph: 인덱스에 해당하는 노드와 연결된 노드 목록
     public boolean isBipartite(int[][] graph) {
         map = new HashMap<>();
-        bfs(graph);
+        
+        // bfs(graph);
+        for(int i=0; i<graph.length; i++) {
+            dfs(graph, i, 'A');
+        }
         
         return answer;
     }
@@ -41,13 +45,28 @@ class Solution {
                         else continue; //방문한 적 있으나 서로 세트가 다르면 무시
                     }
                     
-                    System.out.println("대기열에 추가:"+nextNode);
                     //다음 노드가 방문한 적 없으면, 세트 부여 & 대기열에 추가
                     q.offer(nextNode);
                     if(map.get(cur) == 'A') map.put(nextNode, 'B');
                     else map.put(nextNode, 'A');
                 }
             }
+        }
+    }
+    
+    void dfs(int[][] graph, int cur, char set) {
+        if(map.get(cur) == null) map.put(cur, set);
+        
+        for(int nextNode : graph[cur]) {
+            if(map.get(nextNode) != null) {
+                if(map.get(nextNode) == map.get(cur)) {
+                    answer = false; return;
+                }
+                continue;
+            }
+            
+            if(set == 'A') dfs(graph, nextNode, 'B');
+            else dfs(graph, nextNode, 'A');
         }
     }
 }
