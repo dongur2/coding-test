@@ -1,47 +1,39 @@
-import java.util.*;
-
 class Solution {
-    //1. 전역 변수 선언: 리턴할 리스트, 방문 여부 배열
-    List<List<Integer>> result;
-    boolean[] visited;
+    /*
+     ** 주어진 배열 길이로 만들 수 있는 가능한 모든 순열을 만들어서 반환
+     - 순열: 중복X && 순서의미O
+     */
+
+    boolean[] visited; //중복으로 원소를 추가하지 않기 위해 방문 여부 관리
+    List<List<Integer>> answer; //만든 순열을 넣어 반환할 리스트
 
     public List<List<Integer>> permute(int[] nums) {
-        //2. 전역 변수 초기화
-        result = new ArrayList<>();
         visited = new boolean[nums.length];
+        answer = new ArrayList<>();
 
-        //3. backtrack 호출: 매개변수로 넘기는 새로운 리스트에 순열 요소를 저장해서 계속해서 공유
-        backtrack(new ArrayList<Integer>(), nums); 
+        backtrack(nums, new ArrayList<>());
 
-        return result;
+        return answer;
     }
 
-    private void backtrack(List<Integer> cur, int[] nums) {
-        //base case: 순열 크기가 nums배열 크기와 같으면 정답 리스트에 추가하고 재귀 종료
-        if(cur.size() == nums.length) {
-            result.add(new ArrayList<>(cur));
+    private void backtrack(int[] nums, List<Integer> list) {
+        //basecase: 현재 만들고있는 순열의 길이가 주어진 배열 길이와 같다면 리스트에 저장하고 재탐색 중지
+        if(list.size() == nums.length) {
+            answer.add(new ArrayList<>(list)); return;
         }
 
-        //recursive call
-        //1. nums를 앞에서부터 순회
+        /* recursive call: 
+        배열 전체를 순회하며 방문 & 방문했던 노드라면 무시
+        1. 새로운 노드라면 방문 체크 & 순열에 추가 (하청에서 현재 노드를 또 방문해 추가하지 않도록 :: 중복 불가능)
+        2. 그 노드에서 재탐색, 길이를 만족하면 저장 후 중지(하청): 지금까지의 순열 + 추가 노드를 합해 만들 수 있는 순열을 모두 만들어 저장 완료
+        3. 하청 완료 후 현재 노드 방문 무효 & 순열에서 제거
+        */
         for(int i=0; i<nums.length; i++) {
-            //2. 방문한 노드의 visited 값이 true(이미 방문): 다음 노드로 이동
             if(visited[i]) continue;
-
-            //3. 방문하지 않았다면 
-            //노드의 visited 값을 true로 변경
-            visited[i] = true;
-            //cur에 현재 노드값을 추가
-            cur.add(nums[i]);
-
-            //backtrack() 호출: 아직 순열 크기가 nums배열 크기에 미달하므로 추가할 값이 더 필요
-            backtrack(cur, nums);
-
-            //4. backtrack 작업을 끝내고 돌아온 후:
-            //visited 값을 false로 변경: backtrack으로 이어진 재귀 마지막에서 이미 순열을 추가했으므로
-            visited[i] = false;
-            //cur에서 현재 노드값을 삭제
-            cur.remove(cur.size() - 1);
+            
+            visited[i] = true; list.add(nums[i]);
+            backtrack(nums, list);
+            visited[i] = false; list.remove(Integer.valueOf(nums[i]));
         }
     }
 }
