@@ -1,20 +1,43 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int[] numbers, int target) {
-        return backtrack(numbers, target, 0, 0);
+    /*
+    ** 타겟 넘버를 만들 수 있는 방법의 개수를 반환
+    - 주어진 숫자들의 순서는 그대로 하되 +,-만 바꿔서 타겟 넘버를 만들기
+    
+    개수니까 BFS, DFS 모두 가능할 듯?
+    */
+    
+    int answer = 0;
+
+    class Node {
+        int num; int level;
+        public Node(int num, int level) {
+            this.num = num; this.level = level;
+        }
     }
     
-    private int backtrack(int[] numbers, int target, int idx, int node) {
-        //2. 인덱스가 배열 끝이라면, 현재 노드값이 타겟 숫자와 같은지 확인 후, 같다면 1을 리턴
-        if(idx == numbers.length) {
-            return node == target ? 1 : 0;
-        }
+    public int solution(int[] numbers, int target) {
+        bfs(numbers, target);
+        return answer;
+    }
+    
+    void bfs(int[] numbers, int target) {
+        //시작점: 0
+        Queue<Node> q = new ArrayDeque<>();
+        q.offer(new Node(0, 0)); 
         
-        //1. 인덱스 0부터 각 배열값을 더하거나/빼가면서 전체 노드를 순회
-        int cnt = 0;
-        cnt += backtrack(numbers, target, idx+1, node + numbers[idx]);
-        cnt += backtrack(numbers, target, idx+1, node - numbers[idx]);
-        return cnt; //3. 리턴된 1과 0의 합을 리턴
+        while(!q.isEmpty()) {
+            Node cur = q.poll();
+            if(cur.level == numbers.length) break; //주어진 숫자 다 돌았으면 종료
+      
+            //인접노드
+            for(int n : new int[] {-1, 1}) {
+                int nxt = cur.num + (numbers[cur.level] * n); // -, +
+                q.offer(new Node(nxt, cur.level+1));
+                
+                if((cur.level + 1) == numbers.length && nxt == target) answer++;
+            }
+        }
     }
 }
