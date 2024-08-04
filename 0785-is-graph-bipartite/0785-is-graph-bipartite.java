@@ -31,15 +31,11 @@ class Solution {
             while(!q.isEmpty()) {
                 int cur = q.poll();
                 
-                System.out.println("현재 노드: "+cur);
-                
                 //다음 노드 탐색
                 for(int nextNode : graph[cur]) {
                     //다음 노드가 방문했던 적이 있고, 그 노드와 현재 노드의 세트가 다르면 통과, 같으면 이분되지 않으므로 즉시 리턴
                     if(map.get(nextNode) != null) {
                         if(map.get(cur) == map.get(nextNode)) {
-                            System.out.println("cur set:: "+map.get(cur));
-                            System.out.println("next set:: "+map.get(nextNode));
                             answer = false; return;
                         } 
                         else continue; //방문한 적 있으나 서로 세트가 다르면 무시
