@@ -1,40 +1,57 @@
 import java.util.*;
 
 class Solution {
-    Map<Integer, Boolean> visited;
-    int cnt;
+    /*
+    ** 네트워크 개수 반환
+    - 주어진 연결관계 computers에서 서로 연결되어있는 그래프 개수를 반환
+    - 연결이 끊기면 네트워크 카운트: BFS, DFS
+    */
+    
+    int cnt = 0;
+    boolean[] visited;
     
     public int solution(int n, int[][] computers) {
-        visited = new HashMap<>();
+        visited = new boolean[n];
+        // return bfs(n, computers);
         
-        countNetworks(n, computers);    
+        for(int i=0; i<n; i++) {
+            if(!visited[i]) cnt++; //그래프 연결이 끊기고 dfs새로 시작할 때 그래프 카운트
+            dfs(n, computers, i);
+        }
+        
         return cnt;
     }
     
-    private void countNetworks(int n, int[][] computers) {
-        Queue<Integer> q = new ArrayDeque<>();
-        
-        //1. 주어진 노드를 0부터 ~ 끝까지 순회
-        for(int cur=0; cur<n; cur++) { //0
-            //2. 새로운 그래프(BFS 새로 시작): 방문하지 않은 시작 노드라면 방문 체크 & 대기열 추가 & 네트워크 카운트
-            if(!visited.containsKey(cur)) {
-                q.offer(cur); visited.put(cur, true);
-                cnt++;
-            } else continue; //방문했던 시작 노드라면 아래는 똑같은 작업이 이어지므로 중지
+    int bfs(int n, int[][] computers) {
+        for(int i=0; i<n; i++) {
+            //시작점
+            Queue<Integer> q = new ArrayDeque<>();
+            if(visited[i]) continue;
+            
+            q.offer(i); visited[i] = true;
+            cnt++; // 새롭게 처음부터 시작할 때마다 새로운 그래프라는 의미이므로 카운트
 
-            //3. 대기열이 빌 때까지 BFS 너비 탐색(똑같은 그래프 내에서 순회하므로 네트워크 카운트는 이뤄지지 않음)
+            //대기열
             while(!q.isEmpty()) {
-                int curVertex = q.poll();
+                int cur = q.poll();
                 
-                //자기 자신 연결은 제외하고, 다른 연결 노드를 방문하지 않았다면 대기열 추가 & 방문 처리
-                for(int nxt=0; nxt<n; nxt++) {
-                    if(nxt == curVertex) continue;
-                    else if(computers[curVertex][nxt] == 1 && !visited.containsKey(nxt)) {
-                        q.offer(nxt); visited.put(nxt, true);
+                //연결노드 탐색
+                for(int j=0; j<n; j++) {
+                    if(computers[cur][j] == 1 && !visited[j]) {
+                        q.offer(j); visited[j] = true;
                     }
                 }
             }
         }
+        return cnt;
     }
     
+    void dfs(int n, int[][] computers, int cur) {
+        if(visited[cur]) return; //방문했던 노드면 중지
+        
+        visited[cur] = true;
+        for(int i=0; i<n; i++) {
+            if(computers[cur][i] == 1) dfs(n, computers, i); // 연결된 노드 방문
+        } 
+    }
 }
