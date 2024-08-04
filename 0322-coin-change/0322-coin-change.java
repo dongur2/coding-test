@@ -1,30 +1,47 @@
 import java.util.*;
 
 class Solution {
-    Map<Integer, Integer> coinsMap;
-
+    /*
+    ** 주어진 동전 종류로 주어진 금액을 만들 수 있는 최소 동전 개수를 반환
+    - 만들 수 없으면 -1을 반환
+    - 각 동전마다 사용할 수 있는 횟수는 제한 없음
+    
+    최소 동전 개수를 구하므로 BFS로 접근
+    각 동전을 하나씩 뺐을 때 남는 금액이 노드: 다음 연결 노드가 0이 될 때 카운트를 반환
+    */
+    
+    Map<Integer, Integer> map; // {남은 금액:필요 동전 개수}
+    
     public int coinChange(int[] coins, int amount) {
-        coinsMap = new HashMap<>();
-        return countCoin(coins, amount);
+        map = new HashMap<>();
+        
+        return bfs(coins, amount);
     }
-
-    private int countCoin(int[] coins, int amount) {
+    
+    int bfs(int[] coins, int amount) {
+        //시작점
+        if(amount == 0) return 0;
+        
         Queue<Integer> q = new ArrayDeque<>();
-        q.offer(amount); coinsMap.put(amount, 0); //만들어야하는 총 금액을 루트 노드로 시작
-
+        q.offer(amount); 
+        map.put(amount, 0);
+        
+        //대기열에서 방문
         while(!q.isEmpty()) {
-            int cur = q.poll(); //현재 노드(남은 금액)
-
-            for(int coin:coins) {
-                int nxt = cur - coin; //현재 금액에서 각 동전을 거슬러 주면 남는 금액
-                if(!coinsMap.containsKey(nxt) && nxt >= 0) { //남은 금액을 방문한 적 없고 남은 금액이 0이상일 때 대기열 추가 & 동전 카운트(이전 금액 동전+1)
-                    q.offer(nxt); coinsMap.put(nxt, coinsMap.get(cur)+1); 
-                    if(nxt == 0) return coinsMap.get(nxt); // 남은 금액이 0이 될 경우 즉시 사용한 동전 개수 리턴
-                } else if(cur == 0) return coinsMap.get(cur); // 현재 노드(남은 금액)가 0이면 사용한 동전 개수 리턴
+            int curAmount = q.poll();
+            int curCoinCnt = map.get(curAmount);
+            
+            //인접 노드 탐색 후 대기열 추가
+            for(int i=0; i<coins.length; i++) {
+                int nextAmount = curAmount - coins[i];
+                if(nextAmount == 0) return curCoinCnt + 1; //다음 노드가 0이면 즉시 종료
+                
+                if(map.get(nextAmount) != null || nextAmount < 0) continue;
+                
+                q.offer(nextAmount); 
+                map.put(nextAmount, curCoinCnt + 1); 
             }
         }
-
-        //남은 금액이 0인 경우가 없이 모든 노드 탐색을 끝난 경우: 금액을 만들 수 없으므로 -1 리턴
         return -1;
     }
 }
