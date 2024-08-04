@@ -30,7 +30,6 @@ class Solution {
             return;
         }    
         
-        
         //recursive call
         //분할한 문자열 배열을 처음부터 끝까지 순회:
         for(int i=0; i<splited.length; i++) {
@@ -47,7 +46,6 @@ class Solution {
                 number.deleteCharAt(number.length()-1);
             }
         }
-
     }
     
     private boolean isPrime(int num) {
