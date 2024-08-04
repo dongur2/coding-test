@@ -18,7 +18,8 @@ class Solution {
     }
     
     public int solution(int[] numbers, int target) {
-        bfs(numbers, target);
+        // bfs(numbers, target);
+        dfs(numbers, target, 0, 0);
         return answer;
     }
     
@@ -38,6 +39,18 @@ class Solution {
                 
                 if((cur.level + 1) == numbers.length && nxt == target) answer++;
             }
+        }
+    }
+    
+    void dfs(int[] numbers, int target, int cur, int level) {
+        if(level == numbers.length) {
+            if(cur == target) answer++;
+            return;
+        }
+        
+        for(int n:new int[]{-1, 1}) {
+            int nxt = cur + (numbers[level] * n);
+            dfs(numbers, target, nxt, level+1);
         }
     }
 }
