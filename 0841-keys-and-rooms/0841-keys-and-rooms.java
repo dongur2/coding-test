@@ -17,7 +17,8 @@ class Solution {
         answer = false; 
         visited = new boolean[rooms.size()];
         
-        bfs(rooms);
+        // bfs(rooms);
+        dfs(rooms, 0);
         
         int cnt = 0;
         for(boolean v:visited) {
@@ -45,6 +46,18 @@ class Solution {
                 visited[nextNode] = true;
                 q.offer(nextNode);
             }
+        }
+    }
+    
+    //깊이 끝까지 순회
+    void dfs(List<List<Integer>> rooms, int cur) {
+        //1. 방문한 노드 체크
+        visited[cur] = true;
+        
+        //2. 방문한 노드의 인접 노드를 탐색해 방문
+        for(int nextNode : rooms.get(cur)) {
+            if(visited[nextNode]) continue;
+            dfs(rooms, nextNode);
         }
     }
 }
