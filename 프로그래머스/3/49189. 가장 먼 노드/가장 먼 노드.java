@@ -8,8 +8,8 @@ class Solution {
     
     int maximum = 0; //가장 먼 간선 개수 저장
     
-    Map<Integer, List<Integer>> graph; //그래프
-    Map<Integer, Integer> nodes; //
+    Map<Integer, List<Integer>> graph; //그래프 {노드 번호 : 연결된 노드 목록}
+    Map<Integer, Integer> nodes; //{노드 번호 : 노드 1로부터 연결된 간선 개수}
     
     public int solution(int n, int[][] edge) {
         graph = new HashMap<>();
@@ -25,10 +25,17 @@ class Solution {
         //2. bfs
         findFarNode(n, edge);
         
-        //3. count
-        return (int)(nodes.values().stream().filter(l->l==maximum).count());
+        //3. count: 가장 많은 간선 개수를 가진 값을 카운트해서 반환
+        int answer = 0;
+        for(int node:nodes.values()) {
+            if(node == maximum) answer++;
+        }
+        return answer;
+        
+        // return (int)(nodes.values().stream().filter(l->l==maximum).count());
     }
     
+    // {노드:연결노드목록} 그래프로 변환
     void makeGraph(int[][] edge) {
         for(int i = 0; i < edge.length; i++) {
             addConnection(edge[i][0], edge[i][1]);
@@ -36,11 +43,13 @@ class Solution {
         }
     }
     
+    //노드 간 연결관계 추가
     void addConnection(int baseNode, int addedNode) {
         if (!graph.containsKey(baseNode)) graph.put(baseNode, new ArrayList<>());
         graph.get(baseNode).add(addedNode);
     }
     
+    //전체 그래프 순회하며 간선 개수 카운트
     void findFarNode(int n, int[][] edge) {
         boolean[] visited = new boolean[n+1];
         
