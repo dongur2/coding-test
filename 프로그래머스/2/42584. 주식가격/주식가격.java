@@ -1,33 +1,32 @@
 import java.util.*;
 
 class Solution {
-    public int[] solution(int[] prices) { // 시간복잡도 O(N)
-        //1. 정답으로 리턴할 배열, 스택 생성
-        int[] res = new int[prices.length];
-        Deque<Integer> stack = new ArrayDeque<>();
+    /*
+    문제: 각 가격마다 해당 가격이 떨어지지 않은 초를 기록하여 반환
+    */
+    public int[] solution(int[] prices) {
+        int[] answer = new int[prices.length];
         
-        //2. 가격 배열 순회하면서 현재 가격과 스택 가격 비교
-        for(int i=0; i<prices.length; i++) { // O(N)
-            //3. 현재 가격 <= 스택 가격: 현재 가격이 스택 가격을 초과할 때까지 스택에서 인덱스 꺼냄 & 답 배열에 값 저장
-            //** 정답 배열에 저장: 현재 인덱스 - 꺼낸 인덱스
-            if(!stack.isEmpty() && prices[i] <= prices[stack.peek()]) {
-                while(!stack.isEmpty() && prices[i] < prices[stack.peek()]) {
-                    int idx = stack.pop();
-                    res[idx] = i - idx;
-                }
+        //과거 가격을 저장할 스택
+        Deque<Integer> past = new ArrayDeque<>();
+        
+        //각 초를 차례대로 순회
+        for(int sec=0; sec<prices.length; sec++) {
+            //현재 가격이 과거 가격과 같거나 낮아질 때까지 스택에서 과거 가격을 삭제: 삭제하는 과거 가격은 정답 배열에 가격이 떨어지지 않았던 기간을 기록
+            while(!past.isEmpty() && prices[sec] < prices[past.peek()]) {
+                int pastSec = past.pop();
+                answer[pastSec] = sec - pastSec;
             }
-            //4. 현재 가격 > 스택 가격, 빈 스택: 스택에 현재 인덱스 저장
-            stack.push(i);
-        }
-            
-        //5. 스택이 비어있는지 확인
-        //6. 비어있지 않으면: 빌 때까지 인덱스 꺼내서 답 배열에 값 저장
-        while(!stack.isEmpty()) {
-            int idx = stack.pop();
-            res[idx] = prices.length-1 - idx;
+            past.push(sec);
         }
         
-        //7. 비어있으면 정답 배열 리턴
-        return res;
+        //과거 가격이 반복이 끝날 때까지 떨어지지 않으면 스택에 시간대가 남아있으므로 처리
+        while(!past.isEmpty()) {
+            int pastSec = past.pop();
+            answer[pastSec] = prices.length-1 - pastSec;
+        }
+        
+        return answer;
     }
+    
 }
