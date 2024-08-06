@@ -1,61 +1,60 @@
 import java.util.*;
 
 class Solution {
-    int[] rowArr = {0, 1, 0, -1};
-    int[] colArr = {1, 0, -1, 0};
-    
-    int[] answer;
+    int[] rowArr = {0, 1, 0, -1}, colArr = {1, 0, -1, 0};
     
     public int[] solution(String[][] places) {
-        answer = new int[5];
-        
-        //거리두기를 충족하는 경우 배열값을 1로 변경
+        int[] answer = new int[5];
+        Arrays.fill(answer, 1);
+
+        //강의실 차례대로 순회
         for(int i=0; i<5; i++) {
-            if(isProperDistance(places[i])) answer[i] = 1;
+            isOkay(places[i], new boolean[5][5], answer, i);            
         }
-       
         return answer;
     }
     
-    private boolean isProperDistance(String[] place) {
-        //전체 노드를 순차적으로 순회:
-        for(int row=0; row<5; row++) {
-            for(int col=0; col<5; col++) {
-                //새로운 응시자(P)가 있는 노드를 발견할 경우:
-                if(place[row].charAt(col) == 'P') {
-                    //맨해튼 거리 탐색 - 충족하지 않으면 즉시 false 리턴
-                    if(!isNearEmpty(place, row, col, new boolean[5][5], 0)) return false;
-                }
+    void isOkay(String[] place, boolean[][] visited, int[] answer, int room) {
+        for(int r=0; r<5; r++) {
+            for(int c=0; c<5; c++) {
+                if(place[r].charAt(c) == 'P' && !bfs(place, visited, r, c)) answer[room] = 0;
             }
         }
-        return true;
     }
     
-    private boolean isNearEmpty(String[] place, int row, int col, boolean[][] visited, int cnt) {
-        if(cnt == 2) return true; 
+    boolean bfs(String[] place, boolean[][] visited, int row, int col) {
+        //start
+        Queue<int[]> q = new ArrayDeque<>();
+        q.offer(new int[]{row, col, 0}); visited[row][col] = true;
         
-        //상하좌우 탐색
-        visited[row][col] = true;
-        for(int i=0; i<4; i++) {
-            int nxtR = row + rowArr[i];
-            int nxtC = col + colArr[i];
+        //cur
+        while(!q.isEmpty()) {
+            int[] cur = q.poll();
+            int curR = cur[0];
+            int curC = cur[1];
+            int curCnt = cur[2];
 
-            //다음 노드에 파티션이 있지 않고, 유효한 범위면 탐색:
-            if(isValid(nxtR, nxtC) && place[nxtR].charAt(nxtC) != 'X') {
-                //방문하지 않았던 노드라면:
-                if(!visited[nxtR][nxtC]) {
-                    //다른 응시자가 있으면 거리두기 미준수
+            if(curCnt == 2) return true;
+            
+            //near
+            for(int i=0; i<4; i++) {
+                int nxtR = curR + rowArr[i];
+                int nxtC = curC + colArr[i];
+                
+                if(isValid(nxtR, nxtC, visited)) {
+                    //사람 있으면 즉시 X
                     if(place[nxtR].charAt(nxtC) == 'P') return false;
-                    //없으면 한 단계 더 탐색
-                    if(!isNearEmpty(place, nxtR, nxtC, visited, cnt+1)) return false;
+                    //파티션 제외 재탐색
+                    else if(place[nxtR].charAt(nxtC) != 'X') {
+                        q.offer(new int[]{nxtR, nxtC, curCnt+1});
+                    }
                 }
             }
         }
         return true;
     }
     
-    private boolean isValid(int row, int col) {
-        return row >= 0 && row < 5 && col >= 0 && col < 5;
+    boolean isValid(int r, int c, boolean[][] visited) {
+        return r >= 0 && r < 5 && c >= 0 && c < 5 && !visited[r][c];
     }
-
 }
