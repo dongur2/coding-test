@@ -1,58 +1,47 @@
 import java.util.*;
 
+/*
+(0,0)에서 시작 - 상대팀 진영(오른쪽 끝)에 도착할 수 있는 최단 거리 반환 (불가능하면 -1 반환)
+0인 칸은 불가능, 1인 칸은 갈 수 있음
+*/
 class Solution {
-    /*
-    ** 상대 팀 진영에 도착하기 위해 지나야 하는 '최소' 칸의 개수 반환
-    - 상대 팀 진영[n][m]에 도착할 수 없으면 -1 반환
-    - 캐릭터는 [0][0]에서 시작
-    - 상하좌우로 값이 1인 칸으로 이동 가능; 주어진 맵 바깥으로 나갈 수 없음
-    
-    최소 칸의 개수니까 BFS
-    */
-    
+    int[] rowArr = {0, 1, 0, -1}, colArr = {1, 0, -1, 0};
     int rowLen, colLen;
     boolean[][] visited;
-    
-    int[] rowArr = {0, 1, 0, -1};
-    int[] colArr = {1, 0, -1, 0};
     
     public int solution(int[][] maps) {
         rowLen = maps.length; colLen = maps[0].length;
         visited = new boolean[rowLen][colLen];
         
-        return findWays(maps);
+        return bfs(maps);
     }
     
-    int findWays(int[][] maps) {
+    int bfs(int[][] maps) {
         //start
         Queue<int[]> q = new ArrayDeque<>();
         q.offer(new int[]{0, 0, 1}); visited[0][0] = true;
         
-        //find way
+        //cur
         while(!q.isEmpty()) {
-            //current node
             int[] cur = q.poll();
-            int curR = cur[0];
-            int curC = cur[1];
-            int curCnt = cur[2];
+            int curR = cur[0], curC = cur[1], curCnt = cur[2];
             
-            //next node
+            //near
             for(int i=0; i<4; i++) {
-                int nextR = curR + rowArr[i];
-                int nextC = curC + colArr[i];
+                int nxtR = curR + rowArr[i];
+                int nxtC = curC + colArr[i];
                 
-                if(isValid(maps, nextR, nextC)) {
-                    if(nextR == rowLen - 1 && nextC == colLen - 1) return curCnt + 1;
-                    
-                    q.offer(new int[]{nextR, nextC, curCnt + 1});
-                    visited[nextR][nextC] = true;
+                if(nxtR == rowLen - 1 && nxtC == colLen - 1) return curCnt + 1; //다음 노드가 도착이면 리턴
+                if(isValid(maps, nxtR, nxtC)) {
+                    q.offer(new int[]{nxtR, nxtC, curCnt+1});
+                    visited[nxtR][nxtC] = true;
                 }
             }
         }
         return -1;
     }
     
-    boolean isValid(int[][] maps, int row, int col) {
-        return row >= 0 && row < rowLen && col >= 0 && col < colLen && !visited[row][col] && maps[row][col] == 1;
+    boolean isValid(int[][] maps, int r, int c) {
+        return r >= 0 && r < rowLen && c >= 0 && c < colLen && !visited[r][c] && maps[r][c] == 1;
     }
 }
