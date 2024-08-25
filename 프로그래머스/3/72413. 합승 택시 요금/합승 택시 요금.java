@@ -1,24 +1,26 @@
 import java.util.*;
 
+/*
+Q. s에서 출발해서 각 도착 지점까지 택시를 타고 갔을 때, 최저 예상 택시요금을 반환
+- s에서 출발하는 경우의 최소 비용: 하나씩 뒤로 밀어가면서 합승 종료 지점 찾기 - 0인 경우 합승 하지 않는 경우가 됨
+- a까지의 최소 비용: 합승 종료 지점 -> a까지의 비용
+- b까지의 최소 비용: 합승 종료 지점 -> b까지의 비용
+
+fares[i] = [출발지점, 타겟지점, 비용]
+*/
 class Solution {
     Map<Integer, List<Edge>> graph;
-    int INF = Integer.MAX_VALUE;
     
     public int solution(int n, int s, int a, int b, int[][] fares) {
-        //그래프화
         makeGraph(fares);
-        
-        //다익스트라
-        int[] startA = dijkstra(n, a); // a에서 출발했을 때 최소비용(무방향 그래프 => 거꾸로 해석 가능: a에 도착했을 때 최소비용)
-        int[] startB = dijkstra(n, b); // b에서 출발했을 때 최소비용
-        int[] start = dijkstra(n, s); // s에서 출발했을 때 최소비용
-        
-        //비교: 합승 끝내는 지점을 1~N번까지 확인해서 최소 비용 구하기
-        int answer = INF; 
-        for(int i=1; i<=n; i++) {
-            answer = Math.min(answer, start[i]+startA[i]+startB[i]);
+        return countMinimum(n, s, a, b);
+    }
+    
+    class Edge {
+        public int node; public int cost;
+        public Edge(int node, int cost) {
+            this.node = node; this.cost = cost;
         }
-        return answer;
     }
     
     void makeGraph(int[][] fares) {
@@ -30,52 +32,68 @@ class Solution {
         }
     }
     
-    void addConnection(int start, int arrive, int cost) {
+    void addConnection(int start, int end, int cost) {
         List<Edge> list = graph.getOrDefault(start, new ArrayList<>());
-        list.add(new Edge(arrive, cost));
+        list.add(new Edge(end, cost));
         graph.put(start, new ArrayList<>(list));
     }
     
-    class Edge implements Comparable<Edge> {
-        public int node; public int cost;
-        public Edge(int node, int cost) {
-            this.node = node; this.cost = cost;
-        }
+    int countMinimum(int n, int s, int a, int b) {
+        int[] costs = countCosts(n, s);
+        int[] costsForA = countCosts(n, a);
+        int[] costsForB = countCosts(n, b);
         
-        @Override
-        public int compareTo(Edge o) {
-            return this.cost - o.cost;
-        }
+        return findMin(costs, costsForA, costsForB);
     }
     
-    int[] dijkstra(int n, int start) {
-        //초기 작업: 비용 무한대로 초기화
+    int[] countCosts(int n, int start) {
+        //setting: costs to INF
         int[] costs = new int[n+1];
-        Arrays.fill(costs, INF);
+        Arrays.fill(costs, Integer.MAX_VALUE);
         
-        Queue<Edge> pq = new PriorityQueue<>();
+        //set start
+        Queue<Entry> pq = new PriorityQueue<>();
+        costs[start] = 0; 
+        pq.add(new Entry(start, 0));
         
-        //시작점 초기화
-        costs[start] = 0;
-        pq.add(new Edge(start, 0));
-        
+        //loop
         while(!pq.isEmpty()) {
             //cur
-            Edge cur = pq.poll();
+            Entry cur = pq.poll();
+            if(costs[cur.to] > cur.cost || graph.get(cur.to) == null) continue;
             
-            //현재 노드의 비용이 현재 노드까지 오는 데 필요한 최소 비용을 초과하거나, 현재 노드의 인접 노드가 없다면 통과
-            if(cur.cost > costs[cur.node] || graph.get(cur.node) == null) continue; 
             //near
-            for(Edge next : graph.get(cur.node)) {
-                int nextCost = costs[cur.node] + next.cost; //다음 노드까지 가는 데 필요한 비용
-                
-                //새롭게 계산한 비용이 저장되어있는 다음 노드까지 가는 데 필요한 최소 비용보다 작을 경우에만 업데이트
-                if(nextCost < costs[next.node]) {
-                    costs[next.node] = nextCost;
-                    pq.add(new Edge(next.node, nextCost));
+            for(Edge nxt:graph.get(cur.to)) {
+                int newCost = costs[cur.to] + nxt.cost;
+                if(newCost < costs[nxt.node]) {
+                    costs[nxt.node] = newCost;
+                    pq.add(new Entry(nxt.node, newCost));
                 }
             }
         }
         return costs;
+    }
+    
+    class Entry implements Comparable<Entry>{
+        public int to; public int cost;
+        public Entry(int to, int cost) {
+            this.to = to; this.cost = cost;
+        }
+        
+        @Override
+        public int compareTo(Entry o) {
+            return this.cost - o.cost;
+        }
+    }
+    
+    int findMin(int[] costs, int[] costsForA, int[] costsForB) {
+        int answer = Integer.MAX_VALUE;
+        
+        for(int i=1; i<costs.length; i++) {
+            int temp = costs[i] + costsForA[i] + costsForB[i];
+            answer = Math.min(answer, temp);
+        }
+        
+        return answer;
     }
 }
