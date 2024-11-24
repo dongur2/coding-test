@@ -7,6 +7,10 @@ class Solution {
     -> 참여 배열에는 있으나, 완주 배열에 없는 이름을 반환
     */
     public String solution(String[] participant, String[] completion) {
+        return useMap(participant, completion);
+    }
+    
+    private String useSort(String[] participant, String[] completion) {
         Arrays.sort(participant);
         Arrays.sort(completion);
         
@@ -15,5 +19,22 @@ class Solution {
         }
         
         return participant[participant.length-1];
+    }
+    
+    private String useMap(String[] participant, String[] completion) {
+        //{이름 : 완주횟수}
+        Map<String, Integer> map = new HashMap<>();
+        for(String c : completion) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        
+        for(String p : participant) {
+            if(!map.containsKey(p)) return p;
+            
+            if(map.get(p) > 0) map.put(p, map.get(p)-1);
+            else return p;
+        }
+        
+        return null;
     }
 }
