@@ -2,40 +2,38 @@ import java.util.*;
 
 class Solution {
     /*
-     ** 주어지는 중복 없는 배열을 이용하여 만들 수 있는 모든 부분집합을 만들어 반환
-     - 공집합도 포함
-     - 중복되는 부분집합은 미포함
-     
-     - 중복 X, 순서 의미 없음 --> 조합 
-     */
-
-    boolean[] visited;
-    List<List<Integer>> answer;
-
+    Q. 주어진 중복 없는 숫자 배열로 만들 수 있는 모든 부분집합을 반환
+    - 공집합 포함
+    - 중복 불허 & 순서 상관없음 => "조합"
+    */
+    
+    List<List<Integer>> result;
+    
     public List<List<Integer>> subsets(int[] nums) {
-        visited = new boolean[nums.length];
-        answer = new ArrayList<>();
-
-        for(int len=0; len<= nums.length; len++) {
-            backtrack(nums, len, 0, new ArrayList<>());
+        result = new ArrayList<>();
+        
+        //만들어야하는 부분집합 크기 0 ~ nums.length개
+        for(int i=0; i<=nums.length; i++) {
+            makeSubsets(nums, new boolean[nums.length], new ArrayList<>(), i, 0);
         }
         
-        return answer;
+        return result;
     }
-
-    void backtrack(int[] nums, int len, int start, List<Integer> list) {
-        //base case: 만들려고 하는 배열 길이와 현재 만들고있는 조합 길이가 같으면 저장하고 중지
+    
+    private void makeSubsets(int[] nums, boolean[] visited, List<Integer> list, int len, int idx) {
+        //만든 집합의 크기가 만들어야하는 크기와 같으면 추가하고 종료
         if(list.size() == len) {
-            answer.add(new ArrayList<>(list)); return;
+            result.add(new ArrayList<>(list)); return;
         }
-
-        //recursive call: 방문한 적 없는 노드를 방문 처리 & 조합에 추가 - 그 노드를 포함한 조합에 대한 하청 - 현재 노드 방문 무효 & 제거
-        for(int i=start; i<nums.length; i++) {
+        
+        for(int i=idx; i<nums.length; i++) {
             if(visited[i]) continue;
-
-            visited[i] = true; list.add(nums[i]);
-            backtrack(nums, len, i+1, list);
-            visited[i] = false; list.remove(Integer.valueOf(nums[i]));
+            
+            visited[i] = true;
+            list.add(nums[i]);
+            makeSubsets(nums, visited, list, len, i+1);
+            visited[i] = false;
+            list.remove(Integer.valueOf(nums[i]));
         }
     }
 }
