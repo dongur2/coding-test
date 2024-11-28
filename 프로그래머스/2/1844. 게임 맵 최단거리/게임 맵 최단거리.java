@@ -1,37 +1,46 @@
 import java.util.*;
-
-/*
-(0,0)에서 시작 - 상대팀 진영(오른쪽 끝)에 도착할 수 있는 최단 거리 반환 (불가능하면 -1 반환)
-0인 칸은 불가능, 1인 칸은 갈 수 있음
-*/
+ 
 class Solution {
+    /*
+    Q. [0][0]에서 [n-1][m-1]에 도착할 수 있는 최단 거리를 반환 (도착할 수 없으면 -1)
+    - 0 = 벽, 1 = 통로
+    - 상하좌우로 1칸씩 이동 가능 
+    - 맵을 벗어난 이동 불가능
+    */
+    
     int[] rowArr = {0, 1, 0, -1}, colArr = {1, 0, -1, 0};
-    int rowLen, colLen;
+    
+    int maxRow, maxCol;
     boolean[][] visited;
     
     public int solution(int[][] maps) {
-        rowLen = maps.length; colLen = maps[0].length;
-        visited = new boolean[rowLen][colLen];
+        maxRow = maps.length;
+        maxCol = maps[0].length;
+        visited = new boolean[maxRow][maxCol];
         
-        return bfs(maps);
+        return bfs(maps, 0, 0);
     }
     
-    int bfs(int[][] maps) {
-        //start
+    int bfs(int[][] maps, int r, int c) {
         Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{0, 0, 1}); visited[0][0] = true;
         
-        //cur
+        //start
+        q.offer(new int[]{r, c, 1});
+        visited[r][c] = true;
+        
+        //queue
         while(!q.isEmpty()) {
             int[] cur = q.poll();
-            int curR = cur[0], curC = cur[1], curCnt = cur[2];
+            int curR = cur[0];
+            int curC = cur[1];
+            int curCnt = cur[2];
             
-            //near
+            if(curR == maxRow-1 && curC == maxCol-1) return curCnt;
+            
             for(int i=0; i<4; i++) {
                 int nxtR = curR + rowArr[i];
                 int nxtC = curC + colArr[i];
-                
-                if(nxtR == rowLen - 1 && nxtC == colLen - 1) return curCnt + 1; //다음 노드가 도착이면 리턴
+                            
                 if(isValid(maps, nxtR, nxtC)) {
                     q.offer(new int[]{nxtR, nxtC, curCnt+1});
                     visited[nxtR][nxtC] = true;
@@ -41,7 +50,7 @@ class Solution {
         return -1;
     }
     
-    boolean isValid(int[][] maps, int r, int c) {
-        return r >= 0 && r < rowLen && c >= 0 && c < colLen && !visited[r][c] && maps[r][c] == 1;
+    boolean isValid(int[][] maps, int row, int col) {
+        return row >= 0 && row < maxRow && col >= 0 && col < maxCol && maps[row][col] == 1 && !visited[row][col]; 
     }
 }
