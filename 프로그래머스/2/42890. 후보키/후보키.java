@@ -1,68 +1,81 @@
 import java.util.*;
-
 class Solution {
     /*
-    후보키: 유일성 & 최소성 만족
-    - 만들 수 있는 속성 조합을 모두 만든 뒤, 유일성과 최소성 만족 여부를 차례로 검사
-    -- 속성 조합: 중복 불가 && 순서에 의미 두지 않음 ==> 조합
+    Q. 후보 키의 최대 개수 리턴
+    - 후보키: 유일성(다른 튜플에 중복값이 없음) + 최소성([이름,전공]O, [이름,전공,학년]X)
+    - 주어진 속성으로 만들 수 있는 모든 조합으로 후보키를 확인 -> 조합(부분집합)
     */
-    
-    boolean[] visited;
-    List<Set<Integer>> list;
-    
     public int solution(String[][] relation) {
-        visited = new boolean[relation[0].length];
-        list = new ArrayList<>();
+        List<List<Integer>> keys = new ArrayList<>();
         
-        //속성 1개 선택 ~ 주어진 속성 모두 선택하는 조합 생성
-        for(int len=1; len<=relation[0].length; len++) {
-            backtrack(relation, len, 0, new HashSet<>());
+        //인덱스(속성)로 이루어진 모든 조합 생성
+        List<List<Integer>> combs = new ArrayList<>();
+        int len = relation[0].length;
+        for(int i=1; i<=len; i++) {
+            makeCombinations(combs, i, len, 0, new ArrayList<>(), new boolean[len]);
         }
         
-        return list.size();
+        //각 인덱스조합이 후보키가 되는지 확인 후 저장
+        checkIsCandidateKey(relation, keys, combs);
+        
+        return keys.size();
     }
     
-    void backtrack(String[][] relation, int len, int start, Set<Integer> tempKey) {
-        //base case: 선택하려는 개수만큼 속성을 선택 완료했다면, 유일성 검사
-        if(tempKey.size() == len) {
-            //유일성 검사
-            if(!isUnique(relation, tempKey)) return;
-            
-            //최소성 검사: 현재 인덱스 조합이 이미 저장된 후보키 조합을 포함한다면 최소성 불만족
-            if(!list.isEmpty()) {
-                for(Set<Integer> savedKey : list) {
-                    if(tempKey.containsAll(savedKey)) return;
-                }
-            }
-            
-            list.add(new HashSet<>(tempKey)); return;
+    private void makeCombinations(List<List<Integer>> combs, int size, int maxIdx, int idx, List<Integer> list, boolean[] visited) {
+        if(list.size() == size) {
+            combs.add(new ArrayList<>(list));
+            return;
         }
         
-        //recursive call: 전체 속성 인덱스 순회
-        //방문한 속성은 무시, 아니라면 방문 처리 & 선택 추가 -> 그 다음 탐색 하청 -> 방문 무효 & 선택 제거
-        for(int i=start; i<relation[0].length; i++) {
+        for(int i=idx; i<maxIdx; i++) {
             if(visited[i]) continue;
             
-            visited[i] = true; tempKey.add(i);
-            backtrack(relation, len, i+1, tempKey);
-            visited[i] = false; tempKey.remove(i);
+            visited[i] = true;
+            list.add(i);
+            
+            makeCombinations(combs, size, maxIdx, i+1, list, visited);
+            
+            list.remove(Integer.valueOf(i));
+            visited[i] = false;
         }
     }
     
-    //유일성 검사: 가져온 인덱스 조합을 각 튜플에 적용해 중복되는 값이 있는지 확인
-    boolean isUnique(String[][] relation, Set<Integer> tempKey) {
-        Set<String> tuples = new HashSet<>();
-        
-        for(String[] r:relation) {
-            StringBuilder tuple = new StringBuilder();
+    void checkIsCandidateKey(String[][] relation, List<List<Integer>> keys, List<List<Integer>> combs) {
+        for(List<Integer> comb : combs) {
+            //각 조합으로 만든 튜플이 중복값이 존재하는지 확인
+            if(!isUnique(relation, comb)) continue;
+
+            //중복되지 않고 & 이미 후보키로 저장한 조합 중에 포함되는 경우가 없으면 저장
+            if(!isMinimum(keys, comb)) continue;
             
-            for(int t:tempKey) {
-                tuple.append(r[t]);            
+            keys.add(new ArrayList<>(comb));
+        }
+    }
+    
+    private boolean isUnique(String[][] relation, List<Integer> comb) {
+        Set<String> set = new HashSet<>();
+            
+        for(String[] data : relation) {
+            StringBuilder sb = new StringBuilder();
+
+            for(Integer idx : comb) {
+                sb.append(data[idx]);
             }
-            
-            tuples.add(tuple.toString());
+
+            set.add(sb.toString());
         }
         
-        return tuples.size() == relation.length;
+        return set.size() == relation.length;
     }
+    
+    private boolean isMinimum(List<List<Integer>> keys, List<Integer> comb) {
+        if(keys.isEmpty()) return true;
+        
+        for(List<Integer> key : keys) {
+            if(comb.containsAll(key)) return false;
+        }
+        
+        return true;
+    }
+    
 }
