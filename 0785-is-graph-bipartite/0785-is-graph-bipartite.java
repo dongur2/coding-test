@@ -8,36 +8,29 @@ class Solution {
     */
     
     Map<Integer, Integer> map;
-    boolean[] visited;
-    
     boolean answer = true;
+    
     public boolean isBipartite(int[][] graph) {
         map = new HashMap<>();
-        visited = new boolean[graph.length];
         
         for(int i=0; i<graph.length; i++) {
-            if(visited[i]) continue;
-            if(!dfs(graph, i, 0)) return false;
+            dfs(graph, i, 0);
         }
         
         return answer;
     }
 
-    boolean dfs(int[][] graph, int node, int set) {
-        visited[node] = true;
+    void dfs(int[][] graph, int node, int set) {
+        //이미 방문한 적 있으면 무시
+        if(map.get(node) == null) map.put(node, set);
         
-        if(graph[node].length > 0) {
-            map.put(node, set);
-            
-            for(int nxt : graph[node]) {
-                if(visited[nxt]) {
-                    if(map.get(nxt) == map.get(node)) return false;
-                } else {
-                    if (!dfs(graph, nxt, 1-set)) return false;
+        for(int nxt : graph[node]) {
+            if(map.get(nxt) != null) { //방문한 적 있는 인접노드
+                if(map.get(nxt) == map.get(node)) {
+                    answer = false; return;
                 }
-            }
+            //방문한 적 없는 인접노드
+            } else dfs(graph, nxt, 1-set);
         }
-        
-        return true;
     }
 }
