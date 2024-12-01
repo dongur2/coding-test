@@ -1,47 +1,40 @@
-import java.util.*;
-
 class Solution {
     /*
-    ** 주어진 동전 종류로 주어진 금액을 만들 수 있는 최소 동전 개수를 반환
-    - 만들 수 없으면 -1을 반환
-    - 각 동전마다 사용할 수 있는 횟수는 제한 없음
-    
-    최소 동전 개수를 구하므로 BFS로 접근
-    각 동전을 하나씩 뺐을 때 남는 금액이 노드: 다음 연결 노드가 0이 될 때 카운트를 반환
+    Q. 주어진 가격을 만들기 위해 필요한 '동전의 최소 개수'를 리턴 (만들 수 없으면 '-1')
+    - 각 동전의 개수는 무한
     */
-    
-    Map<Integer, Integer> map; // {남은 금액:필요 동전 개수}
+
+    Map<Integer, Integer> coinsMap;
     
     public int coinChange(int[] coins, int amount) {
-        map = new HashMap<>();
-        
+        coinsMap = new HashMap<>();
         return bfs(coins, amount);
     }
     
     int bfs(int[] coins, int amount) {
-        //시작점
-        if(amount == 0) return 0;
-        
         Queue<Integer> q = new ArrayDeque<>();
-        q.offer(amount); 
-        map.put(amount, 0);
         
-        //대기열에서 방문
+        //start
+        q.offer(amount);
+        coinsMap.put(amount, 0);
+        
+        //q
         while(!q.isEmpty()) {
-            int curAmount = q.poll();
-            int curCoinCnt = map.get(curAmount);
+            int remainAmt = q.poll();
             
-            //인접 노드 탐색 후 대기열 추가
-            for(int i=0; i<coins.length; i++) {
-                int nextAmount = curAmount - coins[i];
-                if(nextAmount == 0) return curCoinCnt + 1; //다음 노드가 0이면 즉시 종료
+            for(int coin : coins) {
+                int nxtAmt = remainAmt - coin;
                 
-                if(map.get(nextAmount) != null || nextAmount < 0) continue;
+                if(nxtAmt >= 0 && !coinsMap.containsKey(nxtAmt)) {
+                    q.offer(nxtAmt);
+                    coinsMap.put(nxtAmt, coinsMap.get(remainAmt)+1);
+                    if(nxtAmt == 0) return coinsMap.get(remainAmt)+1;
+                } 
                 
-                q.offer(nextAmount); 
-                map.put(nextAmount, curCoinCnt + 1); 
+                if(remainAmt == 0) return coinsMap.get(remainAmt);
             }
         }
+        
         return -1;
     }
 }
