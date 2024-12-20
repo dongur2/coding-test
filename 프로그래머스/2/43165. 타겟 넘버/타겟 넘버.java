@@ -1,26 +1,29 @@
 import java.util.*;
 
 /*
-순서를 바꾸지 않고 더하거나/빼서 타겟 넘버를 만들 수 있는 방법 개수를 반환
-DFS: 0부터 시작해서 -1/+1 곱한 결과로 이동
+Q. 순서를 유지한 상태로 "더하거나 빼서" 타겟 넘버로 만들 수 있는 "총 방법 수"를 리턴
+
+- 시작 노드는 무조건 "0"
+- 다음 노드는 음수/양수 두가지 경우의 수로
+- 앞 노드는 방문할 필요 없으므로 인덱스를 하나씩 밀기
+- dfs
 */
 class Solution {
-    int answer = 0;
+    int cnt = 0;
     
     public int solution(int[] numbers, int target) {
-        dfs(numbers, target, 0, 0);
-        return answer;
+        dfs(numbers, target, 0, 0); 
+        return cnt;    
     }
     
-    void dfs(int[] numbers, int target, int cur, int idx) {
+    void dfs(int[] numbers, int target, int now, int idx) {
+        //base case: 끝 노드라면 현재 숫자가 타겟과 같은지 확인 후 종료
         if(idx == numbers.length) {
-            if(target == cur) answer++;
-            return;
+            if(target == now) cnt++; return;
         }
         
-        for(int n : new int[]{-1, 1}) {
-            int nextNode = cur + (numbers[idx] * n);
-            if(idx < numbers.length) dfs(numbers, target, nextNode, idx+1);
-        }
+        //loop: 현재 숫자에 다음 노드 숫자를 빼거나 더함
+        dfs(numbers, target, now + numbers[idx], idx+1);
+        dfs(numbers, target, now - numbers[idx], idx+1);
     }
 }
