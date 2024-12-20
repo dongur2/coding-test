@@ -1,40 +1,54 @@
-class Solution {
-    /*
-    Q. 주어진 가격을 만들기 위해 필요한 '동전의 최소 개수'를 리턴 (만들 수 없으면 '-1')
-    - 각 동전의 개수는 무한
-    */
+import java.util.*;
 
-    Map<Integer, Integer> coinsMap;
-    
+/*
+Q. 주어진 동전으로 목표 금액을 만들 수 있을 때, 필요한 동전의 "최소 개수"를 리턴
+- 만들 수 없으면 -1 리턴
+
+- 최소 개수니까 bfs 적용
+*/
+class Solution {
     public int coinChange(int[] coins, int amount) {
-        coinsMap = new HashMap<>();
-        return bfs(coins, amount);
+        return bfs(coins, amount);        
     }
     
     int bfs(int[] coins, int amount) {
-        Queue<Integer> q = new ArrayDeque<>();
+        //setting
+        Queue<Node> q = new ArrayDeque<>();
+        q.offer(new Node(amount, 0));
         
-        //start
-        q.offer(amount);
-        coinsMap.put(amount, 0);
+        Set<Integer> log = new HashSet<>();
         
-        //q
+        //queue
         while(!q.isEmpty()) {
-            int remainAmt = q.poll();
+            //now
+            Node cur = q.poll();
+            int curAmt = cur.now;
+            int curCnt = cur.cnt;
             
-            for(int coin : coins) {
-                int nxtAmt = remainAmt - coin;
+            if(curAmt == 0) return curCnt;
+            
+            //next
+            for(int coin:coins) {
+                int nxtAmt = curAmt - coin;
                 
-                if(nxtAmt >= 0 && !coinsMap.containsKey(nxtAmt)) {
-                    q.offer(nxtAmt);
-                    coinsMap.put(nxtAmt, coinsMap.get(remainAmt)+1);
-                    if(nxtAmt == 0) return coinsMap.get(remainAmt)+1;
-                } 
-                
-                if(remainAmt == 0) return coinsMap.get(remainAmt);
+                if(nxtAmt >= 0 && !log.contains(nxtAmt)) {
+                    if(nxtAmt == 0) return curCnt+1;
+                    
+                    q.offer(new Node(nxtAmt, curCnt+1));
+                    log.add(nxtAmt);   
+                }
             }
         }
-        
         return -1;
+    }
+    
+    class Node {
+        int now;
+        int cnt;
+        
+        public Node(int now, int cnt) {
+            this.now = now;
+            this.cnt = cnt;
+        }
     }
 }
