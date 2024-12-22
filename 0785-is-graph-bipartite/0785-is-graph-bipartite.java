@@ -26,7 +26,7 @@ class Solution {
         //방문한 적 있는 노드라면 그룹 확인
         if(map.containsKey(node)) {
             if(group != map.get(node)) return false;
-            return true;
+                
         } else {
             //방문한 적 없는 노드라면 그룹 부여
             map.put(node, group);
