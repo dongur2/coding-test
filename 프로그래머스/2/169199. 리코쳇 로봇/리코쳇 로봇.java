@@ -1,79 +1,75 @@
 import java.util.*;
+
 /*
-* R: 출발, G: 도착, D: 장애물
-* 상하좌우 끝까지 한번에 이동
-* 도착지점까지 최소 몇 번 이동해야 하는가? -> bfs
+- 시작점에서 도착점까지 필요한 최소 이동 횟수: 제일 빠르게 도착[bfs]
+- 상하좌우로 끝까지 이동
 */
 class Solution {
-    //상하좌우
-    int[] dRow = new int[] {0, 1, 0, -1};
-    int[] dCol = new int[] {1, 0, -1, 0};
-    
-    //보드게임판 크기
-    int maxRow, maxCol;
+    int[] dRow = {0, 1, 0, -1};
+    int[] dCol = {1, 0, -1, 0};
     
     //시작점, 도착점
     int[] start = new int[2];
     int[] end = new int[2];
     
+    boolean[][] visited;
+    
     public int solution(String[] board) {
-        maxRow = board.length; 
-        maxCol = board[0].length();
+        visited = new boolean[board.length][board[0].length()];
         
-        findPoint(board);
-        
-        return bfs(board, start[0], start[1], new boolean[maxRow][maxCol]);
+        findPoints(board);
+        return bfs(board);
     }
     
-    //시작점, 도착점 탐색
-    void findPoint(String[] board) {
-        for(int r=0; r<maxRow; r++) {
+    void findPoints(String[] board) {
+        for(int r=0; r<board.length; r++) {
             if(board[r].indexOf('R') > -1) {
                 start[0] = r;
                 start[1] = board[r].indexOf('R');
-            } else if(board[r].indexOf('G') > -1) {
+            }
+            if(board[r].indexOf('G') > -1) {
                 end[0] = r;
                 end[1] = board[r].indexOf('G');
             }
         }
     }
     
-    int bfs(String[] board, int startRow, int startCol, boolean[][] visited) {
-        //시작
+    int bfs(String[] board) {
         Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{startRow, startCol, 0});
-        visited[startRow][startCol] = true;
+        q.offer(new int[] {start[0], start[1], 0}); //[현재 좌표, 이동 횟수]
+        visited[start[0]][start[1]] = true;
         
-        //큐 반복
         while(!q.isEmpty()) {
             int[] cur = q.poll();
             int row = cur[0];
             int col = cur[1];
             int moves = cur[2];
             
-            //도착점이면 리턴
+            //현재 위치가 도착점이면 리턴
             if(row == end[0] && col == end[1]) return moves;
             
             for(int i=0; i<4; i++) {
-                int newR = row, newC = col;
+                int newRow = row, newCol = col;
                 
-                //막다른 길까지 이동
-                while(isValid(board, newR + dRow[i], newC + dCol[i])) {
-                    newR += dRow[i];
-                    newC += dCol[i];
+                //장애물이 없는 방향으로 끝까지 이동
+                while(isValid(board, newRow + dRow[i], newCol + dCol[i])) {
+                    newRow += dRow[i];
+                    newCol += dCol[i];
                 }
                 
-                //도착한 곳이 방문한 적 없는 곳이면 추가
-                if(!visited[newR][newC]) {
-                    q.offer(new int[]{newR, newC, moves+1});
-                    visited[newR][newC] = true;
+                //도착: 방문한 적 없으면 대기열에 추가
+                if(!visited[newRow][newCol]) {
+                    q.offer(new int[]{newRow, newCol, moves + 1});
+                    visited[newRow][newCol] = true;
                 }
+
             }
         }
+        
         return -1;
     }
     
     boolean isValid(String[] board, int r, int c) {
-        return r > -1 && r < maxRow && c > -1 && c < maxCol && board[r].charAt(c) != 'D';
+        return r > -1 && r < board.length && c > -1 && c < board[0].length() && board[r].charAt(c) != 'D';
     }
 }
