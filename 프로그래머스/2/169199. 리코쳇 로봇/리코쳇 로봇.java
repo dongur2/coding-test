@@ -1,22 +1,17 @@
 import java.util.*;
 
-/*
-- 시작점에서 도착점까지 필요한 최소 이동 횟수: 제일 빠르게 도착[bfs]
-- 상하좌우로 끝까지 이동
-*/
+//목표점에 도착하기 위해 필요한 최소 이동 수 [최소 이동 수니까 bfs]
 class Solution {
+    //상하좌우 이동 가능
     int[] dRow = {0, 1, 0, -1};
     int[] dCol = {1, 0, -1, 0};
     
-    //시작점, 도착점
+    //시작점(R), 목표점(G)
     int[] start = new int[2];
-    int[] end = new int[2];
-    
-    boolean[][] visited;
+    int[] goal = new int[2];
     
     public int solution(String[] board) {
-        visited = new boolean[board.length][board[0].length()];
-        
+        //시작, 목표 좌표 탐색
         findPoints(board);
         return bfs(board);
     }
@@ -27,16 +22,19 @@ class Solution {
                 start[0] = r;
                 start[1] = board[r].indexOf('R');
             }
+            
             if(board[r].indexOf('G') > -1) {
-                end[0] = r;
-                end[1] = board[r].indexOf('G');
+                goal[0] = r;
+                goal[1] = board[r].indexOf('G');
             }
         }
     }
     
     int bfs(String[] board) {
+        boolean[][] visited = new boolean[board.length][board[0].length()];
+        
         Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[] {start[0], start[1], 0}); //[현재 좌표, 이동 횟수]
+        q.offer(new int[]{start[0], start[1], 0}); //좌표, 이동 횟수
         visited[start[0]][start[1]] = true;
         
         while(!q.isEmpty()) {
@@ -45,27 +43,27 @@ class Solution {
             int col = cur[1];
             int moves = cur[2];
             
-            //현재 위치가 도착점이면 리턴
-            if(row == end[0] && col == end[1]) return moves;
+            //목표에 도착했을 경우 리턴
+            if(row == goal[0] && col == goal[1]) return moves;
             
+            //상하좌우 확인 후 방향 정하기
             for(int i=0; i<4; i++) {
                 int newRow = row, newCol = col;
                 
-                //장애물이 없는 방향으로 끝까지 이동
+                //장애물에 부딪치거나 맵 끝까지 이동
                 while(isValid(board, newRow + dRow[i], newCol + dCol[i])) {
                     newRow += dRow[i];
                     newCol += dCol[i];
                 }
-                
-                //도착: 방문한 적 없으면 대기열에 추가
+
+                //도착한 위치에 방문한 적 없으면 큐에 추가
                 if(!visited[newRow][newCol]) {
-                    q.offer(new int[]{newRow, newCol, moves + 1});
+                    q.offer(new int[]{newRow, newCol, moves+1});
                     visited[newRow][newCol] = true;
                 }
-
             }
         }
-        
+        //목표에 도착하지 못했을 경우
         return -1;
     }
     
