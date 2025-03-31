@@ -1,43 +1,44 @@
 import java.util.*;
 
-//모을 수 있는 최대 양 수
-//양 <= 늑대: 양 0
+//최대 양 수
 class Solution {
-    Map<Integer, List<Integer>> map = new HashMap<>();
     int answer = Integer.MIN_VALUE;
+    Map<Integer, List<Integer>> map = new HashMap<>();
     
     public int solution(int[] info, int[][] edges) {
-        //{노드번호 : [연결된 노드 번호 목록]}
+        //연결 노드 맵 
         for(int[] edge:edges) {
-            map.computeIfAbsent(edge[0], m -> new ArrayList<>()).add(edge[1]);
+            map.computeIfAbsent(edge[0], k -> new ArrayList<>()).add(edge[1]);
         }
         
-        //루트에서 시작
-        dfs(info, 0, 0, new ArrayList<>(List.of(0)));
-            
+        dfs(info, 0, 1, 0, new ArrayList<>(map.get(0))); //루트노드
+        
         return answer;
     }
     
-    void dfs(int[] info, int sheep, int wolf, List<Integer> nextNodes) {
+    void dfs(int[] info, int curr, int sheep, int wolf, List<Integer> nextNodes) {
         answer = Math.max(answer, sheep);
         
-        //자식 노드 탐색
-        for (int i=0; i<nextNodes.size(); i++) {
-            int curr = nextNodes.get(i);
-            int newSheep = sheep;
-            int newWolf = wolf;
-
-            if (info[curr] == 0) newSheep++;
-            else newWolf++;
-
-            if (newWolf >= newSheep) continue; // 늑대 >= 양: 무시
-
-            List<Integer> newNext = new ArrayList<>(nextNodes);
-            newNext.remove(i); // 현재 노드 제외
+        //다음 이동 노드 목록 탐색
+        //recursive: 다음 노드의 양/늑대 입양 - 늑대 < 양일 경우에만 이동 
+        for(int i=0; i<nextNodes.size(); i++) {
+            int newSheep = sheep, newWolf = wolf;
             
-            if (map.containsKey(curr)) newNext.addAll(map.get(curr)); // 다음 방문 리스트에 자식 노드 목록 추가
-
-            dfs(info, newSheep, newWolf, newNext);
+            int nxt = nextNodes.get(i); //다음 노드
+            
+            if(info[nxt] == 0) newSheep++;
+            else newWolf++;
+            
+            //basecase: 늑대 >= 양: 이동하지 않음
+            if(newWolf >= newSheep) continue;
+            
+            //늑대 < 양: 이동 - 이동할 노드의 자식 노드 추가
+            List<Integer> newNextNodes = new ArrayList<>(nextNodes);
+            newNextNodes.remove(i);
+            if(map.containsKey(nxt)) newNextNodes.addAll(map.get(nxt));
+            
+            //이동
+            dfs(info, nxt, newSheep, newWolf, newNextNodes);
         }
     }
 }
