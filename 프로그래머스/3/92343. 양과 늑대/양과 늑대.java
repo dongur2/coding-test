@@ -2,43 +2,47 @@ import java.util.*;
 
 //최대 양 수
 class Solution {
-    int answer = Integer.MIN_VALUE;
-    Map<Integer, List<Integer>> map = new HashMap<>();
+    static int answer = Integer.MIN_VALUE;
+    static Map<Integer, List<Integer>> map = new HashMap<>();
+    
     
     public int solution(int[] info, int[][] edges) {
-        //연결 노드 맵 
-        for(int[] edge:edges) {
-            map.computeIfAbsent(edge[0], k -> new ArrayList<>()).add(edge[1]);
+        //노드:[자식노드]
+        for(int[] e:edges) {
+            map.computeIfAbsent(e[0], k -> new ArrayList<>()).add(e[1]);
         }
         
-        dfs(info, 0, 1, 0, new ArrayList<>(map.get(0))); //루트노드
+        dfs(info, 1, 0, new ArrayList<>(map.get(0)));
         
         return answer;
     }
     
-    void dfs(int[] info, int curr, int sheep, int wolf, List<Integer> nextNodes) {
+    public void dfs(int[] info, int sheep, int wolf, List<Integer> nextNodes) {
+        //양 수 업데이트
         answer = Math.max(answer, sheep);
         
-        //다음 이동 노드 목록 탐색
-        //recursive: 다음 노드의 양/늑대 입양 - 늑대 < 양일 경우에만 이동 
+        //자식 노드 탐색
         for(int i=0; i<nextNodes.size(); i++) {
             int newSheep = sheep, newWolf = wolf;
             
-            int nxt = nextNodes.get(i); //다음 노드
+            //다음 노드
+            int nxt = nextNodes.get(i);
             
             if(info[nxt] == 0) newSheep++;
             else newWolf++;
             
-            //basecase: 늑대 >= 양: 이동하지 않음
+            //늑대 >= 양이면 방문하지 않음
             if(newWolf >= newSheep) continue;
             
-            //늑대 < 양: 이동 - 이동할 노드의 자식 노드 추가
-            List<Integer> newNextNodes = new ArrayList<>(nextNodes);
-            newNextNodes.remove(i);
-            if(map.containsKey(nxt)) newNextNodes.addAll(map.get(nxt));
+            //늑대 < 양이면 방문 후 다음 노드 추가
+            List<Integer> newNxt = new ArrayList<>(nextNodes);
+            newNxt.remove(i); //현재 노드는 삭제
             
-            //이동
-            dfs(info, nxt, newSheep, newWolf, newNextNodes);
+            if(map.containsKey(nxt)) newNxt.addAll(map.get(nxt)); //다음 노드의 자식 노드 추가
+            
+            //방문
+            dfs(info, newSheep, newWolf, newNxt);
         }
     }
+    
 }
