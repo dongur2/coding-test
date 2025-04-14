@@ -1,119 +1,101 @@
 import java.util.*;
 import java.io.*;
 
+//안전 영역의 최대값
 public class Main {
-    //바이러는 상하좌우로 인접한 빈 칸으로 전파
-    static int[] dRow = {0, 1, 0, -1};
-    static int[] dCol = {1, 0, -1, 0};
+  static int[][] map;
+  
+  static int n = -1, m = -1;
+  static int answer = Integer.MIN_VALUE;
+  
+  //바이러스 상하좌우 이동
+  static int[] dRow = {0, 1, 0, -1};
+  static int[] dCol = {1, 0, -1, 0};
+  
+  public static void main(String[] args) throws IOException{
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     
-    static int[][] map;
-    static boolean[][] visited;
+    StringTokenizer st = new StringTokenizer(br.readLine());
+    n = Integer.parseInt(st.nextToken());
+    m = Integer.parseInt(st.nextToken());
     
-    static int[][] newMap;
+    //맵 생성 0:빈칸, 1:벽, 2:바이러스
+    map = new int[n][m];
     
-    static int answer = Integer.MIN_VALUE;
-    
-    //안전 영역 크기의 최대값 - dfs로 끝까지 감염
-    public static void main(String[] args) throws IOException{
-      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                  
-      StringTokenizer st = new StringTokenizer(br.readLine());
-      int n = Integer.parseInt(st.nextToken());
-      int m = Integer.parseInt(st.nextToken());
-      
-      map = new int[n][m];
-      visited = new boolean[n][m];
-      
-      //지도 생성 0:빈칸, 1:벽, 2:바이러스
-      for(int r=0; r<n; r++) {
-        String line = br.readLine();
-        String[] arr = line.split(" ");
-        
-        for(int c=0; c<m; c++) {
-          map[r][c] = Integer.parseInt(arr[c]);
-        }
+    for(int r=0; r<n; r++) {
+      st = new StringTokenizer(br.readLine());
+      for(int c=0; c<m; c++) {
+        map[r][c] = Integer.parseInt(st.nextToken());
       }
-      
-      //벽 3개 세우기 (중복 불허용, 순서 상관없음 -> 조합)
-      //벽을 세울 수 있는 모든 경우의 수에서 감염 후 안전구역 카운트 
-      getMaxSafety(n, m, 0);
-      
-      System.out.println(answer);
     }
     
-    public static void getMaxSafety(int n, int m, int walls) {
-      //벽 3개 다 세웠으면 
-      if(walls == 3) {
-        //맵 복사 
-        newMap = new int[n][m];
-        for(int i=0; i<n; i++) {
-          // newMap[i] = Arrays.copyOfRange(map[i], 0, m);
-          newMap[i] = Arrays.copyOf(map[i], m);
-        }
-        
-        //감염
-        visited = new boolean[n][m]; //방문 초기화 
-        infect(n, m);
-        
-        //안전구역 카운트
-        int safety = countSafety(n, m);
-        answer = Math.max(answer, safety);
-        
-        return;
+    //벽 3개를 세우는 모든 경우의 수에서 안전 영역 확인
+    //[조합] 하나씩 밀어가면서 만들어 보기
+    makeWalls(0);
+  
+    System.out.println(answer);
+  }
+  
+  public static void makeWalls(int walls) {
+    //벽 3개 다 세웠으면 바이러스 전파 후 안전 영역 탐색
+    if(walls == 3) {
+      //맵 복사
+      int[][] copied = new int[n][m];
+      boolean[][] visited = new boolean[n][m];
+      for(int i=0; i<n; i++) {
+        copied[i] = Arrays.copyOf(map[i], m);
       }
       
-      
+      //전파
       for(int r=0; r<n; r++) {
         for(int c=0; c<m; c++) {
-          //빈 공간이면 벽 생성
-          if(map[r][c] == 0) {
-            map[r][c] = 1;
-            getMaxSafety(n, m, walls+1);
-            map[r][c] = 0; //복구
+          if(copied[r][c] == 2 && !visited[r][c]) {
+            visited[r][c] = true;
+            pollute(copied, visited, r, c); 
           } 
         }
       }
-    }
-    
-    public static int countSafety(int n, int m) {
-      //안전 구역 카운트
-      int cnt = 0;
+      
+      //안전구역 카운트
+      int safe = 0;
       for(int r=0; r<n; r++) {
         for(int c=0; c<m; c++) {
-          if(newMap[r][c] == 0) cnt++;
-        }
-      }     
-      return cnt;
-    }
-    
-    public static void infect(int n, int m) {
-      for(int r=0; r<n; r++) {
-        for(int c=0; c<m; c++) {
-          //바이러스를 발견하면 감염 시작
-          if(newMap[r][c] == 2 && !visited[r][c]) {
-            visited[r][c] = true;
-            dfs(n, m, r, c);
-          }
+          if(copied[r][c] == 0) safe++;
         }
       }
+      
+      //최대값 바인딩
+      answer = Math.max(answer, safe);
+      return;
     }
     
-    public static void dfs(int n, int m, int r, int c) {
-      //인접 지역에 바이러스나 빈 공간이 있을 경우 이동
-      for(int i=0; i<4; i++) {
-        int nxtR = r + dRow[i];
-        int nxtC = c + dCol[i];
-        
-        if(isValid(n, m, nxtR, nxtC)) {
-          visited[nxtR][nxtC] = true;
-          //빈 공간이면 감염 
-          if(newMap[nxtR][nxtC] == 0) newMap[nxtR][nxtC] = 2; 
-          dfs(n, m, nxtR, nxtC); //이동
+    for(int r=0; r<n; r++) {
+      for(int c=0; c<m; c++) {
+        if(map[r][c] == 0) {
+          map[r][c] = 1; //벽 생성
+          makeWalls(walls+1);
+          map[r][c] = 0; //복구
         }
       }
+    }  
+  }
+  
+  public static void pollute(int[][] copiedMap, boolean[][] visited, int row, int col) {
+    //상하좌우
+    for(int i=0; i<4; i++) {
+      int nxtR = row + dRow[i];
+      int nxtC = col + dCol[i];
+      
+      if(isValid(copiedMap, visited, nxtR, nxtC)) {
+        visited[nxtR][nxtC] = true;
+        //빈 칸일 경우 감염
+        if(copiedMap[nxtR][nxtC] == 0) copiedMap[nxtR][nxtC] = 2;
+        pollute(copiedMap, visited, nxtR, nxtC);
+      }
     }
-    
-    public static boolean isValid(int n, int m, int r, int c) {
-      return r >= 0 && r < n && c >= 0 && c < m && !visited[r][c] && newMap[r][c] != 1;
-    }
+  }
+  
+  public static boolean isValid(int[][] copiedMap, boolean[][] visited, int row, int col) {
+    return row>=0 && row<n && col>=0 && col<m && !visited[row][col] && copiedMap[row][col] != 1;
+  }
 }
