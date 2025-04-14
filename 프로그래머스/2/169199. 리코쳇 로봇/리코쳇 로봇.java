@@ -1,73 +1,80 @@
 import java.util.*;
 
-//목표점에 도착하기 위해 필요한 최소 이동 수 [최소 이동 수니까 bfs]
+//출발점에서 목표점까지 도달하는 최소 이동 수
 class Solution {
-    //상하좌우 이동 가능
-    int[] dRow = {0, 1, 0, -1};
-    int[] dCol = {1, 0, -1, 0};
+    static String[] b;
+    static boolean[][] visited;
+    static int row = -1, col = -1;
     
-    //시작점(R), 목표점(G)
-    int[] start = new int[2];
-    int[] goal = new int[2];
+    static int[] start = new int[2];
+    static int[] goal = new int[2];
+    
+    static int[] dRow = {0, 1, 0, -1};
+    static int[] dCol = {1, 0, -1, 0};
     
     public int solution(String[] board) {
-        //시작, 목표 좌표 탐색
-        findPoints(board);
-        return bfs(board);
-    }
-    
-    void findPoints(String[] board) {
-        for(int r=0; r<board.length; r++) {
-            if(board[r].indexOf('R') > -1) {
+        //보드판 복사
+        b = Arrays.copyOf(board, board.length);
+        row = b.length; 
+        col = b[0].length();
+        visited = new boolean[row][col];
+        
+        //로봇 위치 (출발점), 목표점 찾기
+        for(int r=0; r<row; r++) {
+            String line = board[r];
+            if(line.indexOf('R') > -1) {
                 start[0] = r;
-                start[1] = board[r].indexOf('R');
+                start[1] = line.indexOf('R');
             }
-            
-            if(board[r].indexOf('G') > -1) {
+            if(line.indexOf('G') > -1) {
                 goal[0] = r;
-                goal[1] = board[r].indexOf('G');
+                goal[1] = line.indexOf('G');
             }
         }
+        
+        return bfs();
     }
     
-    int bfs(String[] board) {
-        boolean[][] visited = new boolean[board.length][board[0].length()];
-        
-        Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[]{start[0], start[1], 0}); //좌표, 이동 횟수
+    public static int bfs() {
+        //initial
+        Deque<int[]> q = new ArrayDeque<>();
         visited[start[0]][start[1]] = true;
+        q.offer(new int[]{start[0], start[1], 0});
         
+        //queue
         while(!q.isEmpty()) {
-            int[] cur = q.poll();
-            int row = cur[0];
-            int col = cur[1];
-            int moves = cur[2];
+            int[] curr = q.poll();
+            int nowR = curr[0];
+            int nowC = curr[1];
+            int moves = curr[2];
             
-            //목표에 도착했을 경우 리턴
-            if(row == goal[0] && col == goal[1]) return moves;
+            //현재 위치가 목표점이라면 움직임 수 리턴
+            if(nowR == goal[0] && nowC == goal[1]) return moves;
             
-            //상하좌우 확인 후 방향 정하기
+            //상하좌우 확인
             for(int i=0; i<4; i++) {
-                int newRow = row, newCol = col;
+                int nxtR = nowR;
+                int nxtC = nowC;
                 
-                //장애물에 부딪치거나 맵 끝까지 이동
-                while(isValid(board, newRow + dRow[i], newCol + dCol[i])) {
-                    newRow += dRow[i];
-                    newCol += dCol[i];
+                //장애물이나 보드판 끝을 마주할 때까지 이동
+                while(isValid(nxtR + dRow[i], nxtC + dCol[i])) {
+                    nxtR += dRow[i];
+                    nxtC += dCol[i];
                 }
-
-                //도착한 위치에 방문한 적 없으면 큐에 추가
-                if(!visited[newRow][newCol]) {
-                    q.offer(new int[]{newRow, newCol, moves+1});
-                    visited[newRow][newCol] = true;
-                }
+                
+                //방문한 적 있으면 중지   
+                if(visited[nxtR][nxtC]) continue;
+                
+                //방문한 적 없는 위치면 진행
+                q.offer(new int[]{nxtR, nxtC, moves+1});
+                visited[nxtR][nxtC] = true;
             }
-        }
-        //목표에 도착하지 못했을 경우
+        }            
+        //도달하지 못했을 경우 -1
         return -1;
     }
     
-    boolean isValid(String[] board, int r, int c) {
-        return r > -1 && r < board.length && c > -1 && c < board[0].length() && board[r].charAt(c) != 'D';
+    public static boolean isValid(int r, int c) {
+        return r >= 0 && r < row && c >= 0 && c < col && b[r].charAt(c) != 'D';
     }
 }
