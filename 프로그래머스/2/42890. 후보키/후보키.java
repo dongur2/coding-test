@@ -1,81 +1,76 @@
 import java.util.*;
+//후보키 개수
+/*
+후보키: 유일성 + 최소성 만족
+*/
 class Solution {
-    /*
-    Q. 후보 키의 최대 개수 리턴
-    - 후보키: 유일성(다른 튜플에 중복값이 없음) + 최소성([이름,전공]O, [이름,전공,학년]X)
-    - 주어진 속성으로 만들 수 있는 모든 조합으로 후보키를 확인 -> 조합(부분집합)
-    */
+    static int len = 0;
+    
     public int solution(String[][] relation) {
-        List<List<Integer>> keys = new ArrayList<>();
+        len = relation[0].length; //모든 속성 개수
         
-        //인덱스(속성)로 이루어진 모든 조합 생성
-        List<List<Integer>> combs = new ArrayList<>();
-        int len = relation[0].length;
-        for(int i=1; i<=len; i++) {
-            makeCombinations(combs, i, len, 0, new ArrayList<>(), new boolean[len]);
+        //모든 속성 조합 구하기 (부분집합)
+        List<String> answer = new ArrayList<>();
+        for(int l=1; l<=len; l++) {
+            makeComb(relation, l, answer, -1, new StringBuilder());
         }
         
-        //각 인덱스조합이 후보키가 되는지 확인 후 저장
-        checkIsCandidateKey(relation, keys, combs);
-        
-        return keys.size();
+        return answer.size();
     }
     
-    private void makeCombinations(List<List<Integer>> combs, int size, int maxIdx, int idx, List<Integer> list, boolean[] visited) {
-        if(list.size() == size) {
-            combs.add(new ArrayList<>(list));
+    public static void makeComb(String[][] relation, int l, List<String> answer, int i, StringBuilder sb) {
+        if(sb.length() == l) {
+            //유일성 검사
+            if(isUnique(relation, sb)) {
+                //처음 값은 바로 저장
+                if(answer.isEmpty()) {
+                    answer.add(sb.toString()); return;
+                }
+                
+                //최소성 검사
+                if(isMinimum(answer, sb)) answer.add(sb.toString()); 
+            }
             return;
         }
         
-        for(int i=idx; i<maxIdx; i++) {
-            if(visited[i]) continue;
-            
-            visited[i] = true;
-            list.add(i);
-            
-            makeCombinations(combs, size, maxIdx, i+1, list, visited);
-            
-            list.remove(Integer.valueOf(i));
-            visited[i] = false;
+        for(int j=i+1; j<len; j++) {
+            sb.append(j);
+            makeComb(relation, l, answer, j, sb);
+            sb.deleteCharAt(sb.length()-1);
         }
     }
     
-    void checkIsCandidateKey(String[][] relation, List<List<Integer>> keys, List<List<Integer>> combs) {
-        for(List<Integer> comb : combs) {
-            //각 조합으로 만든 튜플이 중복값이 존재하는지 확인
-            if(!isUnique(relation, comb)) continue;
+    public static boolean isUnique(String[][] relation, StringBuilder sb) {
+        //인덱스 조합으로 값 생성
+        Set<String> tuples = new HashSet<>();
+        
+        for(String[] r:relation) {
+            StringBuilder s = new StringBuilder();
 
-            //중복되지 않고 & 이미 후보키로 저장한 조합 중에 포함되는 경우가 없으면 저장
-            if(!isMinimum(keys, comb)) continue;
-            
-            keys.add(new ArrayList<>(comb));
-        }
-    }
-    
-    private boolean isUnique(String[][] relation, List<Integer> comb) {
-        Set<String> set = new HashSet<>();
-            
-        for(String[] data : relation) {
-            StringBuilder sb = new StringBuilder();
-
-            for(Integer idx : comb) {
-                sb.append(data[idx]);
+            for(int i=0; i<sb.length(); i++) {
+                s.append(r[Integer.valueOf(sb.charAt(i)+"")]);
             }
 
-            set.add(sb.toString());
+            tuples.add(s.toString());
         }
-        
-        return set.size() == relation.length;
+
+        return tuples.size() == relation.length;
     }
     
-    private boolean isMinimum(List<List<Integer>> keys, List<Integer> comb) {
-        if(keys.isEmpty()) return true;
-        
-        for(List<Integer> key : keys) {
-            if(comb.containsAll(key)) return false;
+    public static boolean isMinimum(List<String> answer, StringBuilder sb) {
+        Set<Character> sc = new HashSet<>();
+        for(char c:sb.toString().toCharArray()) {
+            sc.add(c);
         }
         
+        for(String ans:answer) {
+            Set<Character> ac = new HashSet<>();
+            for(char a:ans.toCharArray()) {
+                ac.add(a);
+            }
+            
+            if(sc.containsAll(ac)) return false;
+        }
         return true;
     }
-    
 }
