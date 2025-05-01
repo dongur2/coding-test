@@ -1,38 +1,39 @@
-import java.util.*;
-
+//탐험 가능한 최대 던전 개수
+/*
+던전 순서를 바꿔서 탐험 [필요, 소모]
+- 유저 >= 최소 필요 피로도 -> 탐험 가능 -> 탐험 후 소모 피로도만큼 유저의 피로도 감소
+- 순서 의미 있는 -- "순열"
+*/
 class Solution {
-    /*
-    Q. 탐험 가능한 최대 던전 개수를 반환
-    - [최소 피로도, 소모 피로도]
-    - k: 현재 피로도
-    
-    - 한번 방문한 던전은 재방문하지 않음 (중복 불가)
-    - 순서 상관 있음 [2,3] [3,2] 둘 다 유효
-      => 순열(permutation)
-    */
-    
-    int res = -1;
-    
+    static boolean[] visited;
+    static int answer = 0, n = 0;
     public int solution(int k, int[][] dungeons) {
-        visit(k, dungeons, new boolean[dungeons.length], 0);
-        return res;
+        n = dungeons.length;
+        visited = new boolean[n];
+        
+        explore(k, dungeons, 0);
+        
+        return answer;
     }
     
-    private void visit(int k, int[][] dungeons, boolean[] visited, int cnt) {
-        //주어진 던전을 순차적으로 순회
-        for(int i=0; i<dungeons.length; i++) {
-            //방문한 던전이거나, 현재 피로도 < 최소 피로도라면 무시
-            if(visited[i] || k < dungeons[i][0]) continue;
+    public static void explore(int k, int[][] dungeons, int cnt) {
+        for(int i=0; i<n; i++) {
+            if(visited[i]) continue; //이미 탐험한 던전은 무시
             
-            //던전을 방문: 피로도 감소 & 방문 처리 & 방문 카운트
-            visited[i] = true;
-            visit(k - dungeons[i][1], dungeons, visited, cnt+1);
+            int[] d = dungeons[i]; //현재 던전
             
-            //이후 방문 처리 무효
-            visited[i] = false;
+            //최소 필요 피로도 > 유저 피로도: 불가
+            if(d[0] > k) continue;
+            
+            //최소 필요 피로도 <= 유저 피로도: 탐험 진행
+            else if(d[0] <= k) {
+                visited[i] = true;
+                explore(k-d[1], dungeons, cnt+1);
+                visited[i] = false;
+            }
         }
         
-        //최대값 비교 후 바인딩
-        res = Math.max(res, cnt);
+        //최대 탐험 개수 업데이트
+        answer = Math.max(answer, cnt);
     }
 }
