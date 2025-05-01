@@ -1,32 +1,47 @@
-import java.util.*;
+import java.util.Deque;
+import java.util.ArrayDeque;
 
+//가격이 떨어지지 않은 초
 class Solution {
-    /*
-    문제: 각 가격마다 해당 가격이 떨어지지 않은 초를 기록하여 반환
-    */
     public int[] solution(int[] prices) {
-        int[] answer = new int[prices.length];
+        int n = prices.length;
+        int[] answer = new int[n];
         
-        //과거 가격을 저장할 스택
-        Deque<Integer> past = new ArrayDeque<>();
-        
-        //각 초를 차례대로 순회
-        for(int sec=0; sec<prices.length; sec++) {
-            //현재 가격이 과거 가격과 같거나 낮아질 때까지 스택에서 과거 가격을 삭제: 삭제하는 과거 가격은 정답 배열에 가격이 떨어지지 않았던 기간을 기록
-            while(!past.isEmpty() && prices[sec] < prices[past.peek()]) {
-                int pastSec = past.pop();
-                answer[pastSec] = sec - pastSec;
+        //가격 비교
+        Deque<Node> st = new ArrayDeque<>();
+        for(int i=0; i<n-1; i++) {
+            int nxtPrice = prices[i+1];
+            
+            //다음 초 가격 >= 현재 가격: 스택에 추가
+            if(nxtPrice >= prices[i]) st.push(new Node(prices[i], i));
+            
+            //다음 초 가격 < 현재 가격: 1초 유지 바인딩 및 스택에 있는 가격을 다음 초 가격과 비교 (떨어지면 꺼내고 바인딩)
+            else {
+                answer[i] = 1;
+                
+                while(!st.isEmpty() && st.peek().price > nxtPrice) {
+                    Node prior = st.pop();
+                    answer[prior.idx] = i+1 - prior.idx;
+                }
             }
-            past.push(sec);
         }
         
-        //과거 가격이 반복이 끝날 때까지 떨어지지 않으면 스택에 시간대가 남아있으므로 처리
-        while(!past.isEmpty()) {
-            int pastSec = past.pop();
-            answer[pastSec] = prices.length-1 - pastSec;
+        //스택에 남은 가격
+        while(!st.isEmpty()) {
+            Node prior = st.pop();
+            answer[prior.idx] = n - prior.idx - 1;
         }
         
         return answer;
     }
     
+    private class Node {
+        private int price;
+        private int idx;
+        
+        public Node (int price, int idx) {
+            this.price = price;
+            this.idx = idx;
+        }
+    }
 }
