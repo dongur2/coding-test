@@ -1,42 +1,45 @@
-import java.util.*;
+import java.util.Set;
+import java.util.HashSet;
 
-//만들 수 있는 소수 개수
+//모든 길이의 부분수열 구하기 -> 소수 판별
 class Solution {
-    static Set<Integer> set = new HashSet<>(); //중복불허
-    static boolean[] visited;
+    static Set<Integer> set = new HashSet<>();
+    static int n = 0;
     
     public int solution(String numbers) {
-        visited = new boolean[numbers.length()];
+        n = numbers.length();
         
-        for(int len=1; len<=numbers.length(); len++) {
-            make(numbers.toCharArray(), len, new StringBuilder());
+        //모든 길이로 만들 수 있는 숫자 생성
+        for(int len=1; len<=n; len++) {
+            makeSub(numbers.toCharArray(), len, new boolean[n], new StringBuffer());
         }
         
-        return set.size();
+        //소수 판별
+        return (int) set.stream().filter(s -> isPrime(s)).count();
     }
     
-    void make(char[] nums, int len, StringBuilder number) {
-        //길이충족시 소수 확인
-        if(number.length() == len) {
-            int num = Integer.parseInt(number.toString());
-            if(isPrime(num)) set.add(num);
+    public static void makeSub(char[] chars, int len, boolean[] visited, StringBuffer sb) {
+        //중복을 필터링하기 위해 세트에 추가
+        if(sb.length() == len) {
+            set.add(Integer.parseInt(sb.toString()));
             return;
         }
         
-        for(int i=0; i<nums.length; i++) {
+        //조합하기 (중복 비허용, 순서 의미 있음)
+        for(int i=0; i<n; i++) {
             if(visited[i]) continue;
             
-            visited[i] = true; number.append(nums[i]);
-            make(nums, len, number);
-            visited[i] = false; number.deleteCharAt(number.length()-1);
+            sb.append(chars[i]); visited[i] = true;
+            makeSub(chars, len, visited, sb);
+            sb.deleteCharAt(sb.length()-1); visited[i] = false;
         }
     }
     
-    boolean isPrime(int n) {
-        if(n == 0 || n == 1) return false;
+    public static boolean isPrime(int num) {
+        if(num == 0 || num == 1) return false;
         
-        for(int i=2; i<n; i++) {
-            if(n % i == 0) return false;
+        for(int i=2; i<=Math.sqrt(num); i++) {
+            if(num % i == 0) return false;
         }
         return true;
     }
