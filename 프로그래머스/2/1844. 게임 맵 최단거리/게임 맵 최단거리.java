@@ -1,56 +1,55 @@
-import java.util.*;
-
-/*
-목표에 도착할 수 있는 '최소 거리'
-- 상하좌우 1칸 이동 가능
-- '0': 벽, '1': 이동 가능
-- 시작점 (1,1), 도착점 (n, m)
-*/
+import java.util.Deque;
+import java.util.ArrayDeque;
+//(0,0) -> (n-1, n-1)에 도착하는 최단 거리 (불가능하면 -1)
 class Solution {
-    int maxRow, maxCol;
+    int n = 0, m = 0;
     boolean[][] visited;
     
-    int[] dRow = {0, 1, 0, -1};
-    int[] dCol = {1, 0, -1, 0};
-    
-    int[] end; //도착점
+    int[] dRow = new int[] {0, 1, 0, -1};
+    int[] dCol = new int[] {1, 0, -1, 0};
     
     public int solution(int[][] maps) {
-        maxRow = maps.length; maxCol = maps[0].length;
-        visited = new boolean[maxRow][maxCol];
-        end = new int[] {maxRow-1, maxCol-1};
+        n = maps.length; m = maps[0].length;
+        visited = new boolean[n][m];
         
         return bfs(maps);
     }
     
-    int bfs(int[][] maps) {
-        Queue<int[]> q = new ArrayDeque<>();
-        q.offer(new int[] {0, 0, 1}); //좌표, 횟수
-        visited[0][0] = true;
+    public int bfs(int[][] maps) {
+        Deque<Node> q = new ArrayDeque<>();
+        q.offer(new Node(0, 0, 1));
         
         while(!q.isEmpty()) {
-            int[] cur = q.poll();
-            int row = cur[0];
-            int col = cur[1];
-            int moves = cur[2];
-
-            if(row == end[0] && col == end[1]) return moves;
+            Node curr = q.poll();
+            
+            if(curr.row == n-1 && curr.col == m-1) return curr.moves;
             
             for(int i=0; i<4; i++) {
-                int nxtR = row + dRow[i];    
-                int nxtC = col + dCol[i];
-
+                int nxtR = curr.row + dRow[i];
+                int nxtC = curr.col + dCol[i];
+                
                 if(isValid(maps, nxtR, nxtC)) {
-                    q.offer(new int[]{nxtR, nxtC, moves+1});
                     visited[nxtR][nxtC] = true;
+                    q.offer(new Node(nxtR, nxtC, curr.moves+1));
                 }
-            }            
+            }
         }
-
         return -1;
     }
     
-    boolean isValid(int[][] maps, int r, int c) {
-        return r > -1 && r < maxRow && c > -1 && c < maxCol && !visited[r][c] && maps[r][c] != 0;
+    public boolean isValid(int[][] maps, int r, int c) {
+        return r>=0 && r<n && c>=0 && c<m && !visited[r][c] && maps[r][c] == 1;
+    }
+    
+    private class Node {
+        private int row;
+        private int col;
+        private int moves;
+        
+        public Node(int row, int col, int moves) {
+            this.row = row;
+            this.col = col;
+            this.moves = moves;
+        }
     }
 }
