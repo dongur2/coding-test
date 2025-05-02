@@ -1,54 +1,48 @@
-import java.util.*;
-
-//퀸 n개가 조건에 만족할 수 있는 배치 수
-// <퀸이 서로 공격할 수 없는 배치>
+//퀸이 서로 공격할 수 없는 배치 수
 class Solution {
-    //가로,세로,대각선
-    int[] dRow = {0, 0, -1, -1, -1};
-    int[] dCol = {1, -1, -1, 0, 1};
-    
-    int answer = 0;
+    static int answer = 0;
+    static int[][] board;
     
     public int solution(int n) {
-        int[][] table = new int[n][n];
-        
-        //1행당 퀸1 - 윗행에 있는 퀸들의 공격 범위에 있는지 확인 후 배치
-        placeQueen(table, n, 0);
-        return answer;
+        board = new int[n][n]; //체스핀
+        dfs(n, 0);
+        return answer;    
     }
- 
-    void placeQueen(int[][] table, int n, int r) {
-        //퀸 모두 배치했으면 카운트 후 종료
-        if(r >= n) {
+    
+    public static void dfs(int n, int row) {
+        //모든 퀸을 배치했으면 카운트 후 복귀
+        if(row == n) {
             answer++;
             return;
         }
         
+        //현재 행의 모든 열을 탐색
         for(int c=0; c<n; c++) {
-            //공격범위 포함 확인
-            if(isSafeArea(table, n, r, c)) {
-                table[r][c] = 1; //배치
-                placeQueen(table, n, r+1);
-                table[r][c] = 0; //회수
+            //상(하), 대각선 끝까지 퀸이 있는지 확인 - 행마다 하나씩 놓으니까 좌우는 어차피 없고, 아래는 아직 안갔으니 없음
+            if(isValid(n, row, c)) {
+                board[row][c] = 1;
+                dfs(n, row+1);
+                board[row][c] = 0; //복구
             }
         }
     }
     
-    boolean isSafeArea(int[][] table, int n, int r, int c) {
-        for(int i=0; i<5; i++) {
-            int nxtR = r + dRow[i];
-            int nxtC = c + dCol[i];
+    public static boolean isValid(int n, int r, int c) {
+        for(int row=0; row<=r; row++) {
+            //윗줄
+            if(board[row][c] == 1) return false;
+        } 
+        
+        //오른쪽 위 대각선
+        for(int row = r, col = c; row >= 0 && col < n; row--, col++) {
+            if(board[row][col] == 1) return false;
+        }
 
-            while(isValid(n, nxtR, nxtC)) {
-                if(table[nxtR][nxtC] == 1) return false; //공격범위에 퀸이 있으면 중지
-                nxtR += dRow[i];
-                nxtC += dCol[i];
-            }
+        //왼쪽 위 대각선
+        for(int row = r, col = c; row >= 0 && col >= 0; row--, col--) {
+            if(board[row][col] == 1) return false;            
         }
+        
         return true;
-    }
-    
-    boolean isValid(int n, int row, int col) {
-        return row > -1 && row < n && col > -1 && col < n;
     }
 }
