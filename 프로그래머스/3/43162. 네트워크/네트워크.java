@@ -1,52 +1,48 @@
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
+//네트워크 개수
 class Solution {
-    /*
-    Q. 네트워크의 개수 리턴
-    */
-    
-    int cnt = 0;
-    Map<Integer, List<Integer>> network;
-    boolean[] visited;
-    
     public int solution(int n, int[][] computers) {
-        network = new HashMap<>();
-        visited = new boolean[n];
+        //연결된 그래프 개수 - dfs 활용
+        int answer = 0;
+
+        //{노드:[인접노드]} 맵 만들기
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        makeGraph(map, n, computers);
         
-        makeNetwork(n, computers);
-        
+        //dfs로 연결된 영역 탐색하면서 네트워크 개수 세기
+        boolean[] visited = new boolean[n];
         for(int i=0; i<n; i++) {
             if(visited[i]) continue;
-            
-            findNetworks(i);
-            cnt++;
+            dfs(map, visited, i);
+            answer++;
         }
         
-        return cnt;
+        
+        return answer;
     }
     
-    void makeNetwork(int n, int[][] computers) {
+    public void makeGraph(Map<Integer, List<Integer>> map, int n, int[][] computers) {
         for(int i=0; i<n; i++) {
+            int[] arr = computers[i];
+            
             for(int j=0; j<n; j++) {
-                if(i==j) continue;
-                if(computers[i][j] == 1) {
-                    List<Integer> list = network.getOrDefault(i, new ArrayList<>());
-                    list.add(j);
-                    network.put(i, new ArrayList<>(list));
-                };
+                if(arr[j] == 1) map.computeIfAbsent(i, k->new ArrayList<>()).add(j);
             }
         }
     }
     
-    void findNetworks(int computer) {
-        visited[computer] = true;
+    public void dfs(Map<Integer, List<Integer>> map, boolean[] visited, int node) {
+        visited[node] = true;
         
-        if(network.get(computer) != null) {
-            for(int nxt : network.get(computer)) {
-                if(visited[nxt]) continue;
-                findNetworks(nxt);
-            }
+        if(map.get(node).isEmpty()) return;
+        //인접 노드 이동
+        for(int n:map.get(node)) {
+            if(visited[n]) continue;
+            dfs(map, visited, n);
         }
     }
-    
 }
