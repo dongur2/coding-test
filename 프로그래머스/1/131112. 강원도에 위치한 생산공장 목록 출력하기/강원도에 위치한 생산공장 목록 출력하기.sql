@@ -1,8 +1,7 @@
--- 공장 ID, 공장 이름, 주소 조회
+-- 공장 ID, 공장 이름, 주소
 -- 강원도 위치
 -- 공장 ID 오름차순
-
 SELECT FACTORY_ID, FACTORY_NAME, ADDRESS
 FROM FOOD_FACTORY
-WHERE ADDRESS LIKE '강원도%'
+WHERE SUBSTRING(ADDRESS, 1, 3) = '강원도'
 ORDER BY FACTORY_ID;
