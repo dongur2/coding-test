@@ -1,10 +1,9 @@
--- 생일이 3월인 여성 회원의 ID, 이름, 성별, 생년월일을 조회
--- 전화번호가 NULL인 경우는 출력대상에서 제외
--- 회원ID를 기준으로 오름차순 정렬
+-- 회원의 ID, 이름, 성별, 생년월일
+-- 여성, 생일 3월
+-- 전화번호 null인 경우 제외
+-- 회원 ID 기준 오름차순
 
-SELECT MEMBER_ID, MEMBER_NAME, GENDER, DATE_FORMAT(DATE_OF_BIRTH, '%Y-%m-%d') AS DATE_OF_BIRTH
+SELECT MEMBER_ID, MEMBER_NAME, GENDER, DATE_FORMAT(DATE_OF_BIRTH, '%Y-%m-%d') DATE_OF_BIRTH
 FROM MEMBER_PROFILE
-WHERE GENDER = 'W' 
-AND DATE_FORMAT(DATE_OF_BIRTH, '%m') LIKE '03'
-AND TLNO IS NOT NULL
+WHERE GENDER = 'W' AND TLNO IS NOT NULL AND SUBSTRING(DATE_OF_BIRTH, 6, 2) = '03'
 ORDER BY MEMBER_ID;
