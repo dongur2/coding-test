@@ -1,0 +1,15 @@
+--  2022년도 평가 점수가 가장 높은 사원들의 점수, 사번, 성명, 직책, 이메일
+
+SELECT hg.HIGHEST SCORE, emp.EMP_NO, EMP_NAME, POSITION, EMAIL
+FROM HR_EMPLOYEES emp 
+JOIN (
+-- 2022 합산 점수 가장 높은 직원
+    SELECT e.EMP_NO, SUM(SCORE) HIGHEST
+    FROM HR_EMPLOYEES e JOIN HR_GRADE g 
+    ON e.EMP_NO = g.EMP_NO
+    WHERE g.YEAR = 2022
+    GROUP BY e.EMP_NO
+    ORDER BY HIGHEST DESC
+    LIMIT 1
+) hg
+ON emp.EMP_NO = hg.EMP_NO
