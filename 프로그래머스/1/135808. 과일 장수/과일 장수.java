@@ -1,18 +1,16 @@
-import java.util.*;
+import java.util.Arrays;
 
+//m개씩 포장 - 가격:가장 낮은 점수 * m -> 가능한 최대 이익
 class Solution {
-    /*
-    Q. 얻을 수 있는 최대 이익 리턴
-    - 1상자에 m개씩 포장
-    - 1상자의 가격은 m * 포장된 사과 중 가장 낮은 점수
-    - 이익이 발생하지 않으면 0 리턴
-    */
     public int solution(int k, int m, int[] score) {
+        //최대 점수 k
+        //점수 배열 .. -> 오름차순 정렬하고 m개씩 자르기 
+        Arrays.sort(score);
+        
         int answer = 0;
         
-        Arrays.sort(score);
         for(int i=score.length-m; i>=0; i-=m) {
-            answer += score[i] * m;
+            answer += m * score[i];
         }
         
         return answer;
