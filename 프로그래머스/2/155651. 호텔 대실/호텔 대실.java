@@ -1,41 +1,57 @@
-import java.util.*;
-/*
-Q. 필요한 최소 객실 수
-- 퇴실 -> 10분 -> 사용
-*/
+import java.util.Queue;
+import java.util.PriorityQueue;
+
+//필요한 최소 객실 수 
 class Solution {
     public int solution(String[][] book_time) {
-        int answer = 0;
+        //퇴실 -> 10분 청소 -> 입실
+        //hh:mm -> 분으로 통일
         
-        //예약시간 빠른 순서대로 정렬
-        Arrays.sort(book_time, (book1, book2) -> book1[0].compareTo(book2[0]));
-        
-        //퇴실시간 빠른 순서대로 정렬
-        PriorityQueue<int[]> table = new PriorityQueue<>((book1, book2) -> book1[1] - book2[1]);
-        
-        //문자열 => 숫자화
-        for(String[] book : book_time) {
-            int start = convertToInt(book[0]);
-            int end = convertToInt(book[1]) + 10;
+        //대기열(입실 빠른 순)
+        Queue<int[]> q = new PriorityQueue<>((a,b) -> {
+            return a[0] - b[0];
+        });
             
-            //배정된 방이 없을 경우
-            if(table.isEmpty()) answer++;
-            
-            //배정된 방의 종료 시간이 현재 새로 등록된 방의 예약 시간보다 뒤라면 확인 필요
-            else {
-                if(table.peek()[1] > start) answer++;
-                else table.poll();
+        for(String[] book:book_time) {
+            int[] arr = new int[2]; //분으로 변환한 [입실, 퇴실]
+            for(int i=0; i<2; i++) {
+                String[] t = book[i].split(":"); //시, 분
+                int minutes = (60 * Integer.parseInt(t[0])) + Integer.parseInt(t[1]); //분으로 변환
+                
+                //퇴실일 경우 청소까지 포함해 10분 추가
+                if(i==1) minutes += 10;
+                arr[i] = minutes;
             }
+            q.offer(arr);
+        }
+        
+        int answer = 0;
+
+        //사용중인 방 - 퇴실 시간 빠른 순서대로 정렬
+        Queue<Integer> rooms = new PriorityQueue<>((a,b) -> {
+            return a - b;
+        });
+        
+        while(!q.isEmpty()) {
+            int[] curr = q.poll();
+            int start = curr[0]; //현재 방의 입실 시간 
+            int end = curr[1]; //현재 방의 퇴실 + 청소 시간
             
-            //방 배정
-            table.offer(new int[]{start, end});
+            //사용중인 방이 없으면 추가 
+            if(rooms.isEmpty()) answer++;
+            
+            //사용중인 방이 있으면 
+            else {
+                //퇴실 시간이 가장 빠른 방의 퇴실 시간과 지금 들고있는 방의 입실 시간 비교
+                //퇴실 시간보다 입실 시간이 빠르면 새로 추가
+                if(start < rooms.peek()) answer++;
+                    
+                //퇴실 시간과 같거나 퇴실 시간보다 느리게 입실하면 
+                else rooms.poll(); //기존 방은 빼고
+            }
+            rooms.offer(end); //지금 방을 추가
         }
         
         return answer;
-    }
-    
-    private int convertToInt(String time) {
-        String[] arr = time.split(":");
-        return Integer.parseInt(arr[0]) * 60 + Integer.parseInt(arr[1]);
     }
 }
