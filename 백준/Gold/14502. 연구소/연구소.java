@@ -1,16 +1,18 @@
 import java.util.*;
 import java.io.*;
 
-//안전 영역의 최대값
+
+//안전 영역의 최대 크기 
 public class Main {
+  //바이러스는 상하좌우로 전파
+  static int[] dRow = new int[] {0, 1, 0, -1};
+  static int[] dCol = new int[] {1, 0, -1, 0};
+  
+  //연구소 n*m (0: 빈칸, 1: 벽, 2:바이러스)  
+  static int n=0, m=0;
   static int[][] map;
   
-  static int n = -1, m = -1;
   static int answer = Integer.MIN_VALUE;
-  
-  //바이러스 상하좌우 이동
-  static int[] dRow = {0, 1, 0, -1};
-  static int[] dCol = {1, 0, -1, 0};
   
   public static void main(String[] args) throws IOException{
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -19,9 +21,8 @@ public class Main {
     n = Integer.parseInt(st.nextToken());
     m = Integer.parseInt(st.nextToken());
     
-    //맵 생성 0:빈칸, 1:벽, 2:바이러스
+    //맵 생성
     map = new int[n][m];
-    
     for(int r=0; r<n; r++) {
       st = new StringTokenizer(br.readLine());
       for(int c=0; c<m; c++) {
@@ -29,73 +30,78 @@ public class Main {
       }
     }
     
-    //벽 3개를 세우는 모든 경우의 수에서 안전 영역 확인
-    //[조합] 하나씩 밀어가면서 만들어 보기
-    makeWalls(0);
-  
+    //벽 3개를 세운 모든 경우의 수에서의 안전 영역 구하기
+    makeWallCombinations(0, 0, 1);
+    
     System.out.println(answer);
   }
   
-  public static void makeWalls(int walls) {
-    //벽 3개 다 세웠으면 바이러스 전파 후 안전 영역 탐색
-    if(walls == 3) {
-      //맵 복사
-      int[][] copied = new int[n][m];
-      boolean[][] visited = new boolean[n][m];
-      for(int i=0; i<n; i++) {
-        copied[i] = Arrays.copyOf(map[i], m);
-      }
+  public static void makeWallCombinations(int row, int col, int walls) {
+    //벽 3개 다 세웠으면 전파 후 안전영역 체크
+    if(walls > 3) {
+      //안전영역 카운트 
+      int safeArea = countSafeArea();
+      //더 큰 값으로 업데이트
+      answer = Math.max(answer, safeArea);
       
-      //전파
-      for(int r=0; r<n; r++) {
-        for(int c=0; c<m; c++) {
-          if(copied[r][c] == 2 && !visited[r][c]) {
-            visited[r][c] = true;
-            pollute(copied, visited, r, c); 
-          } 
-        }
-      }
-      
-      //안전구역 카운트
-      int safe = 0;
-      for(int r=0; r<n; r++) {
-        for(int c=0; c<m; c++) {
-          if(copied[r][c] == 0) safe++;
-        }
-      }
-      
-      //최대값 바인딩
-      answer = Math.max(answer, safe);
-      return;
+      return; //복귀
     }
     
+    //차례로 탐색하면서 빈 칸에 벽 세우기
     for(int r=0; r<n; r++) {
       for(int c=0; c<m; c++) {
         if(map[r][c] == 0) {
-          map[r][c] = 1; //벽 생성
-          makeWalls(walls+1);
-          map[r][c] = 0; //복구
+          map[r][c] = 1; //벽 세우고 
+          makeWallCombinations(r, c, walls+1); //다음 벽 세우러 재탐색 
+          map[r][c] = 0; //벽 없애기 (복구) 
         }
-      }
-    }  
-  }
-  
-  public static void pollute(int[][] copiedMap, boolean[][] visited, int row, int col) {
-    //상하좌우
-    for(int i=0; i<4; i++) {
-      int nxtR = row + dRow[i];
-      int nxtC = col + dCol[i];
-      
-      if(isValid(copiedMap, visited, nxtR, nxtC)) {
-        visited[nxtR][nxtC] = true;
-        //빈 칸일 경우 감염
-        if(copiedMap[nxtR][nxtC] == 0) copiedMap[nxtR][nxtC] = 2;
-        pollute(copiedMap, visited, nxtR, nxtC);
       }
     }
   }
   
-  public static boolean isValid(int[][] copiedMap, boolean[][] visited, int row, int col) {
-    return row>=0 && row<n && col>=0 && col<m && !visited[row][col] && copiedMap[row][col] != 1;
+  public static int countSafeArea() {
+    //기존 맵 복사 
+    int[][] temp = new int[n][m];
+    for(int i=0; i<n; i++) {
+      temp[i] = Arrays.copyOf(map[i], m);
+    }
+    
+    //바이러스 전파 
+    boolean[][] visited = new boolean[n][m];
+    for(int r=0; r<n; r++) {
+      for(int c=0; c<m; c++) {
+        if(temp[r][c] == 2 && !visited[r][c]) {
+          pollute(temp, visited, r, c);     
+        }
+      }
+    }
+    
+    //안전영역 카운트 
+    int cnt = 0;
+    for(int[] line:temp) {
+      for(int l:line) {
+        if(l == 0) cnt++;
+      }
+    }
+    
+    return cnt;
+  }
+  
+  public static void pollute(int[][] temp, boolean[][] visited, int row, int col) {
+    visited[row][col] = true;
+    
+    for(int i=0; i<4; i++) {
+      int nr = row + dRow[i];
+      int nc = col + dCol[i];
+      
+      if(isValid(temp, visited, nr, nc)) {
+        temp[nr][nc] = 2;
+        pollute(temp, visited, nr, nc);
+      }
+    }
+  }
+  
+  public static boolean isValid(int[][] temp, boolean[][] visited, int r, int c) {
+    return r>=0 && r<n && c>=0 && c<m && temp[r][c] != 1 && !visited[r][c];
   }
 }
