@@ -37,7 +37,10 @@ class Solution {
             lm.compute(kind, (k,v) -> v == null ? 1 : v+1);
             
             //종류 개수 같으면 카운트 
-            if(lm.size() == rm.size()) answer++;           
+            if(lm.size() == rm.size()) answer++; 
+            
+            //왼쪽보다 오른쪽 종류 수가 작아지면 반복 중지 (어차피 이제 같아질 일 없음)
+            if(lm.size() > rm.size()) break;
         }
         
         return answer;
