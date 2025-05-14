@@ -1,67 +1,56 @@
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Queue;
+import java.util.ArrayDeque;
 
+//n개 노드 그래프 - 1번~n번: 1번에서 가장 멀리 떨어진 노드의 개수
+//최단경로로 이동했을 떄 간선 개수가 가장 많은 노드
 class Solution {
-    /*
-    Q. 1번 노드에서 가장 멀리 떨어진 "노드의 개수"를 리턴
-    - 노드 N개(1번~N번)
-    - 1번에서 N번까지 '최단경로'로 이동했을 때 간선의 개수가 기준
-    */
-    Map<Integer, List<Integer>> graph;
-    boolean[] visited;
-    int dist = 0;
-    Map<Integer, Integer> distMap;
+    static Map<Integer, Integer> distMap = new HashMap<>(); //거리:노드개수
+    static int dist = Integer.MIN_VALUE; //가장 먼 노드 거리
     
     public int solution(int n, int[][] edge) {
-        graph = new HashMap<>();
-        visited = new boolean[n+1];
-        distMap = new HashMap<>();
-        
-        //{노드 : [인접노드목록]}
-        makeGraph(edge);
-        
-        //dfs: 1번 노드에서 시작
-        dfs(1);
-        
-        //최대 간선을 가지는 노드 개수를 리턴
-        return (int)distMap.values().stream().filter(d -> d == dist).count();
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        makeGraph(edge, graph);     
+        bfs(n, graph);
+        return distMap.get(dist);
     }
     
-    void makeGraph(int[][] edge) {
-        for(int[] e : edge) {
-            List<Integer> front = graph.getOrDefault(e[0], new ArrayList<>());
-            front.add(e[1]);
-            graph.put(e[0], new ArrayList<>(front));
-            
-            List<Integer> back = graph.getOrDefault(e[1], new ArrayList<>());
-            back.add(e[0]);
-            graph.put(e[1], new ArrayList<>(back));
+    //노드:{자식노드}
+    public static void makeGraph(int[][] edge, Map<Integer, List<Integer>> g) {
+        for(int[] e:edge) {
+            g.computeIfAbsent(e[0], k->new ArrayList<>()).add(e[1]);
+            g.computeIfAbsent(e[1], k->new ArrayList<>()).add(e[0]);
         }
     }
     
-    void dfs(int node) {
+    //최단거리 탐색
+    public static void bfs(int n, Map<Integer, List<Integer>> graph) {
+        boolean[] visited = new boolean[n+1]; //1번~n번
         Queue<int[]> q = new ArrayDeque<>();
+        q.offer(new int[]{1, 0}); //[노드번호, 현재까지의 거리]
+        visited[1] = true;
         
-        //start
-        q.offer(new int[]{node, 0});
-        visited[node] = true;
-        distMap.put(node, 0);
-        
-        //queue
         while(!q.isEmpty()) {
-            int[] cur = q.poll();
-            int curNode = cur[0];
-            int curCnt = cur[1];
+            int[] curr = q.poll();
+            int curNode = curr[0];
+            int curDist = curr[1];
             
-            dist = Math.max(dist, curCnt);
-            distMap.put(curNode, curCnt);
+            dist = Math.max(dist, curDist); //계속 최대거리 업데이트
+            distMap.compute(curDist, (k, v) -> (v==null) ? 1:v+1); //거리당 개수 업데이트
             
-            for(int nxtNode : graph.get(curNode)) {
-                if(!visited[nxtNode]) {
-                    q.offer(new int[]{nxtNode, curCnt+1});
-                    visited[nxtNode] = true;
-                }
+            //자식노드가 없으면 중지
+            if(graph.get(curNode) == null) continue;
+            
+            //자식노드가 있으면 이동
+            for(int nextNode:graph.get(curNode)) {
+                if(visited[nextNode]) continue; //방문했던 노드는 무시
+
+                q.offer(new int[]{nextNode, curDist+1});
+                visited[nextNode] = true;
             }
         }
     }
-    
 }
