@@ -1,67 +1,68 @@
 import java.util.*;
-import java.util.stream.*;
-//n개 노드(1번 ~ n번)
-//[출발 노드, 도착 노드, 가중치]
-//k번 노드에서 신호 전송 -> 모든 n개 노드에 신호가 도착하는 데 필요한 최소 시간 리턴 (불가하면 -1)
+
+/*
+Q. k번 노드에서 신호를 보냈을 때, 모든 노드에 신호가 도착하기까지 필요한 '최소 시간'
+- 모든 노드에 도달할 수 없으면 -1
+- 1번 ~ n번 노드   
+*/
 class Solution {
     public int networkDelayTime(int[][] times, int n, int k) {
-        Map<Integer, List<Edge>> graph = new HashMap<>();
-
-        for(int[] time:times) {
-            graph.computeIfAbsent(time[0], key->new ArrayList<>()).add(new Edge(time[1], time[2]));
-        }
+        //times[i] = [출발, 도착, 소요 시간]
         
-        int[] dist = new int[n];
-        Arrays.fill(dist, Integer.MAX_VALUE);
+        //연결된 인접노드 그래프 
+        Map<Integer, List<Edge>> map = new HashMap<>();
+        for(int[] t:times) {
+            int from = t[0], to = t[1], time = t[2];
+            map.computeIfAbsent(from, key->new ArrayList<>()).add(new Edge(to, time));
+        }
 
-        check(n, k, graph, dist);
+        //각 노드에 대한 최소 시간 배열 
+        int[] res = new int[n+1];
+        Arrays.fill(res, Integer.MAX_VALUE);
 
-        int answer = Arrays.stream(dist).max().getAsInt();
-        return answer == Integer.MAX_VALUE ? -1 : answer;
-    }
+        Queue<Edge> pq = new PriorityQueue<>();
 
-    public static void check(int n, int k, Map<Integer, List<Edge>> graph, int[] dist) {
-        Queue<Node> q = new PriorityQueue<>();
-        q.offer(new Node(k, 0));
-        dist[k-1] = 0;
+        //k번 노드에서 신호 발신 
+        pq.offer(new Edge(k, 0));
+        res[k] = 0;
 
-        while(!q.isEmpty()) {
-            Node curr = q.poll();
-            int curNode = curr.num;
-            int curDist = curr.dist;
+        while(!pq.isEmpty()) {
+            Edge curr = pq.poll();
+            int curLoc = curr.to;
+            int curTime = curr.time;
 
-            if(graph.get(curNode) != null) {
-                for(Edge edge:graph.get(curNode)) {
-                    int nxtNode = edge.to;
-                    int nxtDist = curDist + edge.dist;
+            if(map.get(curLoc) == null) continue;
+            for(Edge nxt:map.get(curLoc)) {
+                int nxtLoc = nxt.to;
+                int nxtTime = curTime + nxt.time;
 
-                    if(dist[nxtNode-1] > nxtDist) {
-                        dist[nxtNode-1] = nxtDist;
-                        q.offer(new Node(nxtNode, nxtDist));
-                    }
+                if(res[nxtLoc] > nxtTime) {
+                    res[nxtLoc] = nxtTime;
+                    pq.offer(new Edge(nxtLoc, nxtTime));
                 }
             }
         }
+
+        //도달못한 노드가 있으면 -1 
+        for(int i=1; i<=n; i++) {
+            if(res[i] == Integer.MAX_VALUE) return -1;
+        }
+
+        //모든 노드에 도달했으면 최소 시간 
+        Arrays.sort(res);
+        return res[n-1];
     }
 
-    private static class Node implements Comparable<Node>{
-        int num, dist;
+    private class Edge implements Comparable<Edge> {
+        int to, time;
 
-        public Node(int n, int d) {
-            this.num=n; this.dist=d;
+        public Edge(int to, int time) {
+            this.to=to; this.time=time;
         }
 
         @Override
-        public int compareTo(Node o) {
-            return this.dist - o.dist;
-        }
-    }
-
-    private static class Edge {
-        int to, dist;
-
-        public Edge(int t, int d) {
-            this.to=t; this.dist=d;
+        public int compareTo(Edge o) {
+            return this.time - o.time;
         }
     }
 }
