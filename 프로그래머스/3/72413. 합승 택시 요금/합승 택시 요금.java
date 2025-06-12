@@ -1,99 +1,74 @@
 import java.util.*;
 
-/*
-Q. s에서 출발해서 각 도착 지점까지 택시를 타고 갔을 때, 최저 예상 택시요금을 반환
-- s에서 출발하는 경우의 최소 비용: 하나씩 뒤로 밀어가면서 합승 종료 지점 찾기 - 0인 경우 합승 하지 않는 경우가 됨
-- a까지의 최소 비용: 합승 종료 지점 -> a까지의 비용
-- b까지의 최소 비용: 합승 종료 지점 -> b까지의 비용
-
-fares[i] = [출발지점, 타겟지점, 비용]
-*/
+//최저 택시요금
 class Solution {
-    Map<Integer, List<Edge>> graph;
+    static Map<Integer, List<Edge>> map = new HashMap<>();
     
     public int solution(int n, int s, int a, int b, int[][] fares) {
-        makeGraph(fares);
-        return countMinimum(n, s, a, b);
-    }
-    
-    class Edge {
-        public int node; public int cost;
-        public Edge(int node, int cost) {
-            this.node = node; this.cost = cost;
-        }
-    }
-    
-    void makeGraph(int[][] fares) {
-        graph = new HashMap<>();
-        
-        for(int[] fare:fares) {
-            addConnection(fare[0], fare[1], fare[2]);
-            addConnection(fare[1], fare[0], fare[2]);
-        }
-    }
-    
-    void addConnection(int start, int end, int cost) {
-        List<Edge> list = graph.getOrDefault(start, new ArrayList<>());
-        list.add(new Edge(end, cost));
-        graph.put(start, new ArrayList<>(list));
-    }
-    
-    int countMinimum(int n, int s, int a, int b) {
-        int[] costs = countCosts(n, s);
-        int[] costsForA = countCosts(n, a);
-        int[] costsForB = countCosts(n, b);
-        
-        return findMin(costs, costsForA, costsForB);
-    }
-    
-    int[] countCosts(int n, int start) {
-        //setting: costs to INF
-        int[] costs = new int[n+1];
-        Arrays.fill(costs, Integer.MAX_VALUE);
-        
-        //set start
-        Queue<Entry> pq = new PriorityQueue<>();
-        costs[start] = 0; 
-        pq.add(new Entry(start, 0));
-        
-        //loop
-        while(!pq.isEmpty()) {
-            //cur
-            Entry cur = pq.poll();
-            if(costs[cur.to] > cur.cost || graph.get(cur.to) == null) continue;
-            
-            //near
-            for(Edge nxt:graph.get(cur.to)) {
-                int newCost = costs[cur.to] + nxt.cost;
-                if(newCost < costs[nxt.node]) {
-                    costs[nxt.node] = newCost;
-                    pq.add(new Entry(nxt.node, newCost));
-                }
-            }
-        }
-        return costs;
-    }
-    
-    class Entry implements Comparable<Entry>{
-        public int to; public int cost;
-        public Entry(int to, int cost) {
-            this.to = to; this.cost = cost;
+        //무방향 그래프
+        for(int[] f:fares) {
+            map.computeIfAbsent(f[0], k->new ArrayList<>()).add(new Edge(f[1], f[2]));
+            map.computeIfAbsent(f[1], k->new ArrayList<>()).add(new Edge(f[0], f[2]));
         }
         
-        @Override
-        public int compareTo(Entry o) {
-            return this.cost - o.cost;
-        }
-    }
-    
-    int findMin(int[] costs, int[] costsForA, int[] costsForB) {
-        int answer = Integer.MAX_VALUE;
+        //출발지에서 모든 노드에 대한 최소 요금 
+        int[] fromS = getMinCostFrom(s, n);
         
-        for(int i=1; i<costs.length; i++) {
-            int temp = costs[i] + costsForA[i] + costsForB[i];
-            answer = Math.min(answer, temp);
+        //모든 노드에서 a로 가는 최소 요금
+        int[] toA = getMinCostFrom(a, n);
+        //모든 노드에서 b로 가는 최소 요금
+        int[] toB = getMinCostFrom(b, n);
+        
+        //[따로] 출발지 -> 각각 도착지 요금의 합
+        int separated = fromS[a] + fromS[b];
+        
+        int answer = separated; //정답 (최저요금)
+        
+        //[합승] 출발지 -> 합승종료 -> 각각 도착지 요금의 합
+        //모든 지점에서 각각 합승종료하는 경우를 확인
+        for(int i=1; i<=n; i++) {
+            int carpool = fromS[i] + toA[i] + toB[i]; //카풀했을 때 최저요금
+            answer = Math.min(answer, carpool); //따로 가는 요금 > 합승 요금일 경우에만 합승, 더 낮은 요금 루트로 합승
         }
         
         return answer;
+    }
+    
+    public static int[] getMinCostFrom(int start, int n) {
+        int[] costs = new int[n+1];
+        Arrays.fill(costs, Integer.MAX_VALUE);
+        
+        Queue<Edge> q = new PriorityQueue<>();
+        q.offer(new Edge(start, 0));
+        costs[start] = 0;
+        
+        while(!q.isEmpty()) {
+            Edge curr = q.poll();
+            
+            if(map.get(curr.to) == null) continue;
+            for(Edge nxt:map.get(curr.to)) {
+                int newCost = curr.cost + nxt.cost;
+                
+                if(costs[nxt.to] > newCost) {
+                    costs[nxt.to] = newCost;
+                    q.offer(new Edge(nxt.to, newCost));
+                }
+            }
+        }
+        
+        return costs;
+    }
+    
+    private static class Edge implements Comparable<Edge> {
+        int to, cost;
+        
+        public Edge(int to, int cost) {
+            this.to=to; this.cost=cost;
+        }
+        
+        @Override
+        public int compareTo(Edge o) {
+            return this.cost - o.cost;
+        }
     }
 }
