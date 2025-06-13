@@ -1,45 +1,69 @@
-import java.util.*;
+import java.util.Queue;
+import java.util.PriorityQueue;
 
+//모든 요청 작업 평균 반환 시간의 정수 리턴 
 class Solution {
-    /*
-    Q. 작업 요청 ~ 종료 시간의 평균을 최소로 줄였을 때의 시간을 반환
-    - 각 작업의 (대기 시간 + 소요 시간) 합 / 처리 작업 개수
-    - jobs[i] = [작업 요청 시점, 작업 소요 시간]
-    */
     public int solution(int[][] jobs) {
-        //작업을 요청이 빠른 순서대로 정렬
-        Arrays.sort(jobs, (o1, o2) -> o1[0] - o2[0]);
+        int cnt = jobs.length; //모든 작업 개수
         
-        return getMinAverage(jobs);
-    }
-    
-    int getMinAverage(int[][] jobs) {
-        Queue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]); //소요시간 짧은 작업이 우선
+        //작업을 요청시간 빠른 순서대로 정렬
+        Queue<Task> listQ = new PriorityQueue<>((a,b) -> {
+            if(a.ask != b.ask) return a.ask - b.ask;
+            return a.need - b.need;
+        });
         
-        int idx = 0; //작업 포인터
-        int endTime = 0; //현재 작업 종료 시점
-        int finished = 0; //완료된 작업 개수
+        //작업 모두 요청시간 큐에 추가 
+        for(int i=0; i<cnt; i++) {
+            listQ.offer(new Task(i, jobs[i][0], jobs[i][1])); //job[i] = {s, l} (s: i번 작업의 요청시점, l: i번 작업의 소요시간)
+        }
         
-        int sum = 0; //대기 시간 + 소요 시간
+        //디스크 컨트롤러 큐 - 실제 작업 수행 대기 큐
+        Queue<Task> pq = new PriorityQueue<>((a,b) -> {
+            if(a.need != b.need) return a.need - b.need; //짧은 소요시간
+            if(a.ask != b.ask) return a.ask - b.ask; //빠른 요청 시각
+            return a.idx - b.idx; //작은 번호
+        });
         
-        //모든 작업을 완료할 때까지 반복
-        while(finished < jobs.length) {
-            //현재 작업을 진행하는 동안 들어온 요청을 힙에 추가
-            while(idx < jobs.length && endTime >= jobs[idx][0]) {
-                pq.add(jobs[idx++]);
-            } 
+        
+        //시간 업데이트하면서 소요시간 더하기
+        int sum = 0;
+        
+        int now = 0;
+        
+        //모든 작업을 실제 대기 큐에 추가
+        while(!listQ.isEmpty()) {
+            //[대기 큐가 비어있고 + 남은 작업이 있을 경우] 가장 요청 시각이 빠른 작업 추가
+            if(pq.isEmpty() && !listQ.isEmpty()) {
+                Task task = listQ.poll();
+                pq.offer(task);
+            }
             
-            //남은 작업이 존재하지만 && 힙이 비었을 때(하드디스크가 작업을 수행하고 있지 않을 때): 다음 작업이 진행될 수 있도록 시점을 다음 작업 요청 시점으로 설정
-            if(pq.isEmpty()) endTime = jobs[idx][0];
-            
-            //이미 요청이 들어온 작업이 있을 경우
-            else { //소요시간이 짧은 작업부터 처리
-                int[] cur = pq.poll();
-                sum += endTime - cur[0] + cur[1]; //분자
-                endTime += cur[1]; //작업종료시점 업데이트
-                finished++; //완료작업 카운트
+            //[대기 큐가 비어있지 않을 경우]
+            while(!pq.isEmpty()) {
+                Task curr = pq.poll(); //가장 우선순위 높은 작업 
+                if(now < curr.ask) now = curr.ask; //이전 작업 종료 시점보다 현재 작업 요청 시각이 늦을 경우(대기가 필요할 경우)작업 요청 시각으로 리셋팅
+                int end = now + curr.need; //현재 작업 종료 시각
+                
+                //총 소요시간 더하기
+                sum += end - curr.ask;
+                
+                //현재 시각을 종료 시점으로 리셋팅
+                now = end;
+                
+                //현재 작업 시작~종료시간까지 요청이 들어와 대기하고있는 작업을 추가
+                while(!listQ.isEmpty() && listQ.peek().ask <= now) pq.offer(listQ.poll());      
             }
         }
-        return (int)((long)sum / finished);
+        
+        //평균 시간의 정수 리턴
+        return (int)((double)sum/cnt);
+    }
+    
+    private class Task {
+        int idx, ask, need;
+        
+        public Task(int idx, int ask, int need) {
+            this.idx=idx; this.ask=ask; this.need=need;
+        }
     }
 }
