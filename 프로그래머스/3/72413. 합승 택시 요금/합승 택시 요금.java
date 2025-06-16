@@ -1,40 +1,39 @@
 import java.util.*;
 
-//최저 택시요금
+//'최저 택시 요금' 리턴 
+//[합승X 요금 > 합승O 요금]일 경우에만 합승
 class Solution {
     static Map<Integer, List<Edge>> map = new HashMap<>();
     
     public int solution(int n, int s, int a, int b, int[][] fares) {
-        //무방향 그래프
+        //무방향 그래프 
         for(int[] f:fares) {
             map.computeIfAbsent(f[0], k->new ArrayList<>()).add(new Edge(f[1], f[2]));
             map.computeIfAbsent(f[1], k->new ArrayList<>()).add(new Edge(f[0], f[2]));
         }
         
-        //출발지에서 모든 노드에 대한 최소 요금 
-        int[] fromS = getMinCostFrom(s, n);
+        //최초 출발지 -> 모든 노드에 대한 최저 요금
+        int[] fromS = getMinCosts(s, n);
         
-        //모든 노드에서 a로 가는 최소 요금
-        int[] toA = getMinCostFrom(a, n);
-        //모든 노드에서 b로 가는 최소 요금
-        int[] toB = getMinCostFrom(b, n);
+        //합승X 요금: 각자 목적지까지 따로 택시 탑승 
+        int separated = fromS[a] + fromS[b]; 
         
-        //[따로] 출발지 -> 각각 도착지 요금의 합
-        int separated = fromS[a] + fromS[b];
+        //최저 합승 요금
+        int[] fromA = getMinCosts(a, n);
+        int[] fromB = getMinCosts(b, n);
+
+        int answer = separated;
         
-        int answer = separated; //정답 (최저요금)
-        
-        //[합승] 출발지 -> 합승종료 -> 각각 도착지 요금의 합
-        //모든 지점에서 각각 합승종료하는 경우를 확인
+        //합승 종료 지점 확인
         for(int i=1; i<=n; i++) {
-            int carpool = fromS[i] + toA[i] + toB[i]; //카풀했을 때 최저요금
-            answer = Math.min(answer, carpool); //따로 가는 요금 > 합승 요금일 경우에만 합승, 더 낮은 요금 루트로 합승
+            int carpool = fromS[i] + fromA[i] + fromB[i];
+            answer = Math.min(answer, carpool);
         }
         
         return answer;
     }
     
-    public static int[] getMinCostFrom(int start, int n) {
+    public static int[] getMinCosts(int start, int n) {
         int[] costs = new int[n+1];
         Arrays.fill(costs, Integer.MAX_VALUE);
         
@@ -45,8 +44,7 @@ class Solution {
         while(!q.isEmpty()) {
             Edge curr = q.poll();
             
-            if(map.get(curr.to) == null) continue;
-            for(Edge nxt:map.get(curr.to)) {
+            for(Edge nxt:map.getOrDefault(curr.to, Collections.emptyList())) {
                 int newCost = curr.cost + nxt.cost;
                 
                 if(costs[nxt.to] > newCost) {
@@ -58,8 +56,8 @@ class Solution {
         
         return costs;
     }
-    
-    private static class Edge implements Comparable<Edge> {
+                
+    public static class Edge implements Comparable<Edge> {
         int to, cost;
         
         public Edge(int to, int cost) {
@@ -69,6 +67,6 @@ class Solution {
         @Override
         public int compareTo(Edge o) {
             return this.cost - o.cost;
-        }
+        } 
     }
 }
