@@ -42,4 +42,16 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | ------- |
 | [0744-network-delay-time](https://github.com/dongur2/coding-test/tree/master/0744-network-delay-time) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
+## Math
+|  |
+| ------- |
+| [0070-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0070-climbing-stairs) |
+## Dynamic Programming
+|  |
+| ------- |
+| [0070-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0070-climbing-stairs) |
+## Memoization
+|  |
+| ------- |
+| [0070-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0070-climbing-stairs) |
 <!---LeetCode Topics End-->
