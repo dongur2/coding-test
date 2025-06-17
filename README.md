@@ -5,6 +5,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 |  |
 | ------- |
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
+| [0322-coin-change](https://github.com/dongur2/coding-test/tree/master/0322-coin-change) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
 ## String
 |  |
@@ -26,6 +27,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## Breadth-First Search
 |  |
 | ------- |
+| [0322-coin-change](https://github.com/dongur2/coding-test/tree/master/0322-coin-change) |
 | [0744-network-delay-time](https://github.com/dongur2/coding-test/tree/master/0744-network-delay-time) |
 ## Graph
 |  |
@@ -52,6 +54,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | ------- |
 | [0062-unique-paths](https://github.com/dongur2/coding-test/tree/master/0062-unique-paths) |
 | [0070-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0070-climbing-stairs) |
+| [0322-coin-change](https://github.com/dongur2/coding-test/tree/master/0322-coin-change) |
 ## Memoization
 |  |
 | ------- |
