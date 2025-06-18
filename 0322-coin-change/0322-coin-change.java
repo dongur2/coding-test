@@ -1,22 +1,27 @@
-//주어진 가격을 만드는 데 필요한 동전 개수 (불가능하면 -1)
+//amount원을 만드는 데 필요한 최소 동전 개수 (불가능하면 -1)
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        //table[i] = 금액 i를 만드는 데 필요한 최소 동전 개수
-        int[] table = new int[amount + 1]; 
-        Arrays.fill(table, Integer.MAX_VALUE); //기본값 INF
-        table[0] = 0; //출발 
+        final int INF = Integer.MAX_VALUE;
 
-        //1원부터 amount까지 계산 
-        for(int i = 1; i <= amount; i++) {
-            //각 동전 시도 
+        /*
+            인덱스 == 가격
+            counts[i] = i원을 만들기 위해 필요한 동전 '최소' 개수 
+         */
+        int[] counts = new int[amount+1];
+        Arrays.fill(counts, INF); //기본값 INF 설정 (주어진 동전으로 i원을 만들 수 없으면 INF 유지)
+        counts[0] = 0; //0원은 0
+
+        //1원부터 amount원까지 1원씩 올려가면서 주어진 동전으로 만들 수 있는지 확인
+        for(int price=1; price<=amount; price++) {
+            //각각 동전마다 시도
             for(int coin:coins) {
-                //i-coin이 음수가 아니고, 그 금액을 만들 수 있으면 시도('동전을 더하기 전 금액'을 만들 수 있었는지 확인)
-                if(i - coin >= 0 && table[i - coin] != Integer.MAX_VALUE) {
-                    //'동전을 더하기 전 금액을 만든 방법 개수 + 1'이 총 방법 개수: 기존 값보다 작을 경우에만 업데이트
-                    table[i] = Math.min(table[i], 1 + table[i - coin]);
-                }
+                //동전을 추가했을 때, 만들어야하는 남은 금액이 음수가 아닐 때 (음수면 이미 동전 금액이 초과) 
+                //+ 남은 금액을 주어진 동전으로 만들 수 있을 때 (counts[남은 금액]에 저장된 값은: 해당 금액을 만드는 데 필요한 최소 동전 개수이므로 +1만 하면 됨)
+                int remains = price - coin;
+                if(remains >= 0 && counts[remains] != INF) counts[price] = Math.min(counts[price], counts[remains]+1); //이미 price를 만들었던 적이 있을 수도 있으니까 최소값으로 바인딩
             }
         }
-        return (table[amount] == Integer.MAX_VALUE) ?  -1 : table[amount];
+
+        return counts[amount] == INF ? -1 : counts[amount];
     }
 }
