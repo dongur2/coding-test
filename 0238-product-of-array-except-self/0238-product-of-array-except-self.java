@@ -1,6 +1,37 @@
 //answer[i] = nums[i]를 제외한 nums의 모든 원소의 곱 
 class Solution {
     public int[] productExceptSelf(int[] nums) { //10^5
+        // return sol1(nums);
+        return sol2(nums);
+    }
+
+    private int[] sol2 (int[] nums) {
+        int n = nums.length;
+        int[] answer = new int[n];
+
+        Arrays.fill(answer, 1);
+
+        int curr = 1;
+
+        //앞에서부터 곱
+        for(int i=0; i<n; i++) {
+            answer[i] *= curr;  
+            curr *= nums[i];
+        }
+
+        curr = 1; //초기화
+
+        //뒤에서부터 곱
+        for(int i=n-1; i>=0; i--) {
+            answer[i] *= curr;
+            curr *= nums[i];
+        }
+
+        return answer;
+    }
+    
+    //O(N)
+    private int[] sol1 (int[] nums) {
         int n = nums.length;
         int[] answer = new int[n];
         
@@ -23,6 +54,6 @@ class Solution {
             answer[i] = pre[i] * suff[i];
         }
 
-        return answer;     
+        return answer; 
     }
 }
