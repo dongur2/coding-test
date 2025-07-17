@@ -19,6 +19,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 |  |
 | ------- |
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
+| [1894-merge-strings-alternately](https://github.com/dongur2/coding-test/tree/master/1894-merge-strings-alternately) |
 ## Backtracking
 |  |
 | ------- |
@@ -94,4 +95,8 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 |  |
 | ------- |
 | [0238-product-of-array-except-self](https://github.com/dongur2/coding-test/tree/master/0238-product-of-array-except-self) |
+## Two Pointers
+|  |
+| ------- |
+| [1894-merge-strings-alternately](https://github.com/dongur2/coding-test/tree/master/1894-merge-strings-alternately) |
 <!---LeetCode Topics End-->
