@@ -15,6 +15,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0322-coin-change](https://github.com/dongur2/coding-test/tree/master/0322-coin-change) |
 | [0747-min-cost-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0747-min-cost-climbing-stairs) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
+| [1528-kids-with-the-greatest-number-of-candies](https://github.com/dongur2/coding-test/tree/master/1528-kids-with-the-greatest-number-of-candies) |
 ## String
 |  |
 | ------- |
