@@ -8,9 +8,6 @@ class Solution {
         System.out.println(trimmed);
 
         String[] arr = trimmed.split(" "); //공백 기준 단어 분할
-        for(String a:arr) {
-            System.out.print(a+", ");
-        }
 
         StringBuilder sb = new StringBuilder();
         for(int i=arr.length-1; i>=0; i--) {
