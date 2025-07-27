@@ -25,6 +25,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
 | [0151-reverse-words-in-a-string](https://github.com/dongur2/coding-test/tree/master/0151-reverse-words-in-a-string) |
 | [0345-reverse-vowels-of-a-string](https://github.com/dongur2/coding-test/tree/master/0345-reverse-vowels-of-a-string) |
+| [0392-is-subsequence](https://github.com/dongur2/coding-test/tree/master/0392-is-subsequence) |
 | [0443-string-compression](https://github.com/dongur2/coding-test/tree/master/0443-string-compression) |
 | [1146-greatest-common-divisor-of-strings](https://github.com/dongur2/coding-test/tree/master/1146-greatest-common-divisor-of-strings) |
 | [1894-merge-strings-alternately](https://github.com/dongur2/coding-test/tree/master/1894-merge-strings-alternately) |
@@ -78,6 +79,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0221-maximal-square](https://github.com/dongur2/coding-test/tree/master/0221-maximal-square) |
 | [0300-longest-increasing-subsequence](https://github.com/dongur2/coding-test/tree/master/0300-longest-increasing-subsequence) |
 | [0322-coin-change](https://github.com/dongur2/coding-test/tree/master/0322-coin-change) |
+| [0392-is-subsequence](https://github.com/dongur2/coding-test/tree/master/0392-is-subsequence) |
 | [0747-min-cost-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0747-min-cost-climbing-stairs) |
 ## Memoization
 |  |
@@ -110,6 +112,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0151-reverse-words-in-a-string](https://github.com/dongur2/coding-test/tree/master/0151-reverse-words-in-a-string) |
 | [0283-move-zeroes](https://github.com/dongur2/coding-test/tree/master/0283-move-zeroes) |
 | [0345-reverse-vowels-of-a-string](https://github.com/dongur2/coding-test/tree/master/0345-reverse-vowels-of-a-string) |
+| [0392-is-subsequence](https://github.com/dongur2/coding-test/tree/master/0392-is-subsequence) |
 | [0443-string-compression](https://github.com/dongur2/coding-test/tree/master/0443-string-compression) |
 | [1894-merge-strings-alternately](https://github.com/dongur2/coding-test/tree/master/1894-merge-strings-alternately) |
 ## Greedy
