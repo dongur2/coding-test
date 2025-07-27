@@ -6,13 +6,14 @@ class Solution {
         int[] res = new int[nums.length];
 
         int idx = 0; //배열 숫자 저장에 필요한 인덱스 
-        for(int i=0; i<nums.length; i++) {
-            if(nums[i] == 0) continue; //0이면 무시 (기본값 0)
-            res[idx++] = nums[i];
+        for(int num:nums) {
+            //0이 아니면 앞에서부터 채우면서 순서대로 저장 
+            if(num != 0) nums[idx++] = num;
         }
 
-        for(int i=0; i<nums.length; i++) {
-            nums[i] = res[i];
+        //남은 공간 0으로 대체 
+        while(idx < nums.length) {
+            nums[idx++] = 0;
         }
     }
 }
