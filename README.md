@@ -24,6 +24,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
 | [0151-reverse-words-in-a-string](https://github.com/dongur2/coding-test/tree/master/0151-reverse-words-in-a-string) |
 | [0345-reverse-vowels-of-a-string](https://github.com/dongur2/coding-test/tree/master/0345-reverse-vowels-of-a-string) |
+| [0443-string-compression](https://github.com/dongur2/coding-test/tree/master/0443-string-compression) |
 | [1146-greatest-common-divisor-of-strings](https://github.com/dongur2/coding-test/tree/master/1146-greatest-common-divisor-of-strings) |
 | [1894-merge-strings-alternately](https://github.com/dongur2/coding-test/tree/master/1894-merge-strings-alternately) |
 ## Backtracking
@@ -107,6 +108,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | ------- |
 | [0151-reverse-words-in-a-string](https://github.com/dongur2/coding-test/tree/master/0151-reverse-words-in-a-string) |
 | [0345-reverse-vowels-of-a-string](https://github.com/dongur2/coding-test/tree/master/0345-reverse-vowels-of-a-string) |
+| [0443-string-compression](https://github.com/dongur2/coding-test/tree/master/0443-string-compression) |
 | [1894-merge-strings-alternately](https://github.com/dongur2/coding-test/tree/master/1894-merge-strings-alternately) |
 ## Greedy
 |  |
