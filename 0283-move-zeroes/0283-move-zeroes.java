@@ -3,8 +3,6 @@
  */
 class Solution {
     public void moveZeroes(int[] nums) {
-        int[] res = new int[nums.length];
-
         int idx = 0; //배열 숫자 저장에 필요한 인덱스 
         for(int num:nums) {
             //0이 아니면 앞에서부터 채우면서 순서대로 저장 
