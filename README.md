@@ -13,6 +13,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0238-product-of-array-except-self](https://github.com/dongur2/coding-test/tree/master/0238-product-of-array-except-self) |
 | [0300-longest-increasing-subsequence](https://github.com/dongur2/coding-test/tree/master/0300-longest-increasing-subsequence) |
 | [0322-coin-change](https://github.com/dongur2/coding-test/tree/master/0322-coin-change) |
+| [0334-increasing-triplet-subsequence](https://github.com/dongur2/coding-test/tree/master/0334-increasing-triplet-subsequence) |
 | [0605-can-place-flowers](https://github.com/dongur2/coding-test/tree/master/0605-can-place-flowers) |
 | [0747-min-cost-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0747-min-cost-climbing-stairs) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
@@ -110,5 +111,6 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## Greedy
 |  |
 | ------- |
+| [0334-increasing-triplet-subsequence](https://github.com/dongur2/coding-test/tree/master/0334-increasing-triplet-subsequence) |
 | [0605-can-place-flowers](https://github.com/dongur2/coding-test/tree/master/0605-can-place-flowers) |
 <!---LeetCode Topics End-->
