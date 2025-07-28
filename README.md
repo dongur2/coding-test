@@ -22,6 +22,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0747-min-cost-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0747-min-cost-climbing-stairs) |
 | [1046-max-consecutive-ones-iii](https://github.com/dongur2/coding-test/tree/master/1046-max-consecutive-ones-iii) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
+| [1392-find-the-difference-of-two-arrays](https://github.com/dongur2/coding-test/tree/master/1392-find-the-difference-of-two-arrays) |
 | [1528-kids-with-the-greatest-number-of-candies](https://github.com/dongur2/coding-test/tree/master/1528-kids-with-the-greatest-number-of-candies) |
 | [1586-longest-subarray-of-1s-after-deleting-one-element](https://github.com/dongur2/coding-test/tree/master/1586-longest-subarray-of-1s-after-deleting-one-element) |
 | [1798-max-number-of-k-sum-pairs](https://github.com/dongur2/coding-test/tree/master/1798-max-number-of-k-sum-pairs) |
@@ -108,6 +109,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | ------- |
 | [0001-two-sum](https://github.com/dongur2/coding-test/tree/master/0001-two-sum) |
 | [0217-contains-duplicate](https://github.com/dongur2/coding-test/tree/master/0217-contains-duplicate) |
+| [1392-find-the-difference-of-two-arrays](https://github.com/dongur2/coding-test/tree/master/1392-find-the-difference-of-two-arrays) |
 | [1798-max-number-of-k-sum-pairs](https://github.com/dongur2/coding-test/tree/master/1798-max-number-of-k-sum-pairs) |
 ## Sorting
 |  |
