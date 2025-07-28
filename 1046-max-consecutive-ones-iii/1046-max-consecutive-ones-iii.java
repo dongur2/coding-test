@@ -4,31 +4,20 @@
  */
 class Solution {
     public int longestOnes(int[] nums, int k) {
-        int zero = 0; //0개수 
-        int one = 0;  //연속된 1개수
+        int left = 0, zero = 0;
+        int answer = 0;
 
-        int left = 0, right = 0;
+        for(int right=0; right<nums.length; right++) {
+            if(nums[right] == 0) zero++;
 
-        if(nums[left] == 0) zero++;
-        else one++;
-
-        int answer = one;
-        if(k >= zero) answer += zero;
-
-        while(right < nums.length-1) {
-            //0 커버할 수 있으면 right++
-            //추가하는 값이 0이면 0 증가, 1이면 1 증가 
-            if(nums[++right] == 0) zero++; 
-            else one++;
-
-            //0개수 > k이면 중지하고 left++
-            while (zero > k) { //버리는 값이 0이었으면 0 감소, 1이면 1 감소 
+            //바꿀 수 있는 0의 개수보다 더 많은 0을 가지고 있으면 버리기 
+            while(zero > k) {
                 if(nums[left++] == 0) zero--;
-                else one--;
             }
-
-            answer = Math.max(answer, one+zero);
-        }    
+            
+            //최대 연속된 1의 개수 리턴 
+            answer = Math.max(answer, right - left + 1);
+        }
 
         return answer;
     }
