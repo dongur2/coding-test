@@ -17,6 +17,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0322-coin-change](https://github.com/dongur2/coding-test/tree/master/0322-coin-change) |
 | [0334-increasing-triplet-subsequence](https://github.com/dongur2/coding-test/tree/master/0334-increasing-triplet-subsequence) |
 | [0605-can-place-flowers](https://github.com/dongur2/coding-test/tree/master/0605-can-place-flowers) |
+| [0643-maximum-average-subarray-i](https://github.com/dongur2/coding-test/tree/master/0643-maximum-average-subarray-i) |
 | [0747-min-cost-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0747-min-cost-climbing-stairs) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
 | [1528-kids-with-the-greatest-number-of-candies](https://github.com/dongur2/coding-test/tree/master/1528-kids-with-the-greatest-number-of-candies) |
@@ -127,4 +128,8 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0011-container-with-most-water](https://github.com/dongur2/coding-test/tree/master/0011-container-with-most-water) |
 | [0334-increasing-triplet-subsequence](https://github.com/dongur2/coding-test/tree/master/0334-increasing-triplet-subsequence) |
 | [0605-can-place-flowers](https://github.com/dongur2/coding-test/tree/master/0605-can-place-flowers) |
+## Sliding Window
+|  |
+| ------- |
+| [0643-maximum-average-subarray-i](https://github.com/dongur2/coding-test/tree/master/0643-maximum-average-subarray-i) |
 <!---LeetCode Topics End-->
