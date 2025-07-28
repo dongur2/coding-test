@@ -22,6 +22,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [1046-max-consecutive-ones-iii](https://github.com/dongur2/coding-test/tree/master/1046-max-consecutive-ones-iii) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
 | [1528-kids-with-the-greatest-number-of-candies](https://github.com/dongur2/coding-test/tree/master/1528-kids-with-the-greatest-number-of-candies) |
+| [1586-longest-subarray-of-1s-after-deleting-one-element](https://github.com/dongur2/coding-test/tree/master/1586-longest-subarray-of-1s-after-deleting-one-element) |
 | [1798-max-number-of-k-sum-pairs](https://github.com/dongur2/coding-test/tree/master/1798-max-number-of-k-sum-pairs) |
 ## String
 |  |
@@ -86,6 +87,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0322-coin-change](https://github.com/dongur2/coding-test/tree/master/0322-coin-change) |
 | [0392-is-subsequence](https://github.com/dongur2/coding-test/tree/master/0392-is-subsequence) |
 | [0747-min-cost-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0747-min-cost-climbing-stairs) |
+| [1586-longest-subarray-of-1s-after-deleting-one-element](https://github.com/dongur2/coding-test/tree/master/1586-longest-subarray-of-1s-after-deleting-one-element) |
 ## Memoization
 |  |
 | ------- |
@@ -138,4 +140,5 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0643-maximum-average-subarray-i](https://github.com/dongur2/coding-test/tree/master/0643-maximum-average-subarray-i) |
 | [1046-max-consecutive-ones-iii](https://github.com/dongur2/coding-test/tree/master/1046-max-consecutive-ones-iii) |
 | [1567-maximum-number-of-vowels-in-a-substring-of-given-length](https://github.com/dongur2/coding-test/tree/master/1567-maximum-number-of-vowels-in-a-substring-of-given-length) |
+| [1586-longest-subarray-of-1s-after-deleting-one-element](https://github.com/dongur2/coding-test/tree/master/1586-longest-subarray-of-1s-after-deleting-one-element) |
 <!---LeetCode Topics End-->
