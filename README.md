@@ -20,6 +20,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0747-min-cost-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0747-min-cost-climbing-stairs) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
 | [1528-kids-with-the-greatest-number-of-candies](https://github.com/dongur2/coding-test/tree/master/1528-kids-with-the-greatest-number-of-candies) |
+| [1798-max-number-of-k-sum-pairs](https://github.com/dongur2/coding-test/tree/master/1798-max-number-of-k-sum-pairs) |
 ## String
 |  |
 | ------- |
@@ -99,10 +100,12 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | ------- |
 | [0001-two-sum](https://github.com/dongur2/coding-test/tree/master/0001-two-sum) |
 | [0217-contains-duplicate](https://github.com/dongur2/coding-test/tree/master/0217-contains-duplicate) |
+| [1798-max-number-of-k-sum-pairs](https://github.com/dongur2/coding-test/tree/master/1798-max-number-of-k-sum-pairs) |
 ## Sorting
 |  |
 | ------- |
 | [0217-contains-duplicate](https://github.com/dongur2/coding-test/tree/master/0217-contains-duplicate) |
+| [1798-max-number-of-k-sum-pairs](https://github.com/dongur2/coding-test/tree/master/1798-max-number-of-k-sum-pairs) |
 ## Prefix Sum
 |  |
 | ------- |
@@ -116,6 +119,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0345-reverse-vowels-of-a-string](https://github.com/dongur2/coding-test/tree/master/0345-reverse-vowels-of-a-string) |
 | [0392-is-subsequence](https://github.com/dongur2/coding-test/tree/master/0392-is-subsequence) |
 | [0443-string-compression](https://github.com/dongur2/coding-test/tree/master/0443-string-compression) |
+| [1798-max-number-of-k-sum-pairs](https://github.com/dongur2/coding-test/tree/master/1798-max-number-of-k-sum-pairs) |
 | [1894-merge-strings-alternately](https://github.com/dongur2/coding-test/tree/master/1894-merge-strings-alternately) |
 ## Greedy
 |  |
