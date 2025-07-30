@@ -6,6 +6,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | ------- |
 | [0001-two-sum](https://github.com/dongur2/coding-test/tree/master/0001-two-sum) |
 | [0011-container-with-most-water](https://github.com/dongur2/coding-test/tree/master/0011-container-with-most-water) |
+| [0046-permutations](https://github.com/dongur2/coding-test/tree/master/0046-permutations) |
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
 | [0121-best-time-to-buy-and-sell-stock](https://github.com/dongur2/coding-test/tree/master/0121-best-time-to-buy-and-sell-stock) |
 | [0198-house-robber](https://github.com/dongur2/coding-test/tree/master/0198-house-robber) |
@@ -48,6 +49,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## Backtracking
 |  |
 | ------- |
+| [0046-permutations](https://github.com/dongur2/coding-test/tree/master/0046-permutations) |
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
 ## Depth-First Search
 |  |
