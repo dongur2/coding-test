@@ -8,21 +8,21 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
-//연결리스트의 헤드가 주어지면, 거꾸로 뒤집은 연결리스트를 리턴 
+ //주어진 연결 리스트를 뒤집기 
 class Solution {
     public ListNode reverseList(ListNode head) {
-        //가지고 이동할 노드. 
-        ListNode newHead = null;
+        ListNode point = null; //가리키는 노드
 
-        //각 노드가 가리키는 노드를 뒤집기 
         while(head != null) {
-            ListNode next = head.next; //다음 노드
-            head.next = newHead; //헤드가 가리키는 노드를 업데이트 (첫 노드는 null(거꾸로 뒤집어야 하므로))
-            newHead = head; //현재 노드: 헤드  
-            head = next;  //가리키던 노드로 이동 
+            ListNode temp = head.next; //원래 노드가 가리키던 노드를 잠깐 저장 
+            head.next = point; //노드가 가리키는 노드를 수정 
+            point = head; //다음 노드가 가리킬 노드 업데이트 
+            
+            //가리키는 노드가 없으면 끝 
+            if(temp == null) return head;
+            else head = temp; //노드 이동 
         }
 
-        //새로운 헤드 리턴 
-        return newHead;
+        return head;
     }
 }
