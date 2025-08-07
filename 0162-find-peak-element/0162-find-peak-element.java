@@ -13,7 +13,6 @@ class Solution {
         int left=0, right=nums.length;
         while(left <= right) {
             int mid = left + ((right - left) / 2);
-            System.out.println(mid);
             
             //왼쪽 끝이면 오른쪽이랑만 비교
             if(mid == 0) return nums[mid] > nums[mid+1] ? mid : mid+1;
