@@ -35,6 +35,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [1833-find-the-highest-altitude](https://github.com/dongur2/coding-test/tree/master/1833-find-the-highest-altitude) |
 | [2392-successful-pairs-of-spells-and-potions](https://github.com/dongur2/coding-test/tree/master/2392-successful-pairs-of-spells-and-potions) |
 | [2428-equal-row-and-column-pairs](https://github.com/dongur2/coding-test/tree/master/2428-equal-row-and-column-pairs) |
+| [2636-maximum-subsequence-score](https://github.com/dongur2/coding-test/tree/master/2636-maximum-subsequence-score) |
 ## String
 |  |
 | ------- |
@@ -98,6 +99,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0215-kth-largest-element-in-an-array](https://github.com/dongur2/coding-test/tree/master/0215-kth-largest-element-in-an-array) |
 | [0744-network-delay-time](https://github.com/dongur2/coding-test/tree/master/0744-network-delay-time) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
+| [2636-maximum-subsequence-score](https://github.com/dongur2/coding-test/tree/master/2636-maximum-subsequence-score) |
 ## Shortest Path
 |  |
 | ------- |
@@ -158,6 +160,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [1777-determine-if-two-strings-are-close](https://github.com/dongur2/coding-test/tree/master/1777-determine-if-two-strings-are-close) |
 | [1798-max-number-of-k-sum-pairs](https://github.com/dongur2/coding-test/tree/master/1798-max-number-of-k-sum-pairs) |
 | [2392-successful-pairs-of-spells-and-potions](https://github.com/dongur2/coding-test/tree/master/2392-successful-pairs-of-spells-and-potions) |
+| [2636-maximum-subsequence-score](https://github.com/dongur2/coding-test/tree/master/2636-maximum-subsequence-score) |
 ## Prefix Sum
 |  |
 | ------- |
@@ -186,6 +189,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0334-increasing-triplet-subsequence](https://github.com/dongur2/coding-test/tree/master/0334-increasing-triplet-subsequence) |
 | [0605-can-place-flowers](https://github.com/dongur2/coding-test/tree/master/0605-can-place-flowers) |
 | [0649-dota2-senate](https://github.com/dongur2/coding-test/tree/master/0649-dota2-senate) |
+| [2636-maximum-subsequence-score](https://github.com/dongur2/coding-test/tree/master/2636-maximum-subsequence-score) |
 ## Sliding Window
 |  |
 | ------- |
