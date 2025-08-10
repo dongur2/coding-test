@@ -41,8 +41,6 @@ class Solution {
                 cost += rightQ.poll();
                 if(left <= right) rightQ.offer(costs[right--]);
             }
-
-            System.out.println(i+", "+cost);
         }
 
         return cost;
