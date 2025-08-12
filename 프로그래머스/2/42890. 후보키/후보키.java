@@ -1,76 +1,76 @@
-import java.util.*;
-//후보키 개수
 /*
-후보키: 유일성 + 최소성 만족
+    후보키 (1)모든 튜플에 대해 유일하게 식별되는 속성 (2)유일하게 식별하는 데 꼭 필요한 속성으로만 구성
+    > 후보 키의 개수 리턴 
+    
+    *1 <= relation[0].length <= 8 튜플 개수 
+    *1 <= relation.length <= 20 속성 개수 
 */
+import java.util.List; import java.util.ArrayList;
+import java.util.Set; import java.util.HashSet; import java.util.stream.Collectors;
 class Solution {
-    static int len = 0;
+    List<List<Integer>> comb = new ArrayList<>();
     
     public int solution(String[][] relation) {
-        len = relation[0].length; //모든 속성 개수
         
-        //모든 속성 조합 구하기 (부분집합)
-        List<String> answer = new ArrayList<>();
-        for(int l=1; l<=len; l++) {
-            makeComb(relation, l, answer, -1, new StringBuilder());
-        }
+        //모든 속성 인덱스 조합 
+        makeAllCombinations(relation, 0, new ArrayList<>()); 
         
-        return answer.size();
+        //유일성 확인
+        filterUniqueAttributeCombinations(relation);
+        
+        //조합 크기 오름차순 정렬
+        comb.sort((a,b) -> a.size() - b.size());
+        
+        //최소성 확인
+        filterMinimumCombinations();
+        
+        return comb.size();
     }
     
-    public static void makeComb(String[][] relation, int l, List<String> answer, int i, StringBuilder sb) {
-        if(sb.length() == l) {
-            //유일성 검사
-            if(isUnique(relation, sb)) {
-                //처음 값은 바로 저장
-                if(answer.isEmpty()) {
-                    answer.add(sb.toString()); return;
-                }
-                
-                //최소성 검사
-                if(isMinimum(answer, sb)) answer.add(sb.toString()); 
-            }
-            return;
-        }
+
+    void makeAllCombinations(String[][] relation, int idx, List<Integer> list) {
+        //인덱스가 범위를 넘어서면 중지 
+        if(idx == relation[0].length) return;
         
-        for(int j=i+1; j<len; j++) {
-            sb.append(j);
-            makeComb(relation, l, answer, j, sb);
-            sb.deleteCharAt(sb.length()-1);
+        for(int i=idx; i<relation[0].length; i++) {
+            list.add(i);
+            comb.add(new ArrayList<>(list));
+            makeAllCombinations(relation, i+1, list);
+            list.remove(list.size()-1); //복구
         }
     }
     
-    public static boolean isUnique(String[][] relation, StringBuilder sb) {
-        //인덱스 조합으로 값 생성
+    void filterUniqueAttributeCombinations(String[][] relation) {
+        comb = comb.stream().filter(c -> isUnique(relation, c)).collect(Collectors.toList());
+    }
+
+    //유일성 만족 확인
+    boolean isUnique(String[][] relation, List<Integer> list) {
         Set<String> tuples = new HashSet<>();
         
         for(String[] r:relation) {
-            StringBuilder s = new StringBuilder();
-
-            for(int i=0; i<sb.length(); i++) {
-                s.append(r[Integer.valueOf(sb.charAt(i)+"")]);
-            }
-
-            tuples.add(s.toString());
+            StringBuilder data = new StringBuilder();
+            for(int idx:list) {
+                data.append(r[idx]);
+            }     
+            
+            if(tuples.contains(data.toString())) return false;
+            else tuples.add(data.toString());
         }
-
+        
         return tuples.size() == relation.length;
     }
     
-    public static boolean isMinimum(List<String> answer, StringBuilder sb) {
-        Set<Character> sc = new HashSet<>();
-        for(char c:sb.toString().toCharArray()) {
-            sc.add(c);
-        }
-        
-        for(String ans:answer) {
-            Set<Character> ac = new HashSet<>();
-            for(char a:ans.toCharArray()) {
-                ac.add(a);
-            }
-            
-            if(sc.containsAll(ac)) return false;
+    void filterMinimumCombinations() {
+        comb = comb.stream().filter(c -> isMinimum(c)).collect(Collectors.toList());
+    }
+    
+    //최소성 유지 
+    boolean isMinimum(List<Integer> list) {
+        for (List<Integer> c : comb) {
+            if (list.containsAll(c) && !list.equals(c)) return false;
         }
         return true;
     }
+
 }
