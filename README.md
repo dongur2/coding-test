@@ -74,6 +74,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [1116-maximum-level-sum-of-a-binary-tree](https://github.com/dongur2/coding-test/tree/master/1116-maximum-level-sum-of-a-binary-tree) |
 | [1474-longest-zigzag-path-in-a-binary-tree](https://github.com/dongur2/coding-test/tree/master/1474-longest-zigzag-path-in-a-binary-tree) |
 | [1544-count-good-nodes-in-binary-tree](https://github.com/dongur2/coding-test/tree/master/1544-count-good-nodes-in-binary-tree) |
+| [1576-reorder-routes-to-make-all-paths-lead-to-the-city-zero](https://github.com/dongur2/coding-test/tree/master/1576-reorder-routes-to-make-all-paths-lead-to-the-city-zero) |
 ## Matrix
 |  |
 | ------- |
@@ -92,6 +93,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0871-keys-and-rooms](https://github.com/dongur2/coding-test/tree/master/0871-keys-and-rooms) |
 | [1116-maximum-level-sum-of-a-binary-tree](https://github.com/dongur2/coding-test/tree/master/1116-maximum-level-sum-of-a-binary-tree) |
 | [1544-count-good-nodes-in-binary-tree](https://github.com/dongur2/coding-test/tree/master/1544-count-good-nodes-in-binary-tree) |
+| [1576-reorder-routes-to-make-all-paths-lead-to-the-city-zero](https://github.com/dongur2/coding-test/tree/master/1576-reorder-routes-to-make-all-paths-lead-to-the-city-zero) |
 ## Graph
 |  |
 | ------- |
@@ -100,6 +102,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0801-is-graph-bipartite](https://github.com/dongur2/coding-test/tree/master/0801-is-graph-bipartite) |
 | [0871-keys-and-rooms](https://github.com/dongur2/coding-test/tree/master/0871-keys-and-rooms) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
+| [1576-reorder-routes-to-make-all-paths-lead-to-the-city-zero](https://github.com/dongur2/coding-test/tree/master/1576-reorder-routes-to-make-all-paths-lead-to-the-city-zero) |
 ## Heap (Priority Queue)
 |  |
 | ------- |
