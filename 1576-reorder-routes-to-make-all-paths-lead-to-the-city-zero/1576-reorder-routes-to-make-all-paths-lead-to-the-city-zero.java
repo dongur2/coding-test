@@ -1,37 +1,32 @@
 /*
-    도시 n개 (0번 - n-1번)
-    방향 그래프: 두 도시 사이 간선은 1개 
-    모든 도로가 한 방향으로 다니도록 바꿨음
-    
-    connections[i] = [도시1, 도시2] 도시1 -> 도시2 도로
-
-    각 도시가 수도를 방문할 수 있도록 도로 방향을 바꿀 것
-
-    방향을 바꿔야 하는 최소 도로 개수를 리턴
+    현재 한쪽으로만 향해있는 각각의 경로
+    모든 도시에서 0번 도시로 올 수 있도록 바꿔야 하는 최소 경로 수 
  */
-
-import java.util.List; import java.util.ArrayList;
+ import java.util.*;
 class Solution {
-    List<List<Integer>> edges = new ArrayList<>();
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    int answer = 0;
 
     public int minReorder(int n, int[][] connections) {
-        for(int i=0; i<n; i++) edges.add(new ArrayList<>());
+        //연결 리스트 형식 그래프 생성 
+        for(int[] conn : connections) {
+            graph.computeIfAbsent(conn[0], k -> new ArrayList<>()).add(conn[1]);
+            graph.computeIfAbsent(conn[1], k -> new ArrayList<>()).add(-conn[0]); //바꿀 경우의 경로 (음수로 구분)
+        }    
 
-        for(var c : connections) {
-            edges.get(c[0]).add(c[1]);
-            edges.get(c[1]).add(-c[0]); //기존 노드에서 방향을 바꿀 경우 구분 
-        }
-
-        return dfs(new boolean[n], 0); //0에서 모든 노드에 방문
+        return dfs(new boolean[n], 0);
     }
 
-    int dfs(boolean[] visited, int from) {
+    int dfs(boolean[] visited, int curr) {
         int change = 0;
 
-        visited[from] = true;
+        visited[curr] = true;
 
-        for(var to : edges.get(from)) {
-            if(!visited[Math.abs(to)]) change += dfs(visited, Math.abs(to)) + (to > 0 ? 1 : 0); //경로를 바꿨으면 카운트
+        if(graph.get(curr) != null) {
+            for(int nxt : graph.get(curr)) {
+                if(visited[Math.abs(nxt)]) continue;
+                change += dfs(visited, Math.abs(nxt)) + (nxt > 0 ? 1 : 0); //양수일 경우 0 -> 다른 도시인 경로니까 바꿔야 함(+1)
+            }
         }
 
         return change;
