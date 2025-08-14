@@ -19,6 +19,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0300-longest-increasing-subsequence](https://github.com/dongur2/coding-test/tree/master/0300-longest-increasing-subsequence) |
 | [0322-coin-change](https://github.com/dongur2/coding-test/tree/master/0322-coin-change) |
 | [0334-increasing-triplet-subsequence](https://github.com/dongur2/coding-test/tree/master/0334-increasing-triplet-subsequence) |
+| [0399-evaluate-division](https://github.com/dongur2/coding-test/tree/master/0399-evaluate-division) |
 | [0605-can-place-flowers](https://github.com/dongur2/coding-test/tree/master/0605-can-place-flowers) |
 | [0643-maximum-average-subarray-i](https://github.com/dongur2/coding-test/tree/master/0643-maximum-average-subarray-i) |
 | [0724-find-pivot-index](https://github.com/dongur2/coding-test/tree/master/0724-find-pivot-index) |
@@ -45,6 +46,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0345-reverse-vowels-of-a-string](https://github.com/dongur2/coding-test/tree/master/0345-reverse-vowels-of-a-string) |
 | [0392-is-subsequence](https://github.com/dongur2/coding-test/tree/master/0392-is-subsequence) |
 | [0394-decode-string](https://github.com/dongur2/coding-test/tree/master/0394-decode-string) |
+| [0399-evaluate-division](https://github.com/dongur2/coding-test/tree/master/0399-evaluate-division) |
 | [0443-string-compression](https://github.com/dongur2/coding-test/tree/master/0443-string-compression) |
 | [0649-dota2-senate](https://github.com/dongur2/coding-test/tree/master/0649-dota2-senate) |
 | [1146-greatest-common-divisor-of-strings](https://github.com/dongur2/coding-test/tree/master/1146-greatest-common-divisor-of-strings) |
@@ -65,6 +67,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0104-maximum-depth-of-binary-tree](https://github.com/dongur2/coding-test/tree/master/0104-maximum-depth-of-binary-tree) |
 | [0199-binary-tree-right-side-view](https://github.com/dongur2/coding-test/tree/master/0199-binary-tree-right-side-view) |
 | [0236-lowest-common-ancestor-of-a-binary-tree](https://github.com/dongur2/coding-test/tree/master/0236-lowest-common-ancestor-of-a-binary-tree) |
+| [0399-evaluate-division](https://github.com/dongur2/coding-test/tree/master/0399-evaluate-division) |
 | [0437-path-sum-iii](https://github.com/dongur2/coding-test/tree/master/0437-path-sum-iii) |
 | [0547-number-of-provinces](https://github.com/dongur2/coding-test/tree/master/0547-number-of-provinces) |
 | [0744-network-delay-time](https://github.com/dongur2/coding-test/tree/master/0744-network-delay-time) |
@@ -87,6 +90,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0104-maximum-depth-of-binary-tree](https://github.com/dongur2/coding-test/tree/master/0104-maximum-depth-of-binary-tree) |
 | [0199-binary-tree-right-side-view](https://github.com/dongur2/coding-test/tree/master/0199-binary-tree-right-side-view) |
 | [0322-coin-change](https://github.com/dongur2/coding-test/tree/master/0322-coin-change) |
+| [0399-evaluate-division](https://github.com/dongur2/coding-test/tree/master/0399-evaluate-division) |
 | [0547-number-of-provinces](https://github.com/dongur2/coding-test/tree/master/0547-number-of-provinces) |
 | [0744-network-delay-time](https://github.com/dongur2/coding-test/tree/master/0744-network-delay-time) |
 | [0801-is-graph-bipartite](https://github.com/dongur2/coding-test/tree/master/0801-is-graph-bipartite) |
@@ -97,6 +101,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## Graph
 |  |
 | ------- |
+| [0399-evaluate-division](https://github.com/dongur2/coding-test/tree/master/0399-evaluate-division) |
 | [0547-number-of-provinces](https://github.com/dongur2/coding-test/tree/master/0547-number-of-provinces) |
 | [0744-network-delay-time](https://github.com/dongur2/coding-test/tree/master/0744-network-delay-time) |
 | [0801-is-graph-bipartite](https://github.com/dongur2/coding-test/tree/master/0801-is-graph-bipartite) |
@@ -114,6 +119,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## Shortest Path
 |  |
 | ------- |
+| [0399-evaluate-division](https://github.com/dongur2/coding-test/tree/master/0399-evaluate-division) |
 | [0744-network-delay-time](https://github.com/dongur2/coding-test/tree/master/0744-network-delay-time) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
 ## Math
@@ -298,6 +304,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## Union Find
 |  |
 | ------- |
+| [0399-evaluate-division](https://github.com/dongur2/coding-test/tree/master/0399-evaluate-division) |
 | [0547-number-of-provinces](https://github.com/dongur2/coding-test/tree/master/0547-number-of-provinces) |
 | [0801-is-graph-bipartite](https://github.com/dongur2/coding-test/tree/master/0801-is-graph-bipartite) |
 <!---LeetCode Topics End-->
