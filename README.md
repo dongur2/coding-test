@@ -27,6 +27,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0735-asteroid-collision](https://github.com/dongur2/coding-test/tree/master/0735-asteroid-collision) |
 | [0747-min-cost-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0747-min-cost-climbing-stairs) |
 | [0907-koko-eating-bananas](https://github.com/dongur2/coding-test/tree/master/0907-koko-eating-bananas) |
+| [1036-rotting-oranges](https://github.com/dongur2/coding-test/tree/master/1036-rotting-oranges) |
 | [1046-max-consecutive-ones-iii](https://github.com/dongur2/coding-test/tree/master/1046-max-consecutive-ones-iii) |
 | [1319-unique-number-of-occurrences](https://github.com/dongur2/coding-test/tree/master/1319-unique-number-of-occurrences) |
 | [1325-path-with-maximum-probability](https://github.com/dongur2/coding-test/tree/master/1325-path-with-maximum-probability) |
@@ -88,6 +89,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | ------- |
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
 | [0221-maximal-square](https://github.com/dongur2/coding-test/tree/master/0221-maximal-square) |
+| [1036-rotting-oranges](https://github.com/dongur2/coding-test/tree/master/1036-rotting-oranges) |
 | [2038-nearest-exit-from-entrance-in-maze](https://github.com/dongur2/coding-test/tree/master/2038-nearest-exit-from-entrance-in-maze) |
 | [2428-equal-row-and-column-pairs](https://github.com/dongur2/coding-test/tree/master/2428-equal-row-and-column-pairs) |
 ## Breadth-First Search
@@ -101,6 +103,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0744-network-delay-time](https://github.com/dongur2/coding-test/tree/master/0744-network-delay-time) |
 | [0801-is-graph-bipartite](https://github.com/dongur2/coding-test/tree/master/0801-is-graph-bipartite) |
 | [0871-keys-and-rooms](https://github.com/dongur2/coding-test/tree/master/0871-keys-and-rooms) |
+| [1036-rotting-oranges](https://github.com/dongur2/coding-test/tree/master/1036-rotting-oranges) |
 | [1116-maximum-level-sum-of-a-binary-tree](https://github.com/dongur2/coding-test/tree/master/1116-maximum-level-sum-of-a-binary-tree) |
 | [1544-count-good-nodes-in-binary-tree](https://github.com/dongur2/coding-test/tree/master/1544-count-good-nodes-in-binary-tree) |
 | [1576-reorder-routes-to-make-all-paths-lead-to-the-city-zero](https://github.com/dongur2/coding-test/tree/master/1576-reorder-routes-to-make-all-paths-lead-to-the-city-zero) |
