@@ -1,20 +1,24 @@
-import java.util.stream.*;
-
-//붙어있는 집을 방문하지 않고 최대로 털 수 있는 금액
+/*
+    nums[i] = i번째 집에 있는 돈
+    인접한 집은 털 수 없음
+    >>> 하루에 털 수 있는 최대 액수
+ */
 class Solution {
-    public int rob(int[] nums) {
-        int cnt = nums.length; //집 개수 
-        
-        int[] res = new int[cnt]; //그 집까지 오는 데 모은 최대 금액 저장
-        Arrays.fill(res, Integer.MIN_VALUE);
+    int result = 0;
+    int[] pocket;
 
-        for(int i=0; i<cnt; i++) {
-            if(i == 0 || i == 1) res[i] = nums[i]; //0번째, 1번째는 시작점이 되므로 해당 금액만 저장  
-            else if(i == 2) res[i] = Math.max(res[i-2] + nums[i], nums[i]); //2번째는 0->2, 또는 2에서 시작만 가능
-            
-            else res[i] = Math.max(res[i-2], res[i-3]) + nums[i]; //그 후로는 2번째 전, 3번째 전과 비교 
+    public int rob(int[] nums) {
+        pocket = new int[nums.length+1]; //시작점 추가 
+
+        //시작점은 0아니면 1 (2가 되면 손해-0도 가능하니까..)
+        //1,2번째는 최대값 고정
+        //간격도 1아니면 2 (3 되면 중간에 하나 버리는거니까..)
+        for(int i=1; i<=nums.length; i++) {
+            if(i < 3) pocket[i] = nums[i-1];
+            else pocket[i] = Math.max(pocket[i-2]+nums[i-1], pocket[i-3]+nums[i-1]);
+            result = Math.max(pocket[i], result);
         }
 
-        return Arrays.stream(res).max().getAsInt();
+        return result;
     }
 }
