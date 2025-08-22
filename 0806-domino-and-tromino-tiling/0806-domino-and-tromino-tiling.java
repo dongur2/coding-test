@@ -1,42 +1,43 @@
-/*
-    도미노 타입 2가지: 2x1, 트로미노..??ㅋㅋ - 회전 가능
-    숫자 n
-    >>> 2xn 보드판에 타일을 배치할 수 있는 가짓수를 10^9+7로 나눈 나머지
-    전체 보드판이 도미노로 모두 덮여야 함
-
- */
 class Solution {
-    final long mod = 1000000007;
+    final int MOD = 1000000007;
+
+    Long[][] dp; //dp[col][existHalf]
 
     public int numTilings(int n) {
-        int[] dp = new int[n+1];
+        dp = new Long[n+1][2];
+        return (int)put(0, n, 0); //현재 열, 열 길이, 빈 칸 존재     
+    }
 
-        if(n==1) return 1;
-        if(n==2) return 2;
-        if(n==3) return 5;
-        dp[0] = 1; dp[1] = 1; dp[2] = 2; dp[3] = 5;
+    long put(int col, int n, int existHalf) {
+        //base case
+        if(col == n) return existHalf == 1 ? 0 : 1; //열 테두리 도착 => 빈 칸 존재하는지 확인 
+        if(col > n) return 0; //보드판 탈출
 
-        for (int i = 4; i <= n; i++) {
-            //dp[i]: 2*i 보드 덮는 방법 개수
-            //dp[i-1]: 마지막 열만 도미노 세로로 덮음  
-            //2*dp[i-1]: 마지막 2열을 도미노 가로로 덮음  
-            //dp[i-3]: 마지막 3열을 트로미노로 덮음 
-            dp[i] = (int)((2L * dp[i-1] + dp[i-3]) % mod);
+        //저장된 값이 없을 때만 연산, 저장된 값 있으면 즉시 리턴 
+        if(dp[col][existHalf] != null) return dp[col][existHalf];
+
+        long ans; 
+
+        //현재 열이 모두 비었으면 3가지 가능
+        if(existHalf == 0) {
+            //3가지 경우에서 가능한 경우의 수를 모두 더해서 리턴 
+            //1. 세로로 도미노 하나 놓기 -> 다음 열로 이동 (빈 칸 없음)
+            //2. 가로로 도미노 하나 놓기 -> 자동으로 밑에도 가로 도미노 배치 -> 다다음 열로 이동 (빈 칸 없음)
+            //3. 트로미노 놓기 -> 현재 열은 꽉 채우고 다음 열에 빈 칸 발생 -> 다음 열로 이동 + 빈 칸 있음!!!
+            ans = (put(col+1, n, 0) + put(col+2, n, 0) + put(col+1, n, 1)) % MOD;
         }
-        return dp[n];
+
+        //현재 열에 반쪽짜리 도미노가 있다면 -- 전 열에서 놓은 트로미노 조각 -> 2가지 가능
+        else {
+            //2가지 경우에서 가능한 경우의 수를 모두 더해서 리턴 
+            //1. 뒤집은 트로미노를 배치해서 맞물려 채우기 -> 다음 열도 채워짐 -> 다다음 열로 이동 (빈 칸 없음)
+            //1-1. 이 경우 트로미노가 두 방향으로 놓여있을 수 있으므로 *2 
+            //2. 가로 도미노 놓기 -> 현재 열은 채워지지만, 다음 열에 반쪽만 채워지면서 새로운 빈 칸 발생 -> 다음 열로 이동 + 빈 칸 있음!!!
+            ans = (2L * put(col+2, n, 0) + put(col+1, n, 1)) % MOD;
+        }
+
+        return dp[col][existHalf] = ans;
+        
     }
-
-    //현재 채우고 있는 열 i, 트로미노 때문에 반만 덮인 곳 존재 여부 halfEmpty
-    long put(int n, int i, boolean halfEmpty) {
-        //모든 열을 다 채웠으면 i == n, 이 시점에 반만 덮인 곳이 있으면 실패, 아니면 성공 
-        if(i == n) return halfEmpty ? 0 : 1;
-        //n을 초과하면 불가능 
-        if(i > n) return 0;
-
-        //이전 열이 반만 덮였다면, 현재 덮는 방법+다음 열에서 이어서 덮는 방법
-        if(halfEmpty) return (put(n, i+1, false)+put(n, i+1, true)) % mod;
-
-        //이전 열이 다 채워져있다면, 이번 열도 채우는 방법 + 가로로 채우는 방법 + 트로미노로 배치 방법 
-        return (put(n, i+1, false) + put(n, i+2, false)+ 2 * put(n, i+2, true)) % mod;
-    }
+    
 }
