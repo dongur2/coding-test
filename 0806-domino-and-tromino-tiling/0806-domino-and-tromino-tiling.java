@@ -17,7 +17,7 @@
         2) 트로미노 놓기 -> i열의 빈 1칸 채우고 i+1열도 모두 채우므로 i+2열로 이동, 빈 칸 없음
  */
 class Solution {
-    final int MOD = 10000007;
+    final int MOD = 1000000007;
     Long[][] dp;
 
     public int numTilings(int n) {
@@ -34,7 +34,7 @@ class Solution {
         //dp에 이미 계산된 값이 있으면 계산하지 않음
         if(dp[col][existEmpty] != null) return dp[col][existEmpty];
 
-        if(existEmpty == 1) return dp[col][existEmpty] = (put(col+1, n, 1) + put(col+2, n, 0)) % MOD;
-        return dp[col][existEmpty] = (put(col+1, n, 0) + put(col+2, n, 0) + (2L * put(col+1, n, 1))) % MOD;
+        if(existEmpty == 1) return dp[col][existEmpty] = (put(col+1, n, 1) + (2L * put(col+2, n, 0))) % MOD;
+        return dp[col][existEmpty] = (put(col+1, n, 0) + put(col+2, n, 0) + put(col+1, n, 1)) % MOD;
     }
 }
