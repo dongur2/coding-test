@@ -1,49 +1,59 @@
-import java.util.*;
-//n개 노드가 하나로 연결
-//간선 하나를 없애서 그래프 2개로 분할 - 각 그래프의 개수 최대한 비슷하게 
-//두 그래프의 노드 개수 차이 리턴
+/*
+    n개 송전탑
+    - 전선 하나를 끊어서 전력망을 2개로 분할
+    - 두 전력망의 송전탑 개수는 최대한 비슷하게 
+    >>> 두 전력망의 송전탑 개수 차이 중 최소값
+*/
+import java.util.Map; import java.util.HashMap;
+import java.util.List; import java.util.ArrayList;
+
 class Solution {
-    static int answer = Integer.MAX_VALUE;
     
-    public int solution(int n, int[][] wires) {        
-        boolean[] visited;
+    public int solution(int n, int[][] wires) {
+        int answer = Integer.MAX_VALUE;
         
-        //간선 하나씩 없앤 모든 경우의 수
+        //간선 하나씩 차례대로 끊어보기
         for(int i=0; i<wires.length; i++) {
-            Map<Integer, List<Integer>> graph = new HashMap<>();
-            makeGraph(wires, graph, i);
             
-            //각 그래프의 노드 개수를 dfs로 탐색
-            visited = new boolean[n+1];
-            for(int node=1; node<=n; node++) {
-                // if(visited[node]) continue; 
-                int cnt = dfs(graph, visited, node, 1); //현재 노드가 속한 그래프의 노드 개수 카운트
-                int other = Math.abs(n-cnt); //다른 그래프의 노드 개수
-                answer = Math.min(answer, Math.abs(other-cnt)); //현재 노드 차이와 기존 노드 차이 중 작은 값 저장
-                break;
+            //노드:[연결노드]
+            Map<Integer, List<Integer>> graph = new HashMap<>();
+            makeGraph(wires, graph, i);   
+            
+            boolean[] visited = new boolean[n+1];
+            
+            //각 전력망 개수 카운트 
+            int[] counts = new int[2];
+            int idx = 0;
+            for(int curr=1; curr<=n; curr++) {
+                if(!visited[curr]) counts[idx++] = dfs(graph, curr, 1, visited);
             }
+            
+            //전력망 송전탑 개수 업데이트
+            answer = Math.min(answer, Math.abs(counts[1] - counts[0]));
         }
+        
+        
         return answer;
     }
     
-    public static void makeGraph(int[][] wires, Map<Integer, List<Integer>> g, int idx) {
+    void makeGraph(int[][] wires, Map<Integer, List<Integer>> graph, int cutIdx) {
         for(int i=0; i<wires.length; i++) {
-            if(i == idx) continue; //간선 제거
-            g.computeIfAbsent(wires[i][0], k->new ArrayList<>()).add(wires[i][1]);
-            g.computeIfAbsent(wires[i][1], k->new ArrayList<>()).add(wires[i][0]);
+            if(i == cutIdx) continue; //간선 컷 
+
+            //무방향그래프
+            graph.computeIfAbsent(wires[i][0], k -> new ArrayList<>()).add(wires[i][1]);
+            graph.computeIfAbsent(wires[i][1], k -> new ArrayList<>()).add(wires[i][0]);
         }
     }
     
-    public static int dfs(Map<Integer, List<Integer>> graph, boolean[] visited, int node, int cnt) {
-        int count = 1;
-        visited[node] = true;
+    int dfs(Map<Integer, List<Integer>> graph, int curr, int cnt, boolean[] visited) {
+        visited[curr] = true;
         
-        if(graph.get(node) == null) return cnt;
-        
-        for(int next:graph.get(node)) {
-            if(visited[next]) continue;
-            count += dfs(graph, visited, next, cnt+1);
+        if(graph.get(curr) == null) return cnt;
+        for(int next : graph.get(curr)) {
+            if(!visited[next]) cnt = dfs(graph, next, cnt+1, visited);
         }
-        return count;
+        
+        return cnt;
     }
 }
