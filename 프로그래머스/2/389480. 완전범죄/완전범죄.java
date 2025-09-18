@@ -26,11 +26,9 @@ class Solution {
             return true;
         }
         
-        boolean isValid = false;
-        
         dp[idx][evidA][evidB] = dfs(info, idx+1, evidA+info[idx+1][0], evidB) ? 1 : 2;
         dp[idx][evidA][evidB] = dfs(info, idx+1, evidA, evidB+info[idx+1][1]) ? 1 : 2;
         
-        return isValid;
+        return false;
     }
 }
