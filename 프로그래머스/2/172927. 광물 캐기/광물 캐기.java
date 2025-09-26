@@ -1,59 +1,62 @@
 import java.util.*;
 
-//곡괭이를 다 쓰거나 모든 광물을 캘 때까지 필요한 최소 피로도
-//빨리 캐는게 아니고 최소 피로도니까 dfs
+//곡괭이 개수와 광물 순서가 주어졌을 때, 작업 종료까지 필요한 최소 피로도 
 class Solution {
-    //각 곡괭이별 피로도 테이블
-    int[][] fatigues = {
+    //int[] picks = [다이아, 철, 돌] //곡괭이별 광물 채광 피로도
+    int[][] table = new int[][] {
         {1, 1, 1},
         {5, 1, 1},
         {25, 5, 1}
     };
     
-    //최소 피로도
-    int minFatigue = Integer.MAX_VALUE;
-    int mineralCnt;
+    Map<String, Integer> mineralMap = new HashMap<>();
     
+    int answer = Integer.MAX_VALUE; //최소 피로도 
+
     public int solution(int[] picks, String[] minerals) {
-        mineralCnt = minerals.length;
+        mineralMap.put("diamond", 0);
+        mineralMap.put("iron", 1);
+        mineralMap.put("stone", 2);
         
-        dfs(picks, minerals, 0, 0);
-        return minFatigue;
+        int totalPicks = picks[0]+picks[1]+picks[2];
+        int maxBlocks = (int)Math.ceil((double)minerals.length / 5);
+        int maxIdx = Math.min(totalPicks, maxBlocks); //채굴 가능한 그룹 
+        dfs(picks, minerals, 0, 0, maxIdx);
+        
+        return answer;
     }
     
-    void dfs(int[] picks, String[] minerals, int idx, int fatigue) {
-        //stop: 남은 광물/곡괭이가 모두 없을 경우 중지
-        if(idx >= mineralCnt || (picks[0] == 0 && picks[1] == 0 && picks[2] == 0)) {
-            minFatigue = Math.min(minFatigue, fatigue);
+    void dfs(int[] picks, String[] minerals, int blockIdx, int tired, int maxIdx) {
+        //종료 시점
+        if(blockIdx >= maxIdx) {
+            answer = Math.min(answer, tired);
             return;
         }
+
+        //각 곡괭이로 캤을 때 피로도
+        int[] fatigue = new int[3];
         
-        //recursive call: 곡괭이 차례대로 선택해서 채광
+        int start = blockIdx * 5;
+        //다섯개 채광
+        for(int i=0; i<5; i++) {
+            int mIdx = start + i; //현재 광물 인덱스 
+            if(mIdx >= minerals.length) break; //광물 끝
+            
+            int mKindIdx = mineralMap.get(minerals[mIdx]);
+            
+            fatigue[0] += table[0][mKindIdx];
+            fatigue[1] += table[1][mKindIdx];
+            fatigue[2] += table[2][mKindIdx];
+        }
+        
+        //곡괭이 선택 
         for(int i=0; i<3; i++) {
-            //남은 곡괭이 있으면 선택
             if(picks[i] > 0) {
                 picks[i]--;
-                
-                //채광시작 - 연속 5회 
-                int newFatigue = 0, newIdx = idx;
-                for(int cnt=0; cnt<5; cnt++) {
-                    //남은 광물이 있을 경우 채광 진행
-                    if(newIdx < mineralCnt) {
-                        int mineral = convertToIdx(minerals[newIdx]);
-                        newFatigue += fatigues[i][mineral];
-                        newIdx++;
-                    }
-                }
-                
-                dfs(picks, minerals, idx + 5, fatigue + newFatigue);
+                dfs(picks, minerals, blockIdx+1, tired+fatigue[i], maxIdx);
                 picks[i]++;
             }
         }
     }
     
-    int convertToIdx(String name) {
-        if(name.equals("diamond")) return 0;
-        else if(name.equals("iron")) return 1;
-        else return 2;
-    }
 }
