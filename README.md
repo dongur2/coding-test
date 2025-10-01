@@ -7,6 +7,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0001-two-sum](https://github.com/dongur2/coding-test/tree/master/0001-two-sum) |
 | [0011-container-with-most-water](https://github.com/dongur2/coding-test/tree/master/0011-container-with-most-water) |
 | [0046-permutations](https://github.com/dongur2/coding-test/tree/master/0046-permutations) |
+| [0078-subsets](https://github.com/dongur2/coding-test/tree/master/0078-subsets) |
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
 | [0121-best-time-to-buy-and-sell-stock](https://github.com/dongur2/coding-test/tree/master/0121-best-time-to-buy-and-sell-stock) |
 | [0162-find-peak-element](https://github.com/dongur2/coding-test/tree/master/0162-find-peak-element) |
@@ -66,6 +67,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0017-letter-combinations-of-a-phone-number](https://github.com/dongur2/coding-test/tree/master/0017-letter-combinations-of-a-phone-number) |
 | [0046-permutations](https://github.com/dongur2/coding-test/tree/master/0046-permutations) |
 | [0077-combinations](https://github.com/dongur2/coding-test/tree/master/0077-combinations) |
+| [0078-subsets](https://github.com/dongur2/coding-test/tree/master/0078-subsets) |
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
 | [0216-combination-sum-iii](https://github.com/dongur2/coding-test/tree/master/0216-combination-sum-iii) |
 ## Depth-First Search
@@ -326,4 +328,8 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | [0399-evaluate-division](https://github.com/dongur2/coding-test/tree/master/0399-evaluate-division) |
 | [0547-number-of-provinces](https://github.com/dongur2/coding-test/tree/master/0547-number-of-provinces) |
 | [0801-is-graph-bipartite](https://github.com/dongur2/coding-test/tree/master/0801-is-graph-bipartite) |
+## Bit Manipulation
+|  |
+| ------- |
+| [0078-subsets](https://github.com/dongur2/coding-test/tree/master/0078-subsets) |
 <!---LeetCode Topics End-->
