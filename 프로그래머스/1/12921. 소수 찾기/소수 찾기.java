@@ -1,21 +1,16 @@
-import java.util.*;
-
 class Solution {
-    //10^6
     public int solution(int n) {
-        int[] arr = new int[n+1];
-        Arrays.fill(arr, 1);
-        
-        for(int i=2; i<=(int)Math.sqrt(n); i++) {
-            if(arr[i] == 1) {
-                int j = 2;
-                while(i*j <= n) {
-                    arr[i*j] = 0;
-                    j++;
-                }
-            }
+        int answer = 0;
+        for(int i=2; i<=n; i++) {
+            if(isPrime(i)) answer++;
         }
-        
-        return (int)Arrays.stream(arr).filter(a->a==1).count()-2; //0,1 제외
+        return answer;
+    }
+    
+    boolean isPrime(int num) {
+        for(int i=2; i<=Math.sqrt(num); i++) {
+            if(num % i == 0) return false;
+        }
+        return true;
     }
 }
