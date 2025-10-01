@@ -17,7 +17,7 @@ class Solution {
         for(int curr=num; curr<=n; curr++) {
             list.add(curr);
             dfs(n, k, curr+1, list);
-            list.remove(Integer.valueOf(curr));
+            list.remove(list.size()-1);
         }
     }
 }
