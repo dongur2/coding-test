@@ -140,6 +140,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## Math
 |  |
 | ------- |
+| [0060-permutation-sequence](https://github.com/dongur2/coding-test/tree/master/0060-permutation-sequence) |
 | [0062-unique-paths](https://github.com/dongur2/coding-test/tree/master/0062-unique-paths) |
 | [0070-climbing-stairs](https://github.com/dongur2/coding-test/tree/master/0070-climbing-stairs) |
 | [1146-greatest-common-divisor-of-strings](https://github.com/dongur2/coding-test/tree/master/1146-greatest-common-divisor-of-strings) |
@@ -257,6 +258,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## Recursion
 |  |
 | ------- |
+| [0060-permutation-sequence](https://github.com/dongur2/coding-test/tree/master/0060-permutation-sequence) |
 | [0206-reverse-linked-list](https://github.com/dongur2/coding-test/tree/master/0206-reverse-linked-list) |
 | [0394-decode-string](https://github.com/dongur2/coding-test/tree/master/0394-decode-string) |
 ## Design
