@@ -1,39 +1,24 @@
-import java.util.*;
-
+import java.util.List; import java.util.ArrayList;
 class Solution {
-    /*
-    Q. 주어진 중복 없는 숫자 배열로 만들 수 있는 모든 부분집합을 반환
-    - 공집합 포함
-    - 중복 불허 & 순서 상관없음 => "조합"
-    */
-    
-    List<List<Integer>> result;
-    
+    List<List<Integer>> answer = new ArrayList<>();
     public List<List<Integer>> subsets(int[] nums) {
-        result = new ArrayList<>();
-        
-        //만들어야하는 부분집합 크기 0 ~ nums.length개
-        for(int i=0; i<=nums.length; i++) {
-            makeSubsets(nums, new boolean[nums.length], new ArrayList<>(), i, 0);
+        for(int l=0; l<=nums.length; l++) {
+            dfs(nums, l, 0, new ArrayList<>());
         }
-        
-        return result;
+        return answer;
     }
-    
-    private void makeSubsets(int[] nums, boolean[] visited, List<Integer> list, int len, int idx) {
-        //만든 집합의 크기가 만들어야하는 크기와 같으면 추가하고 종료
-        if(list.size() == len) {
-            result.add(new ArrayList<>(list)); return;
+
+    void dfs(int[] nums, int len, int idx, List<Integer> list) {
+        //basecase:크기만족-중지
+        if(list.size()==len) {
+            answer.add(new ArrayList<>(list));
+            return;
         }
-        
-        for(int i=idx; i<nums.length; i++) {
-            if(visited[i]) continue;
-            
-            visited[i] = true;
-            list.add(nums[i]);
-            makeSubsets(nums, visited, list, len, i+1);
-            visited[i] = false;
-            list.remove(Integer.valueOf(nums[i]));
+
+        for(int curr=idx; curr<nums.length; curr++) {
+            list.add(nums[curr]);
+            dfs(nums, len, curr+1, list);
+            list.remove(list.size()-1);
         }
     }
 }
