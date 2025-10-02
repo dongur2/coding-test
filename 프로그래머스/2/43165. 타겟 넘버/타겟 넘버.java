@@ -1,22 +1,20 @@
-//주어진 배열의 숫자를 순서를 유지한 채로 더하거나 빼서 타겟 숫자로 만드는 방법 수
 class Solution {
-    static int answer = 0;
-    
     public int solution(int[] numbers, int target) {
-        dfs(numbers, target, 0, 0);
-        
-        return answer;
+        return dfs(numbers, target, 0, 0, 0);
     }
     
-    public void dfs(int[] numbers, int target, int idx, int num) {
-        //마지막 인덱스까지 왔을 경우 값 비교
+    int dfs(int[] numbers, int target, int idx, int cnt, int curr) {
+        cnt = 0; 
+        
+        //basecase: 주어진 숫자를 모두 연산했으면 값 확인
         if(idx == numbers.length) {
-            if(num == target) answer++;
-            return;
+            if(curr == target) return 1;
+            else return 0;
         }
         
-        //dfs로 각 원소마다 -, + 진행
-        dfs(numbers, target, idx+1, num+numbers[idx]);
-        dfs(numbers, target, idx+1, num-numbers[idx]);
+        cnt += dfs(numbers, target, idx+1, cnt, curr+numbers[idx]);
+        cnt += dfs(numbers, target, idx+1, cnt, curr-numbers[idx]);
+        
+        return cnt;
     }
 }
