@@ -1,35 +1,40 @@
-/*
-    그래프 노드가 두 분류로 나눠지는지 확인 
-    연결되는 두 노드는 서로 다른 분류여야 한다.
- */
- import java.util.Map; import java.util.HashMap;
+import java.util.Map; import java.util.HashMap;
+import java.util.Deque; import java.util.ArrayDeque;
+
 class Solution {
-    int[] kinds;
-    int n;
-    boolean res = true;
-
+    Map<Integer, Character> group = new HashMap<>(); //노드 그룹 부여  A/B
+    
     public boolean isBipartite(int[][] graph) {
-        n = graph.length;
-        kinds = new int[n]; //7,8
-
-        for(int i=0; i<n; i++) {
-            if(kinds[i] == 0) dfs(graph, i, 7);
+        for(int i=0; i<graph.length; i++) {
+            if(!group.containsKey(i) && !bfs(graph, i)) return false; 
         }
-        return res;
+        return true;
     }
 
-    void dfs(int[][] g, int curr, int k) {
-        kinds[curr] = k; //그룹 부여
+    boolean bfs(int[][] graph, int start) {
+        group.put(start, 'A'); //출발점
 
-        for(int nxt : g[curr]) {
-            //미방문
-            if(kinds[nxt] == 0) dfs(g, nxt, (k == 7) ? 8 : 7);
-            
-            //방문했던 노드
-            //서로 분류 같으면 false
-            if(kinds[nxt] == kinds[curr]) {
-                res = false; return;
+        Deque<Integer> q = new ArrayDeque<>();
+        q.offer(start);
+
+        while(!q.isEmpty()) {
+            int curr = q.poll();
+            char currGroup = group.get(curr);
+
+            if(graph[curr].length == 0) continue;
+            for(int next : graph[curr]) {
+                //이미 그룹 부여되어있으면 다른지 확인
+                if(group.containsKey(next)) {
+                    if(group.get(next) == currGroup) return false; //그룹 같으면 실패 
+                }
+                //그룹 부여X -> 부여
+                else {
+                    group.put(next, (currGroup == 'A') ? 'B' : 'A');
+                    q.offer(next);
+                }
             }
         }
+
+        return true;
     }
 }
