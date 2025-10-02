@@ -6,8 +6,28 @@ class Solution {
     
     public boolean isBipartite(int[][] graph) {
         for(int i=0; i<graph.length; i++) {
-            if(!group.containsKey(i) && !bfs(graph, i)) return false; 
+            // if(!group.containsKey(i) && !bfs(graph, i)) return false; 
+            if(!group.containsKey(i) && !dfs(graph, i, 'A')) return false; 
         }
+        return true;
+    }
+
+    boolean dfs(int[][] graph, int curr, char g) {
+        group.put(curr, g);
+
+        if(graph[curr].length == 0) return true;
+        for(int next : graph[curr]) {
+            //이미 그룹 부여되어있으면 다른지 확인
+            if(group.containsKey(next)) {
+                if(group.get(next) == g) return false;
+            }
+            //그룹 부여X -> 부여
+            else {
+                if(!dfs(graph, next, (g == 'A') ? 'B' : 'A')) return false;
+            }
+            
+        }
+
         return true;
     }
 
