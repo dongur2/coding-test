@@ -2,9 +2,27 @@ import java.util.List; import java.util.ArrayList;
 import java.util.Deque; import java.util.ArrayDeque;
 
 class Solution {
+    int cnt = 0;
+    boolean[] checked;
+
     public boolean canVisitAllRooms(List<List<Integer>> rooms) {
-        int cnt = bfs(rooms);    
+        // int cnt = bfs(rooms);    
+        // return cnt == rooms.size();
+
+        checked = new boolean[rooms.size()];
+        dfs(rooms, 0);
         return cnt == rooms.size();
+    }
+
+    void dfs(List<List<Integer>> rooms, int curr) {
+        //방문 체크 
+        checked[curr] = true; cnt++;
+
+        if(rooms.get(curr) != null) {
+            for(int key : rooms.get(curr)) {
+                if(!checked[key]) dfs(rooms, key);
+            }
+        }
     }
 
     int bfs(List<List<Integer>> rooms) {
