@@ -2,6 +2,20 @@ import java.util.Map; import java.util.HashMap;
 
 class Solution {
     public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount+1];
+        Arrays.fill(dp, amount+1);
+        dp[0] = 0;
+
+        for (int i=1; i<=amount; i++) {
+            for (int coin : coins) {
+                if (i - coin >= 0) dp[i] = Math.min(dp[i], 1 + dp[i - coin]);
+            }
+        }   
+
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+    public int useMap(int[] coins, int amount) {
         if(amount == 0) return 0; 
 
         Map<Integer, Integer> map = new HashMap<>(); //가격:필요동전개수 - 최소값으로 업데이트 
