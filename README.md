@@ -6,6 +6,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | ------- |
 | [0001-two-sum](https://github.com/dongur2/coding-test/tree/master/0001-two-sum) |
 | [0011-container-with-most-water](https://github.com/dongur2/coding-test/tree/master/0011-container-with-most-water) |
+| [0037-sudoku-solver](https://github.com/dongur2/coding-test/tree/master/0037-sudoku-solver) |
 | [0046-permutations](https://github.com/dongur2/coding-test/tree/master/0046-permutations) |
 | [0078-subsets](https://github.com/dongur2/coding-test/tree/master/0078-subsets) |
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
@@ -65,6 +66,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 |  |
 | ------- |
 | [0017-letter-combinations-of-a-phone-number](https://github.com/dongur2/coding-test/tree/master/0017-letter-combinations-of-a-phone-number) |
+| [0037-sudoku-solver](https://github.com/dongur2/coding-test/tree/master/0037-sudoku-solver) |
 | [0046-permutations](https://github.com/dongur2/coding-test/tree/master/0046-permutations) |
 | [0077-combinations](https://github.com/dongur2/coding-test/tree/master/0077-combinations) |
 | [0078-subsets](https://github.com/dongur2/coding-test/tree/master/0078-subsets) |
@@ -91,6 +93,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 ## Matrix
 |  |
 | ------- |
+| [0037-sudoku-solver](https://github.com/dongur2/coding-test/tree/master/0037-sudoku-solver) |
 | [0079-word-search](https://github.com/dongur2/coding-test/tree/master/0079-word-search) |
 | [0221-maximal-square](https://github.com/dongur2/coding-test/tree/master/0221-maximal-square) |
 | [1036-rotting-oranges](https://github.com/dongur2/coding-test/tree/master/1036-rotting-oranges) |
@@ -184,6 +187,7 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 | ------- |
 | [0001-two-sum](https://github.com/dongur2/coding-test/tree/master/0001-two-sum) |
 | [0017-letter-combinations-of-a-phone-number](https://github.com/dongur2/coding-test/tree/master/0017-letter-combinations-of-a-phone-number) |
+| [0037-sudoku-solver](https://github.com/dongur2/coding-test/tree/master/0037-sudoku-solver) |
 | [0217-contains-duplicate](https://github.com/dongur2/coding-test/tree/master/0217-contains-duplicate) |
 | [0753-open-the-lock](https://github.com/dongur2/coding-test/tree/master/0753-open-the-lock) |
 | [1319-unique-number-of-occurrences](https://github.com/dongur2/coding-test/tree/master/1319-unique-number-of-occurrences) |
