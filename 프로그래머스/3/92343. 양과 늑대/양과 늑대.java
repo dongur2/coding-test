@@ -1,44 +1,35 @@
-import java.util.*;
+import java.util.Map; import java.util.HashMap; import java.util.List; import java.util.ArrayList;
 
-//모을 수 있는 최대 양 수
 class Solution {
-    static int answer = 0;
+    Map<Integer, List<Integer>> graph = new HashMap<>();
+    int answer = 0;
     
     public int solution(int[] info, int[][] edges) {
-        //부모 노드:[자식 노드]
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-        for(int[] edge:edges) {
-            graph.computeIfAbsent(edge[0], k->new ArrayList<>()).add(edge[1]);
-        }
+        //그래프
+        for(int[] edge:edges) graph.computeIfAbsent(edge[0], k->new ArrayList<>()).add(edge[1]);
         
-        //탐색
-        dfs(info, graph, 0, 1, 0, graph.get(0));
+        dfs(info, graph.get(0), 1, 0);
         
         return answer;
     }
     
-    public void dfs(int[] info, Map<Integer, List<Integer>> graph, int node, int sheep, int wolf, List<Integer> nxtNodes) {
-        //현재 가지고 있는 양의 수와 최대 수 비교 후 업데이트
-        answer = Math.max(sheep, answer);
+    void dfs(int[] info, List<Integer> q, int s, int w) {
+        answer = Math.max(answer, s);
         
-        //자식 노드 탐색
-        for(int nxt:nxtNodes) {
-            int newSheep = sheep, newWolf = wolf;
+        for(int i=0; i<q.size(); i++) {
+            int newSheep = s; int newWolf = w;
             
-            //다음 노드가 양/늑대
-            if(info[nxt] == 0) newSheep++;
-            else newWolf++;
+            int next = q.get(i);
+            if(info[next] == 1) newWolf++; else newSheep++;
             
-            //양 <= 늑대면 방문하지 않음
             if(newSheep <= newWolf) continue;
             
-            //양 > 늑대면 방문
-            else {
-                List<Integer> newNxtNodes = new ArrayList<>(nxtNodes);
-                newNxtNodes.remove(Integer.valueOf(nxt));
-                if(graph.containsKey(nxt)) newNxtNodes.addAll(graph.get(nxt));
-                dfs(info, graph, nxt, newSheep, newWolf, newNxtNodes);
-            }
+            List<Integer> newQ = new ArrayList<>(q);
+            newQ.remove(i);
+            if(graph.containsKey(next)) newQ.addAll(graph.get(next));
+            
+            dfs(info, newQ, newSheep, newWolf);
         }
     }
+    
 }
